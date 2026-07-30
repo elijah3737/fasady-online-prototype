@@ -971,6 +971,10 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   });
   var GROUPS = window.DEC_GROUPS || {};
   function decImg(d) { return window.DEC_PRE + d.sig + window.DEC_MID + d.card; }
+  // URL образца содержит круглые скобки — filters:format(webp):no_upscale() —
+  // поэтому в CSS url() его обязательно кавычить, иначе значение невалидно
+  // и фон молча не отображается (в <img src> скобки безопасны).
+  function decBg(d) { return 'url("' + decImg(d) + '")'; }
   function decLabel(d) { return (d.art ? d.art + ' ' : '') + d.name; }
   function decPrice(d) { return (GROUPS[d.g] || {}).price || 4200; }
   function groupLabel(g) { return (GROUPS[g] || {}).label || g; }
@@ -1167,7 +1171,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     if (!d) return '<span class="hint">выберите декор</span>';
     var own = (r.decor !== null && r.decor !== undefined);
     return '<span style="display:flex; align-items:center; gap:0.375rem; min-width:0">' +
-      '<span class="ol__sw" style="background-image:url(' + decImg(d) + ')"></span>' +
+      '<span class="ol__sw" style=\'background-image:' + decBg(d) + '\'></span>' +
       '<span style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--t-xs)"' +
         ' title="' + esc(decLabel(d)) + '">' + esc(d.art || d.name) + '</span>' +
       (d.stock ? '' : '<span class="tag tag--warn" style="flex-shrink:0">под заказ</span>') +
@@ -1322,7 +1326,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   function setDecor(d) {
     if (!d) return;
     st.decor = d;
-    $('pd-sw').style.backgroundImage = 'url(' + decImg(d) + ')';
+    $('pd-sw').style.backgroundImage = decBg(d);
     $('pd-name').textContent = decLabel(d);
     $('pd-meta').innerHTML = esc(groupLabel(d.g)) + ' · ' + nf.format(decPrice(d)) + ' ₽/м² · ' +
       (d.stock ? '<span class="tag tag--ok"><span class="dot"></span>в наличии</span>'
@@ -1459,7 +1463,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   function renderVis() {
     var v = visVals(), t = TYPES[v.type], f = $('vis-fasad');
     f.dataset.mill = st.mill;
-    if (st.decor) f.style.backgroundImage = 'url(' + decImg(st.decor) + ')';
+    if (st.decor) f.style.backgroundImage = decBg(st.decor);
     $('vis-dim').textContent = (v.h || '—') + ' × ' + (v.w || '—') + ' мм' + (v.q > 1 ? ' · ' + v.q + ' шт' : '');
     if (v.h > 0 && v.w > 0) f.style.aspectRatio = v.w + ' / ' + v.h;
     $('v-lim').textContent = 'Допустимо для «' + t.label + '»: высота ' + t.hMin + '–' + t.hMax +
@@ -1738,7 +1742,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       var items = o.rows.slice(0, 4).map(function (r) {
         var d = decByLabel(r.decor);
         return '<div class="ol__i">' +
-          '<span class="ol__sw"' + (d ? ' style="background-image:url(' + decImg(d) + ')"' : '') + '></span>' +
+          '<span class="ol__sw"' + (d ? ' style=\'background-image:' + decBg(d) + '\'' : '') + '></span>' +
           '<span class="ol__t">' + TYPES[r.type].label + ' ' + r.h + '×' + r.w + ' · ' + r.q + ' шт · ' + esc(r.mill) + '</span>' +
           '<span class="ol__s">' + money(r.cost) + '</span>' +
         '</div>';
@@ -1814,7 +1818,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   /* ═══════════ Старт ═══════════ */
 
   seedOrders();
-  setDecor(decByLabel('0043 Ясень белый') || DEC[0]);
+  setDecor(decByLabel('0101 Дуб шале натуральный') || DEC[0]);
   setMode('spec');
   renderSpec();
   renderOrders();
