@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Фрезеровки МДФ — каталог КАТАЛЕЯ с техкартами</title>
+<meta name="description" content="79 фрезеровок мебельных фасадов МДФ: простые, классические, современные, художественные, 3D, молд, ART. Техкарта с лимитами размеров у каждой.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.cat { padding: clamp(1.6rem, 4vw, 2.8rem) 0 3rem; }
+.cat__head { margin-bottom: 1.2rem; }
+.cat__head p { color: var(--ink-2); margin-top: 0.5rem; max-width: 62ch; }
+.cnt-line { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-3); margin: 0 0 0.9rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.9rem; }
+.fcard { border: 1px solid var(--line); background: var(--surface); border-radius: var(--r-lg); overflow: hidden; cursor: pointer; padding: 0; text-align: left; width: 100%; transition: box-shadow 0.2s, transform 0.2s var(--ease); }
+.fcard:hover { box-shadow: var(--sh-2); transform: translateY(-2px); }
+.fcard .ph { aspect-ratio: 3/4; overflow: hidden; display: block; background: var(--paper-2); }
+.fcard img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fcard .nm { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.6rem 0.8rem 0.7rem; }
+.fcard .nm b { font-size: 0.95rem; }
+.fcard .nm span { margin-left: auto; font-size: 0.72rem; color: var(--ink-3); white-space: nowrap; }
+.fcard .def { position: absolute; top: 8px; left: 8px; background: oklch(96% 0.03 70); color: oklch(45% 0.09 70); font-size: 0.68rem; font-weight: 600; border-radius: 5px; padding: 0.15rem 0.45rem; }
+.fcard { position: relative; }
+.nores { padding: 3rem 1rem; text-align: center; color: var(--ink-3); }
+/* Техкарта в диалоге */
+.tv { display: grid; grid-template-columns: 200px 1fr; }
+.tv__ph { border-radius: var(--r-lg) 0 0 var(--r-lg); overflow: hidden; background: var(--paper-2); }
+.tv__ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tv__b { padding: 1.2rem 1.3rem; }
+.tv__b h3 { font-family: var(--font); text-transform: none; letter-spacing: 0; font-size: 1.15rem; font-weight: 700; }
+.tv__g { font-size: 0.82rem; color: var(--ink-3); margin: 0.15rem 0 0.8rem; }
+.tk { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.tk th, .tk td { padding: 0.4rem 0.55rem; border: 1px solid var(--line); text-align: center; }
+.tk th { background: var(--paper); font-weight: 600; color: var(--ink-2); }
+.tk td:first-child { text-align: left; color: var(--ink-2); }
+.tk .mono { font-size: 0.82rem; }
+.tv__extra { display: flex; flex-wrap: wrap; gap: 0.3rem 1.2rem; margin-top: 0.7rem; font-size: 0.82rem; color: var(--ink-2); }
+.tv__extra b { font-family: var(--mono); font-weight: 500; color: var(--ink); }
+.tv__def { margin-top: 0.7rem; font-size: 0.8rem; color: oklch(45% 0.09 70); background: oklch(96% 0.03 70); border-radius: 6px; padding: 0.45rem 0.7rem; }
+.tv .btn { margin-top: 0.9rem; }
+@media (max-width: 640px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  .tv { grid-template-columns: 1fr; }
+  .tv__ph { border-radius: var(--r-lg) var(--r-lg) 0 0; max-height: 240px; }
+}
+</style>
+</head>
+<body>
+
+<div class="protobar">Прототип нового сайта «КАТАЛЕЯ». Техкарты сняты с действующего каталога фабрики; отмеченные позиции уточняются у технолога.</div>
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a class="brand" href="index.html"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
+    <nav class="nav" aria-label="Разделы сайта">
+      <a href="dekory.html">Декоры</a>
+      <a href="frezerovki.html" aria-current="page">Фрезеровки</a>
+      <a href="index.html#work">Как работаем</a>
+      <a href="index.html#contacts">Контакты</a>
+    </nav>
+    <span class="hdr__sp"></span>
+    <a class="hdr__tel" href="tel:+79219492334">+7 921 949-23-34</a>
+    <a class="btn" href="cabinet.html">Войти в кабинет</a>
+  </div>
+</header>
+
+<main class="cat">
+  <div class="wrap">
+    <div class="cat__head">
+      <h1>Фрезеровки</h1>
+      <p>79 рисунков из каталога фабрики — у каждого своя техкарта: лимиты размеров по типам фасадов, кромка, отступы. Нажмите на фрезеровку, чтобы открыть техкарту. Не нашли свою — разработаем по эскизу.</p>
+    </div>
+
+    <div class="filter" role="group" aria-label="Группы фрезеровок" id="gchips">
+      <button class="chip" data-g="" aria-pressed="true">Все</button>
+    </div>
+
+    <p class="cnt-line" id="cnt" role="status"></p>
+    <div class="grid" id="grid"></div>
+    <div class="nores" id="nores" hidden>В этой группе пока пусто.</div>
+  </div>
+</main>
+
+<dialog id="dlg" aria-label="Техкарта фрезеровки">
+  <button class="dlg__x" id="dlg-x" aria-label="Закрыть"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="tv">
+    <div class="tv__ph"><img id="tv-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=" alt=""></div>
+    <div class="tv__b">
+      <h3 id="tv-name"></h3>
+      <p class="tv__g" id="tv-g"></p>
+      <table class="tk" aria-label="Лимиты размеров, мм">
+        <thead><tr><th></th><th>Глухой</th><th>Витрина</th><th>Ящик</th></tr></thead>
+        <tbody>
+          <tr><td>Высота</td><td class="mono" id="tk-hb"></td><td class="mono" id="tk-hv"></td><td class="mono" id="tk-hd"></td></tr>
+          <tr><td>Ширина</td><td class="mono" id="tk-wb"></td><td class="mono" id="tk-wv"></td><td class="mono" id="tk-wd"></td></tr>
+        </tbody>
+      </table>
+      <div class="tv__extra" id="tv-extra"></div>
+      <p class="tv__def" id="tv-def" hidden>Техкарты этой фрезеровки нет в каталоге — показана типовая. Точные лимиты уточнит технолог при заказе.</p>
+      <a class="btn" href="cabinet.html">Рассчитать с этой фрезеровкой</a>
+    </div>
+  </div>
+</dialog>
+
+<footer class="foot">
+  <div class="wrap foot__legal" style="border-top:0">
+    <span>© 2026 ООО «КАТЕНЬКА» · КАТАЛЕЯ</span>
+    <a href="politika.html">Политика обработки персональных данных</a>
+    <a href="index.html" style="margin-left:auto">На главную</a>
+  </div>
+</footer>
+
+<script src="frezerovki.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  var groups = [];
+  window.FREZ.forEach(function (f) { if (groups.indexOf(f.g) === -1) groups.push(f.g); });
+  var gchips = $('#gchips');
+  groups.forEach(function (g) {
+    gchips.insertAdjacentHTML('beforeend', '<button class="chip" data-g="' + g + '" aria-pressed="false">' + g.replace(' фрезеровки', '') + '</button>');
+  });
+
+  var state = { g: '' };
+  var grid = $('#grid');
+  function render() {
+    var out = window.FREZ.filter(function (f) { return !state.g || f.g === state.g; });
+    grid.innerHTML = out.map(function (f) {
+      var meta = [];
+      if (f.th > 16) meta.push('от ' + f.th + ' мм');
+      if (f.edge !== 'R3') meta.push(f.edge);
+      return '<button class="fcard" data-id="' + f.id + '" id="' + f.id + '">' +
+        '<span class="ph"><img src="' + f.img + '" alt="Фрезеровка «' + f.n + '»" loading="lazy"></span>' +
+        (f.defTech ? '<span class="def" title="Техкарты в каталоге фабрики нет — показана типовая">типовая техкарта</span>' : '') +
+        '<span class="nm"><b>' + f.n + '</b>' + (meta.length ? '<span>' + meta.join(' · ') + '</span>' : '') + '</span>' +
+      '</button>';
+    }).join('');
+    $('#nores').hidden = out.length > 0;
+    $('#cnt').textContent = 'Показано: ' + out.length + ' из ' + window.FREZ.length + (state.g ? ' · ' + state.g.toLowerCase() : '');
+  }
+
+  gchips.addEventListener('click', function (e) {
+    var ch = e.target.closest('.chip'); if (!ch) return;
+    gchips.querySelectorAll('.chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+    ch.setAttribute('aria-pressed', 'true');
+    state.g = ch.dataset.g;
+    render();
+  });
+
+  var dlg = $('#dlg');
+  function openCard(f) {
+    $('#tv-img').src = f.img;
+    $('#tv-img').alt = 'Фрезеровка «' + f.n + '»';
+    $('#tv-name').textContent = f.n;
+    $('#tv-g').textContent = f.g + ' · толщина от ' + f.th + ' мм';
+    var L = f.lim;
+    function rng(a) { return a[0] + '–' + a[1]; }
+    $('#tk-hb').textContent = rng(L.b[0]); $('#tk-hv').textContent = rng(L.v[0]); $('#tk-hd').textContent = rng(L.d[0]);
+    $('#tk-wb').textContent = rng(L.b[1]); $('#tk-wv').textContent = rng(L.v[1]); $('#tk-wd').textContent = rng(L.d[1]);
+    var ex = [];
+    ex.push('Кромка <b>' + f.edge + '</b>');
+    if (f.off) ex.push('Отступ фрезеровки <b>' + f.off + ' мм</b>');
+    if (f.mw && f.mw !== '-') ex.push('Ширина фрезеровки <b>' + f.mw + '</b>');
+    if (f.vf) ex.push('Рамка витрины <b>' + f.vf + ' мм</b>');
+    $('#tv-extra').innerHTML = ex.map(function (x) { return '<span>' + x + '</span>'; }).join('');
+    $('#tv-def').hidden = !f.defTech;
+    dlg.showModal();
+  }
+  grid.addEventListener('click', function (e) {
+    var c = e.target.closest('.fcard'); if (!c) return;
+    var f = window.FREZ.find(function (x) { return x.id === c.dataset.id; });
+    if (f) openCard(f);
+  });
+  $('#dlg-x').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  render();
+
+  // Прямая ссылка с главной: frezerovki.html#<id>
+  if (location.hash) {
+    var f0 = window.FREZ.find(function (x) { return x.id === location.hash.slice(1); });
+    if (f0) { openCard(f0); }
+  }
+})();
+</script>
+
+</body>
+</html>

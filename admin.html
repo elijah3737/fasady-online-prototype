@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Админка фабрики — КАТАЛЕЯ: заказы</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Тот же нейтральный мир, что и кабинет партнёра: это рабочий стол менеджера. */
+:root {
+  --bg: oklch(97.5% 0.003 80); --surface: oklch(100% 0 80); --panel: oklch(95% 0.004 80);
+  --ink: oklch(22% 0.008 60); --ink-2: oklch(42% 0.008 60); --ink-3: oklch(50% 0.008 60);
+  --line: oklch(90% 0.005 80); --line-2: oklch(84% 0.006 80);
+  --accent: oklch(40% 0.075 162); --ok: oklch(48% 0.09 155); --ok-wash: oklch(95.5% 0.028 155);
+  --warn: oklch(52% 0.11 70); --warn-wash: oklch(96% 0.038 70);
+  --font: "IBM Plex Sans", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  --r: 8px; --r-lg: 12px;
+  --sh-1: 0 1px 2px oklch(22% 0.006 250 / 0.06);
+  --sh-2: 0 2px 8px oklch(22% 0.006 250 / 0.08), 0 1px 2px oklch(22% 0.006 250 / 0.05);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 0.9375rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+h1 { margin: 0; font-size: 1.4rem; font-weight: 600; letter-spacing: -0.015em; }
+h3 { margin: 0; font-size: 1rem; font-weight: 600; }
+.mono, .num { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+:where(button, select, input, a):focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 5px; }
+.protobar { background: oklch(30% 0.02 60); color: oklch(92% 0.01 80); font-size: 0.78rem; text-align: center; padding: 0.45rem 1rem; }
+.protobar a { color: inherit; }
+.shell { max-width: 1240px; margin: 0 auto; padding: 0 clamp(0.75rem, 2vw, 1.75rem); }
+.topbar { position: sticky; top: 0; z-index: 100; background: color-mix(in oklab, var(--surface) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+.topbar__in { display: flex; align-items: center; gap: 1rem; min-height: 58px; }
+.brand b { font-family: "Oswald", "Arial Narrow", sans-serif; letter-spacing: 0.08em; text-transform: uppercase; }
+.brand i { font-style: normal; font-size: 0.65rem; color: var(--ink-3); letter-spacing: 0.2em; text-transform: uppercase; margin-left: 0.5rem; }
+.role { margin-left: auto; font-size: 0.8rem; color: var(--ink-3); }
+.head { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin: 1.5rem 0 1rem; }
+.head p { margin: 0.15rem 0 0; color: var(--ink-2); font-size: 0.88rem; }
+.btn { display: inline-flex; align-items: center; gap: 0.4rem; background: oklch(36% 0.058 162); color: #fff; border: 0; border-radius: var(--r); padding: 0.55rem 1rem; font: inherit; font-weight: 600; font-size: 0.88rem; cursor: pointer; }
+.btn:hover { background: oklch(29% 0.052 162); }
+.btn--ghost { background: var(--surface); color: var(--ink); border: 1px solid var(--line-2); }
+.btn--ghost:hover { background: var(--panel); }
+/* сводка */
+.kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-bottom: 1.1rem; }
+.kpi > div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 0.8rem 1rem; box-shadow: var(--sh-1); }
+.kpi dt { font-size: 0.75rem; color: var(--ink-3); margin: 0 0 0.15rem; }
+.kpi dd { margin: 0; font-size: 1.15rem; font-weight: 600; font-family: var(--mono); }
+.kpi dd small { font-size: 0.72rem; color: var(--ink-3); font-family: var(--font); font-weight: 500; }
+/* фильтр */
+.fil { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 0.8rem; }
+.chip { border: 1px solid var(--line-2); background: var(--surface); border-radius: 99px; padding: 0.35rem 0.85rem; font: inherit; font-size: 0.84rem; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--bg); font-weight: 600; }
+/* таблица */
+.tw { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--sh-1); }
+table { width: 100%; border-collapse: collapse; min-width: 900px; }
+th, td { text-align: left; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--line); font-size: 0.86rem; vertical-align: middle; }
+th { font-size: 0.75rem; color: var(--ink-3); font-weight: 600; background: var(--panel); white-space: nowrap; }
+tr:last-child td { border-bottom: 0; }
+td.r, th.r { text-align: right; }
+.pn { font-weight: 600; white-space: nowrap; }
+.pc { color: var(--ink-3); font-size: 0.78rem; }
+.disc { color: var(--ok); font-weight: 600; font-size: 0.78rem; }
+.st { appearance: none; border: 1px solid var(--line-2); border-radius: 99px; padding: 0.3rem 1.6rem 0.3rem 0.7rem; font: inherit; font-size: 0.8rem; font-weight: 600; cursor: pointer; background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' stroke='%23777' stroke-width='1.3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 0.55rem center; }
+.st--0 { color: var(--accent); } .st--1 { color: var(--warn); } .st--2 { color: var(--ok); } .st--3 { color: var(--ink-3); }
+.src { font-size: 0.72rem; color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 0.1rem 0.4rem; white-space: nowrap; }
+.note { margin: 0.9rem 0 2.5rem; font-size: 0.8rem; color: var(--ink-3); }
+/* диалог */
+dialog { border: 0; border-radius: var(--r-lg); box-shadow: 0 16px 44px oklch(22% 0.006 250 / 0.2); padding: 0; max-width: 460px; width: calc(100vw - 2rem); }
+dialog::backdrop { background: oklch(20% 0.01 250 / 0.45); }
+.dlg { padding: 1.4rem; }
+.dlg h3 { margin-bottom: 0.3rem; }
+.dlg p { margin: 0 0 1rem; color: var(--ink-2); font-size: 0.86rem; }
+.dlg label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--ink-2); margin: 0.7rem 0 0.25rem; }
+.dlg input, .dlg select { width: 100%; border: 1px solid var(--line-2); border-radius: var(--r); padding: 0.5rem 0.65rem; font: inherit; background: var(--surface); }
+.dlg .row { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 1.2rem; }
+.toast { position: fixed; left: 50%; bottom: 1.5rem; visibility: hidden; transform: translateX(-50%) translateY(150%); background: oklch(28% 0.02 60); color: #fff; border-radius: 99px; padding: 0.6rem 1.2rem; font-size: 0.85rem; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1); z-index: 400; }
+.toast[data-on] { visibility: visible; transform: translateX(-50%) translateY(0); }
+@media (max-width: 760px) { .kpi { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="protobar">Прототип админки фабрики (экран менеджера). Один экран для демонстрации — полный объём описан в плане. <a href="index.html">← на сайт</a></div>
+
+<header class="topbar">
+  <div class="shell topbar__in">
+    <span class="brand"><b>КАТАЛЕЯ</b><i>админка фабрики</i></span>
+    <span class="role">Менеджер: Екатерина · В. Новгород</span>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="head">
+    <div>
+      <h1>Заказы</h1>
+      <p>Новые заказы приходят сюда и дублируются письмом. Смена статуса сразу видна партнёру в кабинете.</p>
+    </div>
+    <span style="flex:1"></span>
+    <button class="btn" id="btn-new">+ Заказ от имени контрагента</button>
+  </div>
+
+  <dl class="kpi">
+    <div><dt>Заказов в августе</dt><dd id="k-cnt">—</dd></div>
+    <div><dt>Сумма за август</dt><dd id="k-sum">—</dd></div>
+    <div><dt>Топ-декор месяца <small>по площади</small></dt><dd style="font-family:var(--font); font-size:0.95rem" id="k-dec">—</dd></div>
+    <div><dt>Ждут подтверждения</dt><dd id="k-wait">—</dd></div>
+  </dl>
+
+  <div class="fil" role="group" aria-label="Фильтр по статусу">
+    <button class="chip" data-f="" aria-pressed="true">Все</button>
+    <button class="chip" data-f="0" aria-pressed="false">Принят</button>
+    <button class="chip" data-f="1" aria-pressed="false">В производстве</button>
+    <button class="chip" data-f="2" aria-pressed="false">Готов</button>
+    <button class="chip" data-f="3" aria-pressed="false">Выдан</button>
+  </div>
+
+  <div class="tw">
+    <table aria-label="Заказы фабрики">
+      <thead>
+        <tr>
+          <th>№</th><th>Контрагент</th><th>Дата</th><th class="r">Позиции</th><th class="r">Площадь</th><th class="r">Сумма</th><th>Источник</th><th>Статус</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="note">Полная админка по плану: контрагенты и скидки, справочники декоров и фрезеровок, наличие со склада 1С, аналитика по декорам и контрагентам.</p>
+</main>
+
+<dialog id="dlg-new">
+  <form class="dlg" method="dialog">
+    <h3>Заказ от имени контрагента</h3>
+    <p>Для телефонных и WhatsApp-заказов: попадает в ту же базу, партнёр увидит его в своём кабинете.</p>
+    <label for="n-party">Контрагент</label>
+    <select id="n-party">
+      <option>Мебельный цех «Ясень» · скидка 50%</option>
+      <option>Дизайн-бюро «Артель»</option>
+      <option>Мебель-Люкс, Чудово</option>
+      <option>+ Новый контрагент…</option>
+    </select>
+    <label for="n-note">Комментарий</label>
+    <input id="n-note" placeholder="например: заказ по звонку 20.08, счёт на почту">
+    <div class="row">
+      <button class="btn btn--ghost" value="cancel">Отмена</button>
+      <button class="btn" value="ok" id="n-go">Открыть спецификацию</button>
+    </div>
+  </form>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var nf = new Intl.NumberFormat('ru-RU');
+  var ST = ['Принят', 'В производстве', 'Готов', 'Выдан'];
+  var MON = ['янв', 'фев', 'мар', 'апр', 'мая', 'июн', 'июл', 'авг', 'сен', 'окт', 'ноя', 'дек'];
+  function dstr(daysAgo) { var d = new Date(); d.setDate(d.getDate() - daysAgo); return d.getDate() + ' ' + MON[d.getMonth()]; }
+
+  // Демо-данные: заказы и из кабинета, и внесённые менеджером (телефон/WhatsApp)
+  var orders = [
+    { no: 1042, party: 'Дизайн-бюро «Артель»', person: 'Ирина Соколова', d: 0,  pos: 9,  area: 6.82,  sum: 29154,  src: 'кабинет', st: 0, disc: 0 },
+    { no: 1041, party: 'Мебельный цех «Ясень»', person: 'отдел закупок', d: 0,  pos: 3,  area: 2.97,  sum: 6485,   src: 'кабинет', st: 0, disc: 50 },
+    { no: 1040, party: 'Мебель-Люкс, Чудово', person: 'Сергей', d: 1,  pos: 14, area: 11.36, sum: 47712,  src: 'менеджер', st: 1, disc: 0 },
+    { no: 1039, party: 'Студия «Форма», СПб', person: 'Анна', d: 2,  pos: 6,  area: 4.18,  sum: 22572,  src: 'кабинет', st: 1, disc: 0 },
+    { no: 1038, party: 'Дизайн-бюро «Артель»', person: 'Ирина Соколова', d: 4,  pos: 9,  area: 5.64,  sum: 23688,  src: 'кабинет', st: 2, disc: 0 },
+    { no: 1037, party: 'ИП Крылов, В. Новгород', person: 'по звонку', d: 6,  pos: 4,  area: 3.05,  sum: 12810,  src: 'менеджер', st: 2, disc: 0 },
+    { no: 1036, party: 'Мебельный цех «Ясень»', person: 'отдел закупок', d: 8,  pos: 21, area: 18.4,  sum: 40204,  src: 'кабинет', st: 3, disc: 50 },
+    { no: 1035, party: 'Студия «Форма», СПб', person: 'Анна', d: 11, pos: 5,  area: 3.71,  sum: 20034,  src: 'кабинет', st: 3, disc: 0 }
+  ];
+
+  var filter = '';
+  function render() {
+    var rows = orders.filter(function (o) { return filter === '' || o.st === +filter; });
+    $('rows').innerHTML = rows.map(function (o) {
+      return '<tr>' +
+        '<td class="num">' + o.no + '</td>' +
+        '<td><span class="pn">' + o.party + '</span>' + (o.disc ? ' <span class="disc">−' + o.disc + '%</span>' : '') + '<br><span class="pc">' + o.person + '</span></td>' +
+        '<td class="num">' + dstr(o.d) + '</td>' +
+        '<td class="r num">' + o.pos + '</td>' +
+        '<td class="r num">' + o.area.toLocaleString('ru-RU', { minimumFractionDigits: 2 }) + ' м²</td>' +
+        '<td class="r num" style="font-weight:600">' + nf.format(o.sum) + ' ₽</td>' +
+        '<td><span class="src">' + o.src + '</span></td>' +
+        '<td><select class="st st--' + o.st + '" data-no="' + o.no + '" aria-label="Статус заказа ' + o.no + '">' +
+          ST.map(function (s, i) { return '<option value="' + i + '"' + (i === o.st ? ' selected' : '') + '>' + s + '</option>'; }).join('') +
+        '</select></td>' +
+      '</tr>';
+    }).join('');
+    var aug = orders;
+    $('k-cnt').textContent = aug.length;
+    $('k-sum').textContent = nf.format(aug.reduce(function (a, o) { return a + o.sum; }, 0)) + ' ₽';
+    $('k-dec').textContent = '0101 Дуб шале натуральный';
+    $('k-wait').textContent = aug.filter(function (o) { return o.st === 0; }).length;
+  }
+
+  document.querySelector('.fil').addEventListener('click', function (e) {
+    var c = e.target.closest('.chip'); if (!c) return;
+    document.querySelectorAll('.fil .chip').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); });
+    c.setAttribute('aria-pressed', 'true');
+    filter = c.dataset.f;
+    render();
+  });
+
+  var tt;
+  function toast(m) {
+    var t = $('toast'); t.textContent = m; t.setAttribute('data-on', '1');
+    clearTimeout(tt); tt = setTimeout(function () { t.removeAttribute('data-on'); }, 2600);
+  }
+
+  $('rows').addEventListener('change', function (e) {
+    var sel = e.target.closest('.st'); if (!sel) return;
+    var o = orders.find(function (x) { return x.no === +sel.dataset.no; });
+    o.st = +sel.value;
+    sel.className = 'st st--' + o.st;
+    render();
+    toast('Заказ № ' + o.no + ' → «' + ST[o.st] + '». Партнёр видит статус в кабинете.');
+  });
+
+  $('btn-new').addEventListener('click', function () { $('dlg-new').showModal(); });
+  $('dlg-new').addEventListener('close', function () {
+    if ($('dlg-new').returnValue === 'ok') {
+      toast('Демо: открылась бы спецификация кабинета от имени контрагента');
+    }
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

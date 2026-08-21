@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Кабинет партнёра — КАТАЛЕЯ: расчёт и заказ фасадов онлайн</title>
+<meta name="description" content="Прототип кабинета партнёра фабрики мебельных фасадов «КАТАЛЕЯ»: спецификация, расчёт, акт сверки без менеджера.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════════
+   КАТАЛЕЯ · кабинет партнёра — прототип
+   Регистр: product. Пользователь в задаче (собрать спецификацию),
+   а не читает страницу.
+
+   Цветовая стратегия: restrained, хром намеренно нейтральный.
+   Причина не вкусовая: здесь выбирают цвет плёнки по фото образца,
+   и тёплый фон искажал бы восприятие декора. Цвет в UI приносит
+   контент — 582 образца; интерфейс его не перебивает. Акцент только
+   на выделении и фокусе (<10% площади), состояния — зелёный,
+   янтарный, красный — как информация, а не декор.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Поверхности — нейтраль с лёгким тёплым сдвигом (мир сайта, hue 80).
+     Хром остаётся почти бесцветным (chroma ≤0.005), а образцы декоров
+     лежат на --surface с chroma 0 — восприятие плёнки не искажается. */
+  --bg:        oklch(97.5% 0.003 80);
+  --surface:   oklch(100%  0     80);
+  --panel:     oklch(95%   0.004 80);
+  --panel-2:   oklch(92.5% 0.005 80);
+  --ink:       oklch(22%   0.008 60);
+  --ink-2:     oklch(42%   0.008 60);
+  --ink-3:     oklch(50%   0.008 60);   /* ≥4.5:1 на --bg */
+  --line:      oklch(90%   0.005 80);
+  --line-2:    oklch(84%   0.006 80);
+
+  /* Действие и выделение — зелёный бренда, тот же, что на сайте */
+  --btn:       oklch(36%   0.058 162);
+  --btn-hover: oklch(29%   0.052 162);
+  --accent:    oklch(40%   0.075 162);
+  --accent-2:  oklch(34%   0.070 162);
+  --accent-wash: oklch(95.5% 0.025 162);
+
+  /* Состояния */
+  --ok:        oklch(48%   0.090 155);
+  --ok-wash:   oklch(95.5% 0.028 155);
+  --warn:      oklch(52%   0.110 70);
+  --warn-wash: oklch(96%   0.038 70);
+  --danger:    oklch(50%   0.150 27);
+  --danger-wash: oklch(96%  0.030 27);
+
+  --font: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  /* Фиксированная шкала 1.125–1.2 (product, не fluid) */
+  --t-xs:   0.75rem;
+  --t-sm:   0.8125rem;
+  --t-base: 0.9375rem;
+  --t-md:   1.0625rem;
+  --t-lg:   1.3125rem;
+  --t-xl:   1.625rem;
+
+  --r-sm: 5px;
+  --r:    8px;
+  --r-lg: 12px;
+
+  --sh-1: 0 1px 2px oklch(22% 0.006 250 / 0.06);
+  --sh-2: 0 2px 8px oklch(22% 0.006 250 / 0.08), 0 1px 2px oklch(22% 0.006 250 / 0.05);
+  --sh-3: 0 12px 32px oklch(22% 0.006 250 / 0.14), 0 2px 8px oklch(22% 0.006 250 / 0.08);
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);   /* ease-out-quint */
+
+  /* Семантическая z-шкала */
+  --z-sticky: 100;
+  --z-drop:   200;
+  --z-backdrop: 300;
+  --z-modal:  310;
+  --z-toast:  400;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-size: var(--t-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4 { margin: 0; font-weight: 600; line-height: 1.25; text-wrap: balance; }
+h1 { font-size: var(--t-xl); letter-spacing: -0.02em; }
+h2 { font-size: var(--t-lg); letter-spacing: -0.015em; }
+h3 { font-size: var(--t-md); letter-spacing: -0.01em; }
+p { margin: 0; }
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--r-sm);
+}
+
+.num { font-variant-numeric: tabular-nums; }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+
+/* ── Оболочка ───────────────────────────────────────────────────── */
+.shell { max-width: 1400px; margin: 0 auto; padding: 0 clamp(0.75rem, 2vw, 1.75rem); }
+
+.topbar {
+  position: sticky; top: 0; z-index: var(--z-sticky);
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.topbar__in {
+  display: flex; align-items: center; gap: 1.25rem;
+  min-height: 60px; padding: 0.5rem clamp(0.75rem, 2vw, 1.75rem);
+  max-width: 1400px; margin: 0 auto;
+}
+.brand { display: flex; align-items: center; gap: 0.625rem; flex-shrink: 0; }
+.brand__mark { display: grid; line-height: 1; }
+.brand__mark b {
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  font-size: var(--t-md); font-weight: 600; letter-spacing: 0.14em;
+  color: var(--ink); text-transform: uppercase;
+}
+.brand__mark i {
+  font-style: normal; font-size: 0.5625rem; letter-spacing: 0.155em;
+  color: var(--ink-3); text-transform: uppercase; margin-top: 0.1875rem;
+}
+.brand__sub {
+  font-size: var(--t-xs); color: var(--ink-3); letter-spacing: 0.01em;
+  padding-left: 0.625rem; border-left: 1px solid var(--line-2);
+}
+.topbar__sp { flex: 1; }
+
+/* Контрагент — вход со своей ценой */
+.party {
+  display: flex; align-items: center; gap: 0.625rem;
+  padding: 0.3125rem 0.3125rem 0.3125rem 0.75rem;
+  background: var(--panel); border: 1px solid var(--line);
+  border-radius: 999px; min-width: 0;
+}
+.party__txt { min-width: 0; line-height: 1.2; }
+.party__name { font-size: var(--t-sm); font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.party__lvl { font-size: var(--t-xs); color: var(--ink-3); }
+.party__out {
+  background: var(--surface); border: 1px solid var(--line-2); border-radius: 999px;
+  padding: 0.3125rem 0.8125rem; font-size: var(--t-sm); font-weight: 600; cursor: pointer;
+  transition: border-color 0.15s var(--ease), background 0.15s;
+}
+.party__out:hover { border-color: var(--ink-3); background: var(--panel-2); }
+
+/* ── Вход в кабинет ── */
+.auth { min-height: calc(100vh - 40px); display: grid; place-items: center; padding: 2rem 1rem; }
+.auth__card { width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--sh-2); padding: 1.75rem; }
+.auth__brand { text-align: center; margin-bottom: 1.25rem; }
+.auth__brand b { display: block; font-family: "Oswald", "Arial Narrow", sans-serif; font-size: var(--t-lg); letter-spacing: 0.1em; font-weight: 600; }
+.auth__brand i { font-style: normal; font-size: var(--t-xs); letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-3); }
+.auth__tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 3px; margin-bottom: 1.25rem; }
+.auth__tabs button { border: 0; background: transparent; border-radius: 6px; padding: 0.5rem; font-weight: 600; font-size: var(--t-sm); cursor: pointer; color: var(--ink-2); }
+.auth__tabs button[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--sh-1); }
+.auth__f { display: grid; gap: 0.875rem; }
+.auth__f label { display: block; font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); margin-bottom: 0.25rem; }
+.auth__f .ctl { width: 100%; }
+.auth__consent { display: flex; gap: 0.5rem; align-items: flex-start; font-size: var(--t-xs); color: var(--ink-2); }
+.auth__consent input { margin-top: 2px; accent-color: var(--accent); }
+.auth__demo { border-top: 1px dashed var(--line-2); margin-top: 1.25rem; padding-top: 1rem; }
+.auth__demo p { font-size: var(--t-xs); color: var(--ink-3); margin-bottom: 0.625rem; text-align: center; }
+.auth__demo .btn { width: 100%; justify-content: space-between; }
+.auth__demo .btn + .btn { margin-top: 0.5rem; }
+.auth__note { margin-top: 1rem; font-size: var(--t-xs); color: var(--ink-3); text-align: center; }
+
+/* Навигация */
+.nav { display: flex; gap: 0.125rem; overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav button {
+  position: relative; background: none; border: 0; cursor: pointer;
+  padding: 0.5rem 0.75rem; border-radius: var(--r-sm);
+  font-size: var(--t-sm); font-weight: 500; color: var(--ink-2);
+  white-space: nowrap;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.nav button:hover { background: var(--panel); color: var(--ink); }
+.nav button[aria-current="true"] { color: var(--ink); font-weight: 600; background: var(--panel-2); }
+.nav .cnt {
+  display: inline-block; margin-left: 0.375rem; padding: 0 0.3125rem;
+  background: var(--ink); color: var(--surface); border-radius: 999px;
+  font-size: 0.6875rem; font-weight: 600; line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Полоса прототипа */
+.protobar {
+  background: var(--warn-wash); border-bottom: 1px solid color-mix(in oklab, var(--warn) 25%, transparent);
+  color: color-mix(in oklab, var(--warn) 80%, var(--ink));
+  font-size: var(--t-xs); text-align: center; padding: 0.375rem 1rem;
+}
+
+main { padding: 1.5rem 0 5rem; }
+.screen { animation: fade 0.25s var(--ease); }
+@keyframes fade { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .screen { animation: none; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+.head { display: flex; align-items: flex-end; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem; }
+.head p { color: var(--ink-2); font-size: var(--t-sm); max-width: 68ch; margin-top: 0.25rem; }
+.head__sp { flex: 1; min-width: 0; }
+
+/* ── Кнопки ─────────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4375rem;
+  padding: 0.5rem 0.9375rem; border-radius: var(--r-sm);
+  border: 1px solid var(--line-2); background: var(--surface); color: var(--ink);
+  font-size: var(--t-sm); font-weight: 500; cursor: pointer; white-space: nowrap;
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.1s var(--ease);
+}
+.btn:hover { background: var(--panel); border-color: var(--ink-3); }
+.btn:active { transform: translateY(1px); }
+/* disabled переопределяет и цвет текста: у .btn--primary он белый, а фон
+   здесь становится светлым — иначе надпись пропадает на светлой панели */
+.btn:disabled {
+  cursor: not-allowed; transform: none;
+  background: var(--panel); border-color: var(--line);
+  color: var(--ink-3); font-weight: 500;
+}
+.btn--primary { background: var(--btn); border-color: var(--btn); color: oklch(99% 0 0); font-weight: 600; }
+.btn--primary:hover:not(:disabled) { background: var(--btn-hover); border-color: var(--btn-hover); }
+.btn--ghost { background: none; border-color: transparent; color: var(--ink-2); }
+.btn--ghost:hover { background: var(--panel); color: var(--ink); border-color: transparent; }
+.btn--sm { padding: 0.3125rem 0.625rem; font-size: var(--t-xs); }
+.btn--lg { padding: 0.6875rem 1.375rem; font-size: var(--t-base); }
+.btn--danger { color: var(--danger); }
+.btn--danger:hover { background: var(--danger-wash); border-color: var(--danger); }
+
+/* ── Панели ─────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--sh-1);
+  /* grid-элемент по умолчанию min-width:auto и распирается таблицей
+     спецификации (min-width:940px) — обёртка с overflow-x его не сдержит */
+  min-width: 0;
+}
+.card__h {
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  padding: 0.875rem 1.125rem; border-bottom: 1px solid var(--line);
+}
+.card__h h3 { font-size: var(--t-base); }
+.card__h .sp { flex: 1; }
+.card__b { padding: 1.125rem; }
+.card__b--flush { padding: 0; }
+
+.hint { font-size: var(--t-xs); color: var(--ink-3); }
+
+.tag {
+  display: inline-flex; align-items: center; gap: 0.25rem;
+  padding: 0.125rem 0.4375rem; border-radius: var(--r-sm);
+  font-size: var(--t-xs); font-weight: 500; white-space: nowrap;
+}
+.tag--ok { background: var(--ok-wash); color: var(--ok); }
+.tag--warn { background: var(--warn-wash); color: color-mix(in oklab, var(--warn) 85%, var(--ink)); }
+.tag--info { background: var(--accent-wash); color: var(--accent-2); }
+.tag--mute { background: var(--panel-2); color: var(--ink-2); }
+.tag--danger { background: var(--danger-wash); color: var(--danger); }
+.dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* ── Параметры заказа ───────────────────────────────────────────── */
+.params { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.875rem; }
+.field { min-width: 0; }
+.field > label { display: block; font-size: var(--t-xs); color: var(--ink-2); font-weight: 500; margin-bottom: 0.3125rem; }
+.ctl {
+  width: 100%; padding: 0.5rem 0.6875rem; background: var(--surface);
+  border: 1px solid var(--line-2); border-radius: var(--r-sm);
+  font-size: var(--t-sm); transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.ctl:hover { border-color: var(--ink-3); }
+.ctl:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
+select.ctl { appearance: none; cursor: pointer; padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23555' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.6875rem center; }
+
+/* Выбранный декор */
+.decor-pick {
+  display: flex; align-items: center; gap: 0.6875rem; width: 100%;
+  padding: 0.375rem 0.6875rem 0.375rem 0.375rem; background: var(--surface);
+  border: 1px solid var(--line-2); border-radius: var(--r-sm); cursor: pointer; text-align: left;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.decor-pick:hover { border-color: var(--ink-3); }
+.decor-pick__sw {
+  width: 38px; height: 38px; border-radius: var(--r-sm); flex-shrink: 0;
+  background: var(--panel-2) center/cover no-repeat;
+  border: 1px solid var(--line-2);
+}
+.decor-pick__t { min-width: 0; flex: 1; line-height: 1.3; }
+.decor-pick__n { font-size: var(--t-sm); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.decor-pick__m { font-size: var(--t-xs); color: var(--ink-3); display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap; }
+
+/* ── Таблица спецификации ───────────────────────────────────────── */
+.tw { overflow-x: auto; max-width: 100%; }
+table.spec { width: 100%; border-collapse: collapse; font-size: var(--t-sm); min-width: 940px; }
+table.spec th {
+  text-align: left; font-size: var(--t-xs); font-weight: 600; color: var(--ink-2);
+  padding: 0.5rem 0.5rem; border-bottom: 1px solid var(--line-2); white-space: nowrap;
+  position: sticky; top: 0; background: var(--surface); z-index: 1;
+}
+table.spec th.r, table.spec td.r { text-align: right; }
+table.spec th.c, table.spec td.c { text-align: center; }
+table.spec td { padding: 0.375rem 0.5rem; border-bottom: 1px solid var(--line); vertical-align: middle; }
+table.spec tbody tr:hover td { background: color-mix(in oklab, var(--panel) 45%, transparent); }
+table.spec tr.grp td {
+  background: var(--panel); font-weight: 600; font-size: var(--t-xs);
+  color: var(--ink-2); padding: 0.4375rem 0.5rem; border-bottom: 1px solid var(--line-2);
+}
+table.spec tr.grp:hover td { background: var(--panel); }
+table.spec .idx { color: var(--ink-3); font-size: var(--t-xs); width: 26px; }
+
+.cell-in {
+  width: 100%; max-width: 88px; padding: 0.375rem 0.4375rem; text-align: right;
+  background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-sm);
+  font-size: var(--t-sm); font-variant-numeric: tabular-nums;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), background 0.15s var(--ease);
+  -moz-appearance: textfield;
+}
+.cell-in::-webkit-outer-spin-button, .cell-in::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.cell-in:hover { border-color: var(--ink-3); }
+.cell-in:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
+.cell-in[data-bad="1"] { border-color: var(--danger); background: var(--danger-wash); }
+.cell-in--q { max-width: 58px; }
+.cell-sel {
+  max-width: 148px; padding: 0.375rem 1.5rem 0.375rem 0.4375rem; appearance: none; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line-2); border-radius: var(--r-sm); font-size: var(--t-sm);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23777' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.5rem center;
+}
+.cell-sel:hover { border-color: var(--ink-3); }
+.cell-sel:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
+
+.err-cell { display: block; margin-top: 0.1875rem; font-size: 0.6875rem; color: var(--danger); line-height: 1.3; max-width: 140px; }
+
+.row-del {
+  background: none; border: 0; cursor: pointer; color: var(--ink-3);
+  padding: 0.25rem; border-radius: var(--r-sm); line-height: 1;
+  transition: color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.row-del:hover { color: var(--danger); background: var(--danger-wash); }
+
+.addrow { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; padding: 0.875rem 1.125rem; border-top: 1px solid var(--line); }
+
+/* Пустое состояние — учит интерфейсу */
+.empty { padding: 2.75rem 1.5rem; text-align: center; }
+.empty h4 { font-size: var(--t-md); margin-bottom: 0.5rem; }
+.empty p { color: var(--ink-2); font-size: var(--t-sm); max-width: 46ch; margin: 0 auto 1.25rem; }
+.empty__k { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; }
+kbd {
+  font-family: var(--mono); font-size: 0.6875rem; padding: 0.125rem 0.3125rem;
+  background: var(--panel-2); border: 1px solid var(--line-2); border-radius: 4px;
+  border-bottom-width: 2px; color: var(--ink-2);
+}
+
+/* ── Итоги ──────────────────────────────────────────────────────── */
+.sum { display: grid; gap: 0.5rem; margin: 0; }
+.sum__r { display: flex; align-items: baseline; gap: 0.75rem; font-size: var(--t-sm); }
+.sum__r dt { color: var(--ink-2); flex: 1; }
+.sum__r dd { margin: 0; font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sum__r--disc dd { color: var(--ok); }
+.sum__r--big { padding-top: 0.5rem; border-top: 1px solid var(--line-2); }
+.sum__r--big dt { font-weight: 600; color: var(--ink); font-size: var(--t-base); }
+.sum__r--big dd { font-size: var(--t-lg); font-weight: 600; letter-spacing: -0.01em; }
+
+.side { display: grid; gap: 1rem; align-content: start; }
+.work { display: grid; grid-template-columns: minmax(0, 1fr) 306px; gap: 1.25rem; align-items: start; }
+@media (max-width: 1080px) { .work { grid-template-columns: minmax(0, 1fr); } }
+.side--sticky { position: sticky; top: 76px; }
+@media (max-width: 1080px) { .side--sticky { position: static; } }
+
+/* ── Режимы ввода ───────────────────────────────────────────────── */
+.seg { display: inline-flex; background: var(--panel-2); border-radius: var(--r-sm); padding: 2px; gap: 2px; }
+.seg button {
+  background: none; border: 0; cursor: pointer; padding: 0.3125rem 0.75rem;
+  border-radius: 4px; font-size: var(--t-xs); font-weight: 500; color: var(--ink-2);
+  transition: background 0.15s var(--ease), color 0.15s var(--ease), box-shadow 0.15s var(--ease);
+}
+.seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: var(--sh-1); }
+
+/* ── Визуальный подбор ─────────────────────────────────────────── */
+.vis { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 1.25rem; }
+@media (max-width: 720px) { .vis { grid-template-columns: minmax(0, 1fr); } }
+.fasad {
+  aspect-ratio: 3 / 4; border-radius: var(--r-sm); background: var(--panel-2) center/cover no-repeat;
+  box-shadow: inset 0 0 0 1px oklch(22% 0.006 250 / 0.16), var(--sh-2);
+  position: relative; overflow: hidden; max-height: 380px; margin: 0 auto; width: 100%;
+}
+.fasad::after {
+  content: ""; position: absolute; inset: 11%;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1.5px oklch(100% 0 0 / 0.34), 0 0 0 1.5px oklch(22% 0.006 250 / 0.22);
+  transition: inset 0.2s var(--ease), border-radius 0.2s var(--ease);
+}
+.fasad[data-mill="Зеркало"]::after { inset: 7%; }
+.fasad[data-mill="Арка"]::after, .fasad[data-mill="Арка 2х цветная"]::after { inset: 11%; border-radius: 44% 44% 2px 2px; }
+.fasad[data-mill="Сканди"]::after { inset: 13% 9%; }
+.fasad[data-mill="Ампир"]::after, .fasad[data-mill="Антик"]::after { inset: 9%; border-radius: 5px; box-shadow: inset 0 0 0 1.5px oklch(100% 0 0 / 0.4), inset 0 0 0 5px oklch(22% 0.006 250 / 0.1), 0 0 0 1.5px oklch(22% 0.006 250 / 0.22); }
+.fasad[data-mill="Кристалл"]::after { inset: 12%; border-radius: 0; box-shadow: inset 0 0 0 1.5px oklch(100% 0 0 / 0.34), inset 0 0 0 14px oklch(100% 0 0 / 0.07), 0 0 0 1.5px oklch(22% 0.006 250 / 0.22); }
+.fasad[data-mill="Волна 2"]::after { inset: 11%; border-radius: 2px 2px 40% 40%; }
+.fasad[data-mill="Закругленный"]::after { inset: 10%; border-radius: 14px; }
+.fasad[data-mill="Модерн"]::after { inset: 8% 8% 8% 22%; }
+.fasad[data-mill="Выборка"]::after { inset: 6%; border-radius: 1px; }
+.fasad__d {
+  position: absolute; left: 0; right: 0; bottom: 0; padding: 0.375rem 0.5rem;
+  background: linear-gradient(to top, oklch(22% 0.006 250 / 0.72), transparent);
+  color: oklch(99% 0 0); font-size: 0.6875rem; font-variant-numeric: tabular-nums;
+}
+
+/* ── Каталог декоров ────────────────────────────────────────────── */
+.filters { display: flex; gap: 0.625rem; flex-wrap: wrap; align-items: center; }
+.search { position: relative; flex: 1; min-width: 180px; max-width: 340px; }
+.search .ctl { padding-left: 2.125rem; }
+.search svg { position: absolute; left: 0.6875rem; top: 50%; transform: translateY(-50%); color: var(--ink-3); pointer-events: none; }
+.chips { display: flex; gap: 0.3125rem; flex-wrap: wrap; }
+.chip {
+  padding: 0.3125rem 0.6875rem; border-radius: 999px; border: 1px solid var(--line-2);
+  background: var(--surface); font-size: var(--t-xs); font-weight: 500; cursor: pointer; color: var(--ink-2);
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+.chip:hover { border-color: var(--ink-3); color: var(--ink); }
+.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: oklch(99% 0 0); }
+.sw {
+  display: flex; align-items: center; gap: 0.4375rem; font-size: var(--t-xs);
+  color: var(--ink-2); cursor: pointer; user-select: none;
+}
+.sw input { width: 15px; height: 15px; accent-color: var(--accent); cursor: pointer; }
+
+.grid-dec { display: grid; grid-template-columns: repeat(auto-fill, minmax(146px, 1fr)); gap: 0.75rem; }
+.dec {
+  border: 1px solid var(--line); border-radius: var(--r); background: var(--surface);
+  overflow: hidden; cursor: pointer; padding: 0; text-align: left; display: block; min-width: 0;
+  transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.dec:hover { border-color: var(--ink-3); box-shadow: var(--sh-2); transform: translateY(-1px); }
+.dec[aria-pressed="true"] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+.dec__i { aspect-ratio: 4 / 3; width: 100%; background: var(--panel-2); display: block; object-fit: cover; }
+.dec__b { padding: 0.4375rem 0.5625rem 0.5625rem; display: block; }
+.dec__a { font-family: var(--mono); font-size: 0.6875rem; color: var(--ink-3); display: block; }
+.dec__n { font-size: var(--t-xs); font-weight: 500; line-height: 1.35; margin: 0.0625rem 0 0.3125rem;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.dec__f { display: flex; align-items: center; justify-content: space-between; gap: 0.375rem; }
+.dec__p { font-size: 0.6875rem; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+/* ── Заказы ─────────────────────────────────────────────────────── */
+.orders { display: grid; gap: 0.875rem; }
+.order__h { display: flex; align-items: center; gap: 0.875rem; flex-wrap: wrap; }
+.order__n { font-size: var(--t-md); font-weight: 600; letter-spacing: -0.01em; }
+.order__meta { font-size: var(--t-xs); color: var(--ink-3); }
+.order__sum { font-size: var(--t-md); font-weight: 600; font-variant-numeric: tabular-nums; }
+
+.track { display: flex; align-items: center; margin: 0.625rem 0 0; flex-wrap: wrap; row-gap: 0.375rem; }
+.track__s { display: flex; align-items: center; gap: 0.4375rem; font-size: var(--t-xs); color: var(--ink-3); }
+.track__s + .track__s::before {
+  content: ""; width: 20px; height: 1.5px; background: var(--line-2); margin: 0 0.4375rem; flex-shrink: 0;
+}
+.track__s[data-on="1"] { color: var(--ink); font-weight: 500; }
+.track__s[data-on="1"]::before { background: var(--ok); }
+.track__b { width: 8px; height: 8px; border-radius: 50%; background: var(--line-2); flex-shrink: 0; }
+.track__s[data-on="1"] .track__b { background: var(--ok); }
+.track__s[data-cur="1"] .track__b { box-shadow: 0 0 0 3px var(--ok-wash); }
+
+.ol { display: grid; gap: 0.25rem; margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--line); }
+.ol__i { display: flex; align-items: center; gap: 0.625rem; font-size: var(--t-xs); }
+.ol__sw { width: 22px; height: 22px; border-radius: 4px; background: var(--panel-2) center/cover; border: 1px solid var(--line-2); flex-shrink: 0; }
+.ol__t { flex: 1; min-width: 0; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ol__s { font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 500; }
+
+/* ── Документы ──────────────────────────────────────────────────── */
+.docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; align-items: start; }
+table.lim { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+table.lim th, table.lim td { padding: 0.4375rem 0.625rem; text-align: left; border-bottom: 1px solid var(--line); }
+table.lim th { font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); }
+table.lim td.n { font-variant-numeric: tabular-nums; }
+.dl { display: grid; gap: 0.4375rem; }
+.dl a {
+  display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.625rem;
+  border: 1px solid var(--line); border-radius: var(--r-sm); text-decoration: none;
+  color: var(--ink); font-size: var(--t-sm);
+  transition: background 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+.dl a:hover { background: var(--panel); border-color: var(--ink-3); }
+.dl svg { color: var(--ink-3); flex-shrink: 0; }
+.dl .sz { margin-left: auto; font-size: var(--t-xs); color: var(--ink-3); }
+
+/* ── Модальное окно каталога ───────────────────────────────────── */
+dialog.pick {
+  border: 0; padding: 0; border-radius: var(--r-lg); background: var(--surface);
+  box-shadow: var(--sh-3); width: min(960px, calc(100vw - 2rem));
+  max-height: min(86vh, 780px); overflow: hidden; color: var(--ink);
+}
+dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter: blur(2px); }
+.pick__h { display: flex; align-items: center; gap: 0.875rem; padding: 0.875rem 1.125rem; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.pick__b { padding: 1rem 1.125rem 1.25rem; overflow-y: auto; max-height: calc(min(86vh, 780px) - 150px); }
+.pick__f { padding: 0.75rem 1.125rem; border-top: 1px solid var(--line); display: flex; align-items: center; gap: 0.75rem; background: var(--panel); flex-wrap: wrap; }
+.x { background: none; border: 0; cursor: pointer; color: var(--ink-3); padding: 0.3125rem; border-radius: var(--r-sm); line-height: 1; }
+.x:hover { color: var(--ink); background: var(--panel-2); }
+
+/* ── Тост ───────────────────────────────────────────────────────── */
+.toast {
+  position: fixed; left: 50%; bottom: 1.5rem; transform: translate(-50%, 1rem);
+  background: var(--ink); color: oklch(99% 0 0); padding: 0.625rem 1.125rem;
+  border-radius: 999px; font-size: var(--t-sm); box-shadow: var(--sh-3);
+  opacity: 0; pointer-events: none; z-index: var(--z-toast);
+  max-width: calc(100vw - 2rem); text-align: center;
+  transition: opacity 0.2s var(--ease), transform 0.25s var(--ease);
+}
+.toast[data-on="1"] { opacity: 1; transform: translate(-50%, 0); }
+
+/* ═══ АКТ СВЕРКИ — печатная форма по бумажному бланку фабрики ════ */
+.act-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 1.25rem; align-items: start; }
+@media (max-width: 1080px) { .act-wrap { grid-template-columns: minmax(0, 1fr); } }
+
+.act {
+  background: #fff; color: #000; padding: 12mm 10mm; border: 1px solid var(--line);
+  border-radius: var(--r-sm); box-shadow: var(--sh-2);
+  font-family: "Times New Roman", Georgia, serif; font-size: 10.5pt; line-height: 1.32;
+  overflow-x: auto; min-width: 0;
+}
+.act__warn { font-size: 8.6pt; line-height: 1.3; margin-bottom: 6mm; }
+.act__top { display: flex; align-items: flex-start; gap: 8mm; margin-bottom: 4mm; }
+.act__qr { width: 21mm; height: 21mm; flex-shrink: 0; }
+.act__no { font-weight: 700; font-size: 12pt; padding-top: 5mm; }
+.act table { width: 100%; border-collapse: collapse; font-size: 8.4pt; font-family: Arial, Helvetica, sans-serif; }
+.act table th, .act table td { border: 1px solid #000; padding: 1px 3px; vertical-align: top; }
+.act table th { font-weight: 700; text-align: center; font-size: 8pt; }
+.act .lbl { font-weight: 700; }
+.act .grp td { font-weight: 700; text-align: left; }
+.act .r { text-align: right; }
+.act .c { text-align: center; }
+.act__by { margin: 5mm 0 6mm; font-style: italic; font-weight: 700; font-size: 9.5pt; }
+.act__foot { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 10mm; max-width: 150mm; margin-left: 6mm; }
+.act__foot dl { display: flex; gap: 4mm; margin: 0; font-size: 10.5pt; align-items: baseline; }
+.act__foot dt { min-width: 26mm; }
+.act__foot dd { margin: 0; font-variant-numeric: tabular-nums; }
+.act__sign { margin: 9mm 0 0 6mm; display: flex; align-items: baseline; gap: 3mm; }
+.act__sign span { display: inline-block; width: 62mm; border-bottom: 1px solid #000; }
+.act__stamp {
+  margin: 6mm 0 0 6mm; padding: 2.5mm 4mm; border: 1.5px solid #1a6b3c; border-radius: 2mm;
+  color: #1a6b3c; font-family: Arial, sans-serif; font-size: 8.6pt; display: inline-block; line-height: 1.4;
+}
+.act__stamp b { display: block; font-size: 9.6pt; }
+
+@media print {
+  body { background: #fff; }
+  .topbar, .protobar, .nav, .side, .act-side, .toast, .noprint, .head p { display: none !important; }
+  main { padding: 0; }
+  .shell { max-width: none; padding: 0; }
+  .act-wrap { display: block; }
+  .act { border: 0; box-shadow: none; padding: 0; border-radius: 0; }
+  .screen { animation: none; }
+  @page { margin: 14mm 12mm; }
+}
+
+/* ── Мобильные ──────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .topbar__in { flex-wrap: wrap; min-height: 0; padding-bottom: 0.5rem; row-gap: 0.5rem; }
+  .party__txt { display: none; }
+  h1 { font-size: var(--t-lg); }
+  .card__b { padding: 0.875rem; }
+  .act { padding: 6mm 4mm; font-size: 9.5pt; }
+  .act__foot { grid-template-columns: 1fr; margin-left: 0; }
+  .act__sign, .act__stamp { margin-left: 0; }
+  .grid-dec { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<div class="protobar">
+  Прототип кабинета партнёра. Цены и наличие декоров — <b>условные</b>, вход демонстрационный. Реальный прайс подставляется фабрикой. <a href="index.html" style="color:inherit">← на сайт</a>
+</div>
+
+<section class="auth" id="s-auth">
+  <div class="auth__card">
+    <div class="auth__brand"><b>КАТАЛЕЯ</b><i>кабинет партнёра</i></div>
+    <div class="auth__tabs" role="tablist">
+      <button role="tab" id="tab-login" aria-selected="true">Вход</button>
+      <button role="tab" id="tab-reg" aria-selected="false">Регистрация</button>
+    </div>
+
+    <form class="auth__f" id="f-login">
+      <div><label for="l-mail">Электронная почта</label><input class="ctl" id="l-mail" type="email" placeholder="you@company.ru" autocomplete="email"></div>
+      <div><label for="l-pass">Пароль</label><input class="ctl" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
+      <button class="btn btn--primary" type="submit">Войти</button>
+    </form>
+
+    <form class="auth__f" id="f-reg" hidden>
+      <div><label for="r-mail">Электронная почта</label><input class="ctl" id="r-mail" type="email" placeholder="you@company.ru" autocomplete="email"></div>
+      <div><label for="r-pass">Пароль</label><input class="ctl" id="r-pass" type="password" placeholder="минимум 8 символов" autocomplete="new-password"></div>
+      <div><label for="r-comp">Название компании</label><input class="ctl" id="r-comp" type="text" placeholder="Мебельная студия «…»"></div>
+      <div><label for="r-phone">Телефон</label><input class="ctl" id="r-phone" type="tel" placeholder="+7 ___ ___-__-__" autocomplete="tel"></div>
+      <label class="auth__consent"><input type="checkbox" id="r-ok"> Согласен на обработку персональных данных — <a href="politika.html" target="_blank" rel="noopener">политика</a></label>
+      <button class="btn btn--primary" type="submit">Зарегистрироваться</button>
+      <p class="hint" style="text-align:center">ИНН и реквизиты попросим при первом заказе — для счёта.</p>
+    </form>
+
+    <div class="auth__demo">
+      <p>Прототип: вход без пароля, за двух контрагентов</p>
+      <button class="btn" id="demo-artel" type="button">Дизайн-бюро «Артель» <span class="hint">базовая цена</span></button>
+      <button class="btn" id="demo-dd" type="button">Мебельный цех «Ясень» <span class="tag tag--ok" style="margin-left:0.5rem"><span class="dot"></span>−50%</span></button>
+    </div>
+    <p class="auth__note">Скидку контрагенту назначает фабрика в админке — партнёр видит её у себя в ценах.</p>
+  </div>
+</section>
+
+<header class="topbar" id="app-top" hidden>
+  <div class="topbar__in">
+    <a class="brand" href="index.html" style="text-decoration:none; color:inherit">
+      <!-- Wordmark, а не файл логотипа с их сайта: в шапке fasad-kat.ru до сих
+           стоит лого прежнего бренда «KatiSSo», хотя ребрендинг в «КАТАЛЕЯ»
+           на сайте уже объявлен. Тащить устаревшую марку в прототип незачем. -->
+      <span class="brand__mark">
+        <b>КАТАЛЕЯ</b>
+        <i>мебельные фасады</i>
+      </span>
+      <span class="brand__sub">Кабинет партнёра</span>
+    </a>
+
+    <nav class="nav" aria-label="Разделы кабинета">
+      <button data-go="work" aria-current="true">Новый заказ<span class="cnt" id="nav-cnt" hidden>0</span></button>
+      <button data-go="decors">Декоры</button>
+      <button data-go="orders">Мои заказы<span class="cnt" id="nav-ord">3</span></button>
+      <button data-go="docs">Документы</button>
+    </nav>
+
+    <span class="topbar__sp"></span>
+
+    <div class="party">
+      <div class="party__txt">
+        <div class="party__name" id="party-name">—</div>
+        <div class="party__lvl" id="party-person">—</div>
+      </div>
+      <span class="tag tag--ok" id="party-disc" hidden><span class="dot"></span>скидка −50%</span>
+      <button class="party__out" id="btn-logout" type="button" title="Выйти из кабинета">Выйти</button>
+    </div>
+  </div>
+</header>
+
+<main id="app-main" hidden>
+
+<!-- ═══════════ ЭКРАН: НОВЫЙ ЗАКАЗ ═══════════ -->
+<section class="screen shell" id="s-work">
+  <div class="head">
+    <div>
+      <h1>Новый заказ</h1>
+      <p>Соберите спецификацию, проверьте расчёт и сформируйте акт сверки — без звонка менеджеру. Цена считается по вашему уровню сразу.</p>
+    </div>
+    <span class="head__sp"></span>
+    <div class="seg" role="group" aria-label="Способ ввода">
+      <button id="m-spec" aria-pressed="true">Спецификация</button>
+      <button id="m-vis" aria-pressed="false">Подбор с превью</button>
+    </div>
+  </div>
+
+  <div class="work">
+    <div style="display:grid; gap:1.25rem; min-width:0">
+
+      <!-- Общие параметры -->
+      <div class="card">
+        <div class="card__h">
+          <h3>Параметры заказа</h3>
+          <span class="sp"></span>
+          <span class="hint">Действуют на все позиции</span>
+        </div>
+        <div class="card__b">
+          <div class="params">
+            <div class="field">
+              <label for="pick-dec">Плёнка (декор)</label>
+              <button class="decor-pick" id="pick-dec" type="button" aria-haspopup="dialog">
+                <span class="decor-pick__sw" id="pd-sw"></span>
+                <span class="decor-pick__t">
+                  <span class="decor-pick__n" id="pd-name">Выбрать декор</span>
+                  <span class="decor-pick__m" id="pd-meta">582 в каталоге</span>
+                </span>
+              </button>
+            </div>
+            <div class="field">
+              <label for="f-mill">Рисунок (фрезеровка)</label>
+              <select class="ctl" id="f-mill"></select>
+            </div>
+            <div class="field">
+              <label for="f-thick">Толщина, мм</label>
+              <select class="ctl" id="f-thick">
+                <option value="16" selected>16</option>
+                <option value="19">19</option>
+                <option value="22">22</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-edge">Завал / фреза</label>
+              <select class="ctl" id="f-edge">
+                <option value="RМин">RМин</option>
+                <option value="R3" selected>R3 (по умолчанию)</option>
+                <option value="R5">R5</option>
+                <option value="без завала">Без завала</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Режим: спецификация -->
+      <div class="card" id="box-spec">
+        <div class="card__h">
+          <h3>Позиции</h3>
+          <span class="sp"></span>
+          <span class="hint">Размеры проверяются по лимитам фабрики</span>
+        </div>
+        <div class="card__b card__b--flush">
+          <div class="tw" id="spec-wrap" hidden>
+            <table class="spec" id="spec">
+              <thead>
+                <tr>
+                  <th class="idx">№</th>
+                  <th>Тип</th>
+                  <th class="r">Высота</th>
+                  <th class="r">Ширина</th>
+                  <th class="r">Кол-во</th>
+                  <th>Рисунок</th>
+                  <th>Плёнка</th>
+                  <th class="r">Цена</th>
+                  <th class="r">Площадь</th>
+                  <th class="r">Стоимость</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="spec-body"></tbody>
+            </table>
+          </div>
+          <div class="empty" id="spec-empty">
+            <h4>Пока ни одной позиции</h4>
+            <p>Добавьте фасады кнопками ниже или вставьте готовую таблицу из Excel — колонки «высота», «ширина», «количество».</p>
+            <div class="empty__k">
+              <button class="btn btn--primary" id="btn-demo">Заполнить примером кухни</button>
+              <span class="hint" id="paste-hint">Вставка: <kbd>Ctrl</kbd> + <kbd>V</kbd> в любом месте страницы</span>
+            </div>
+          </div>
+        </div>
+        <div class="addrow">
+          <button class="btn" data-add="blind">+ Глухой</button>
+          <button class="btn" data-add="vitrine">+ Витрина</button>
+          <button class="btn" data-add="drawer">+ Ящик</button>
+          <span style="flex:1"></span>
+          <button class="btn btn--ghost btn--sm btn--danger" id="btn-clear" hidden>Очистить</button>
+        </div>
+      </div>
+
+      <!-- Режим: визуальный подбор -->
+      <div class="card" id="box-vis" hidden>
+        <div class="card__h">
+          <h3>Подбор с превью</h3>
+          <span class="sp"></span>
+          <span class="hint">Соберите позицию визуально и добавьте в спецификацию</span>
+        </div>
+        <div class="card__b">
+          <div class="vis">
+            <div>
+              <div class="fasad" id="vis-fasad" data-mill="Модерн">
+                <div class="fasad__d" id="vis-dim">716 × 396 мм</div>
+              </div>
+              <p class="hint" style="margin-top:0.5rem">Превью на реальном образце плёнки. Рисунок фрезеровки показан схематично.</p>
+            </div>
+            <div style="display:grid; gap:0.875rem; align-content:start; min-width:0">
+              <div class="params">
+                <div class="field">
+                  <label for="v-type">Тип фасада</label>
+                  <select class="ctl" id="v-type"></select>
+                </div>
+                <div class="field">
+                  <label for="v-h">Высота, мм</label>
+                  <input class="ctl num" id="v-h" type="number" value="716" inputmode="numeric">
+                </div>
+                <div class="field">
+                  <label for="v-w">Ширина, мм</label>
+                  <input class="ctl num" id="v-w" type="number" value="396" inputmode="numeric">
+                </div>
+                <div class="field">
+                  <label for="v-q">Количество</label>
+                  <input class="ctl num" id="v-q" type="number" value="2" min="1" inputmode="numeric">
+                </div>
+              </div>
+              <p class="hint" id="v-lim"></p>
+              <div style="display:flex; align-items:center; gap:0.875rem; flex-wrap:wrap">
+                <div>
+                  <div class="hint">Стоимость позиции</div>
+                  <div style="font-size:var(--t-lg); font-weight:600; letter-spacing:-0.01em" class="num" id="v-sum">—</div>
+                </div>
+                <span style="flex:1"></span>
+                <button class="btn btn--primary" id="v-add">Добавить в спецификацию</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Итоги -->
+    <aside class="side side--sticky">
+      <div class="card">
+        <div class="card__h"><h3>Расчёт</h3></div>
+        <div class="card__b">
+          <dl class="sum">
+            <div class="sum__r"><dt>Позиций</dt><dd id="t-qty">0</dd></div>
+            <div class="sum__r"><dt>Квадратура</dt><dd id="t-area">0 м²</dd></div>
+            <div class="sum__r"><dt>Стоимость</dt><dd id="t-raw">0 ₽</dd></div>
+            <div class="sum__r sum__r--disc"><dt id="t-disc-l">Скидка 25%</dt><dd id="t-disc">—</dd></div>
+            <div class="sum__r sum__r--big"><dt>Итого</dt><dd id="t-total">0 ₽</dd></div>
+            <div class="sum__r" style="margin-top:0.5rem"><dt>Готовность <span class="hint">(10–14 раб. дней)</span></dt><dd id="t-ready">—</dd></div>
+          </dl>
+          <p class="hint" style="margin-top:0.875rem">Считается фактическая площадь каждой позиции — минимума по метражу нет.</p>
+        </div>
+        <div class="addrow">
+          <button class="btn btn--primary btn--lg" id="btn-act" disabled style="width:100%">Сформировать акт сверки</button>
+        </div>
+      </div>
+
+      <div class="card" id="warn-box" hidden>
+        <div class="card__b" style="display:grid; gap:0.5rem">
+          <span class="tag tag--warn" style="justify-self:start"><span class="dot"></span>Требует внимания</span>
+          <ul id="warn-list" style="margin:0; padding-left:1.125rem; font-size:var(--t-sm); color:var(--ink-2); display:grid; gap:0.25rem"></ul>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- ═══════════ ЭКРАН: ДЕКОРЫ ═══════════ -->
+<section class="screen shell" id="s-decors" hidden>
+  <div class="head">
+    <div>
+      <h1>Декоры плёнки ПВХ</h1>
+      <p>Полный каталог фабрики с образцами и наличием на складе. Наличие видно до заказа — звонить, чтобы уточнить, не нужно.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card__h">
+      <div class="filters" style="flex:1">
+        <div class="search">
+          <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.4 10.4L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <input class="ctl" id="d-q" type="search" placeholder="Артикул или название" autocomplete="off">
+        </div>
+        <div class="chips" id="d-chips"></div>
+        <label class="sw"><input type="checkbox" id="d-stock"> только в наличии</label>
+      </div>
+    </div>
+    <div class="card__b">
+      <p class="hint" id="d-count" style="margin-bottom:0.875rem"></p>
+      <div class="grid-dec" id="d-grid"></div>
+      <div style="text-align:center; margin-top:1.25rem">
+        <button class="btn" id="d-more" hidden>Показать ещё</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ЭКРАН: МОИ ЗАКАЗЫ ═══════════ -->
+<section class="screen shell" id="s-orders" hidden>
+  <div class="head">
+    <div>
+      <h1>Мои заказы</h1>
+      <p>История со статусом производства, актом сверки и повтором заказа в одно действие.</p>
+    </div>
+  </div>
+  <div class="orders" id="ord-list"></div>
+</section>
+
+<!-- ═══════════ ЭКРАН: ДОКУМЕНТЫ ═══════════ -->
+<section class="screen shell" id="s-docs" hidden>
+  <div class="head">
+    <div>
+      <h1>Документы и техничка</h1>
+      <p>То, из-за чего дизайнеру приходится звонить на фабрику: лимиты размеров, присадка, правила эксплуатации, каталоги.</p>
+    </div>
+  </div>
+
+  <div class="docs">
+    <div class="card">
+      <div class="card__h"><h3>Типовая техкарта: лимиты, мм</h3></div>
+      <div class="card__b card__b--flush">
+        <table class="lim">
+          <thead><tr><th>Тип фасада</th><th>Высота</th><th>Ширина</th></tr></thead>
+          <tbody id="lim-body"></tbody>
+        </table>
+      </div>
+      <div class="card__b">
+        <p class="hint">Это типовые значения. <b>У каждой фрезеровки — своя техкарта</b>: лимиты, кромка (R3/R4/Rмин), отступ и ширина фрезеровки, рамка витрины. Все 79 техкарт — <a href="frezerovki.html" target="_blank" rel="noopener">в каталоге фрезеровок</a>.</p>
+        <p class="hint" style="margin-top:0.5rem">Спецификация проверяет размеры по техкарте выбранной фрезеровки — заказ с недопустимым размером не уйдёт в производство.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__h"><h3>Присадка под петли</h3></div>
+      <div class="card__b">
+        <p style="font-size:var(--t-sm); color:var(--ink-2)">Количество петель зависит от веса, ширины и высоты фасада. Значения справочные, для МДФ 16 мм.</p>
+        <table class="lim" style="margin-top:0.75rem">
+          <thead><tr><th>Высота фасада</th><th>Петель</th></tr></thead>
+          <tbody>
+            <tr><td class="n">до 900</td><td class="n">2</td></tr>
+            <tr><td class="n">900 – 1600</td><td class="n">3</td></tr>
+            <tr><td class="n">1600 – 2000</td><td class="n">4</td></tr>
+            <tr><td class="n">от 2000</td><td class="n">5</td></tr>
+          </tbody>
+        </table>
+        <p class="hint" style="margin-top:0.75rem">Присадка на гнутых фасадах отличается от стандартной для прямых.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card__h"><h3>Файлы</h3></div>
+      <div class="card__b">
+        <div class="dl">
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg> Технический каталог фасадов ПВХ<span class="sz">PDF</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg> Каталог фрезеровок<span class="sz">PDF</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg> Правила эксплуатации фасадов<span class="sz">PDF</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4.5l6-3 6 3-6 3-6-3z" stroke="currentColor" stroke-width="1.3"/><path d="M2 8l6 3 6-3M2 11.5l6 3 6-3" stroke="currentColor" stroke-width="1.3"/></svg> 3D-модели фасадов для проектирования<span class="sz">архив</span></a>
+        </div>
+        <p class="hint" style="margin-top:0.875rem">Раздел-образец: наполняется материалами фабрики. У конкурентов такой раздел — главный аргумент в пользу работы с ними.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ЭКРАН: АКТ СВЕРКИ ═══════════ -->
+<section class="screen shell" id="s-act" hidden>
+  <div class="head noprint">
+    <div>
+      <h1 id="act-title">Акт сверки</h1>
+      <p>Проверьте цвет, размеры, направление текстуры и фрезеровку. После согласования заказ уходит в производство.</p>
+    </div>
+    <span class="head__sp"></span>
+    <button class="btn btn--ghost" data-go="work">← К заказу</button>
+  </div>
+
+  <div class="act-wrap">
+    <div class="act" id="act-doc"></div>
+
+    <aside class="side act-side noprint">
+      <div class="card">
+        <div class="card__h"><h3>Согласование</h3></div>
+        <div class="card__b" id="act-panel"></div>
+      </div>
+      <div class="card">
+        <div class="card__b">
+          <p class="hint">В бумажном обороте акт сверки подписывают и присылают обратно по почте. Здесь согласование — одно действие, и в документе остаётся, кто и когда его подтвердил.</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+</main>
+
+<!-- ═══════════ Модальное окно выбора декора ═══════════ -->
+<dialog class="pick" id="dlg" aria-label="Выбор декора">
+  <div class="pick__h">
+    <h3 style="margin-right:auto">Выбор декора</h3>
+    <div class="search" style="max-width:260px">
+      <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.4 10.4L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <input class="ctl" id="p-q" type="search" placeholder="Артикул или название" autocomplete="off">
+    </div>
+    <button class="x" id="p-x" aria-label="Закрыть">
+      <svg width="17" height="17" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+    </button>
+  </div>
+  <div class="pick__b">
+    <div class="filters" style="margin-bottom:0.875rem">
+      <div class="chips" id="p-chips"></div>
+      <label class="sw"><input type="checkbox" id="p-stock"> только в наличии</label>
+    </div>
+    <div class="grid-dec" id="p-grid"></div>
+    <div style="text-align:center; margin-top:1rem">
+      <button class="btn" id="p-more" hidden>Показать ещё</button>
+    </div>
+  </div>
+  <div class="pick__f">
+    <span class="hint" id="p-count"></span>
+    <span style="flex:1"></span>
+    <button class="btn" id="p-cancel">Отмена</button>
+  </div>
+</dialog>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="dekory.js"></script>
+<script src="frezerovki.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ═══════════ Справочники ═══════════ */
+
+  // Лимиты — техкарта фрезеровок с fasad-kat.ru
+  var TYPES = {
+    blind:   { key: 'blind',   label: 'Глухой',  group: 'Глухие',  hMin: 246, hMax: 2500, wMin: 246, wMax: 1200 },
+    vitrine: { key: 'vitrine', label: 'Витрина', group: 'Витрины', hMin: 246, hMax: 2200, wMin: 246, wMax: 1100 },
+    drawer:  { key: 'drawer',  label: 'Ящик',    group: 'Ящики',   hMin: 136, hMax: 245,  wMin: 246, wMax: 1100 }
+  };
+  var TYPE_ORDER = ['blind', 'vitrine', 'drawer'];
+
+  // Справочник фрезеровок: 79 позиций с fasad-kat.ru, у каждой своя техкарта
+  // (frezerovki.js). «Модерн» из эталонного бланка на сайте нет — типовая карта.
+  var FREZ = window.FREZ || [];
+  var MILLS = FREZ.map(function (f) { return f.n; });
+  if (MILLS.indexOf('Модерн') === -1) MILLS.unshift('Модерн');
+  function millByName(n) {
+    for (var i = 0; i < FREZ.length; i++) { if (FREZ[i].n === n) return FREZ[i]; }
+    return null;
+  }
+  // Лимиты типа для строки: техкарта фрезеровки строки, иначе типовая (TYPES)
+  var TKEY = { blind: 'b', vitrine: 'v', drawer: 'd' };
+  function rowLim(r) {
+    var f = millByName(r.mill || st.mill);
+    if (f) {
+      var L = f.lim[TKEY[r.type]];
+      return { hMin: L[0][0], hMax: L[0][1], wMin: L[1][0], wMax: L[1][1] };
+    }
+    return TYPES[r.type];
+  }
+
+  var PROD_MIN = 10, PROD_MAX = 14;   // рабочих дней; срочный заказ 3–5 (FAQ фабрики)
+  function addWorkDays(d, n) {
+    var x = new Date(d.getTime()), left = n;
+    while (left > 0) { x.setDate(x.getDate() + 1); if (x.getDay() !== 0 && x.getDay() !== 6) left--; }
+    return x;
+  }
+
+  /* ═══════════ Каталог декоров ═══════════ */
+
+  var DEC = (window.DECORS || []).map(function (r, i) {
+    return { id: i, art: r[0], name: r[1], g: r[2], sig: r[3], card: r[4], stock: r[5] === 1 };
+  });
+  var GROUPS = window.DEC_GROUPS || {};
+  function decImg(d) { return 'img/dekory/' + d.card + '.webp'; }
+  // URL образца содержит круглые скобки — filters:format(webp):no_upscale() —
+  // поэтому в CSS url() его обязательно кавычить, иначе значение невалидно
+  // и фон молча не отображается (в <img src> скобки безопасны).
+  function decBg(d) { return 'url("' + decImg(d) + '")'; }
+  function decLabel(d) { return (d.art ? d.art + ' ' : '') + d.name; }
+  function decPrice(d) { return (GROUPS[d.g] || {}).price || 4200; }
+  function groupLabel(g) { return (GROUPS[g] || {}).label || g; }
+  function decById(id) {
+    for (var i = 0; i < DEC.length; i++) { if (DEC[i].id === id) return DEC[i]; }
+    return DEC[0];
+  }
+  function decByLabel(lbl) {
+    for (var i = 0; i < DEC.length; i++) { if (decLabel(DEC[i]) === lbl) return DEC[i]; }
+    return null;
+  }
+
+  /* ═══════════ Состояние ═══════════ */
+
+  // Скидку контрагенту назначает фабрика в админке; цена одна для всех.
+  // Второй контрагент показывает механику скидки (условная компания, условный процент).
+  var PARTIES = [
+    { id: 'artel', name: 'Дизайн-бюро «Артель»', person: 'Ирина Соколова', phone: '+7 911 245-38-11', discount: 0 },
+    { id: 'dd',    name: 'Мебельный цех «Ясень»', person: 'Отдел закупок',  phone: '+7 911 600-24-17', discount: 50 }
+  ];
+  var PARTY = PARTIES[0];
+
+  var st = {
+    decor: null,
+    mill: 'Сканди',
+    thick: 16,
+    edge: 'R3',
+    discount: 0,
+    rows: [],
+    orders: [],
+    seq: 1042,
+    mode: 'spec',
+    act: null
+  };
+
+  /* ═══════════ Утилиты ═══════════ */
+
+  var $ = function (id) { return document.getElementById(id); };
+  var nf = new Intl.NumberFormat('ru-RU');
+  function money(n) { return nf.format(Math.round(n)) + ' ₽'; }
+  function money2(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function num3(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 3, maximumFractionDigits: 3 }); }
+  function num2(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function areaOf(h, w, q) { return (h * w / 1000000) * q; }
+  function fmtArea(a) { return num2(a) + ' м²'; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+  var MON = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа',
+             'сентября', 'октября', 'ноября', 'декабря'];
+  function dateRu(d) { return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear() + ' г.'; }
+  function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.dataset.on = '1';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function () { t.dataset.on = '0'; }, 2800);
+  }
+
+  /* ═══════════ Расчёт ═══════════
+     Формула бумажного бланка фабрики, сверена до копейки:
+     стоимость = (В × Ш / 1 000 000) × кол-во × цена за м²
+     Минимума по площади нет — позиция 0,456 м² в бланке посчитана по факту.
+     Скидка берётся от неокруглённой суммы, до рубля округляется итог.
+     Цены за м² здесь условные: реальный прайс не публикуем.  */
+
+  function rowDecor(r) { return (r.decor !== null && r.decor !== undefined) ? decById(r.decor) : st.decor; }
+  function rowPrice(r) { var d = rowDecor(r); return d ? decPrice(d) : 0; }
+  function rowArea(r) { return areaOf(r.h || 0, r.w || 0, r.q || 0); }
+  function rowCost(r) { return rowArea(r) * rowPrice(r); }
+
+  function rowErrors(r) {
+    var t = rowLim(r), e = {};
+    if (!r.h) e.h = 'укажите высоту';
+    else if (r.h < t.hMin || r.h > t.hMax) e.h = t.hMin + '–' + t.hMax + ' мм';
+    if (!r.w) e.w = 'укажите ширину';
+    else if (r.w < t.wMin || r.w > t.wMax) e.w = t.wMin + '–' + t.wMax + ' мм';
+    if (!r.q || r.q < 1) e.q = 'от 1';
+    return e;
+  }
+  function rowOk(r) {
+    for (var k in rowErrors(r)) { if (Object.prototype.hasOwnProperty.call(rowErrors(r), k)) return false; }
+    return true;
+  }
+
+  function totals(rows, discount) {
+    var raw = 0, area = 0, qty = 0, ok = 0;
+    rows.forEach(function (r) {
+      if (!rowOk(r) || !rowDecor(r)) return;
+      ok++;
+      raw += rowCost(r);
+      area += rowArea(r);
+      qty += r.q;
+    });
+    var disc = raw * (discount / 100);
+    return { raw: raw, area: area, qty: qty, ok: ok, disc: disc, total: raw - disc };
+  }
+
+  /* ═══════════ Навигация ═══════════ */
+
+  var SCREENS = { work: 's-work', decors: 's-decors', orders: 's-orders', docs: 's-docs', act: 's-act' };
+
+  function go(name) {
+    Object.keys(SCREENS).forEach(function (k) { $(SCREENS[k]).hidden = (k !== name); });
+    var navName = (name === 'act') ? 'work' : name;
+    document.querySelectorAll('.nav button').forEach(function (b) {
+      b.setAttribute('aria-current', b.dataset.go === navName ? 'true' : 'false');
+    });
+    window.scrollTo(0, 0);
+    if (name === 'decors') renderCatalog();
+    if (name === 'orders') renderOrders();
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-go]');
+    if (b) { e.preventDefault(); go(b.dataset.go); }
+    var f = e.target.closest('[data-file]');
+    if (f) { e.preventDefault(); toast('В прототипе файлы не приложены — раздел наполняет фабрика'); }
+  });
+
+  /* ═══════════ Спецификация ═══════════ */
+
+  var rowSeq = 0;
+
+  function addRow(type, preset) {
+    var r = { uid: 'r' + (++rowSeq), type: type, h: 0, w: 0, q: 1, mill: null, decor: null };
+    if (preset) {
+      r.h = preset.h || 0; r.w = preset.w || 0; r.q = preset.q || 1;
+      if (preset.mill) r.mill = preset.mill;
+      if (preset.decor !== undefined && preset.decor !== null) r.decor = preset.decor;
+    }
+    st.rows.push(r);
+    return r;
+  }
+
+  function delRow(uid) {
+    st.rows = st.rows.filter(function (r) { return r.uid !== uid; });
+    renderSpec();
+  }
+
+  function renderSpec() {
+    var body = $('spec-body'), html = '';
+    var has = st.rows.length > 0;
+    $('spec-empty').hidden = has;
+    $('spec-wrap').hidden = !has;
+    $('btn-clear').hidden = !has;
+    $('nav-cnt').hidden = !has;
+    $('nav-cnt').textContent = st.rows.length;
+
+    var n = 0;
+    TYPE_ORDER.forEach(function (tk) {
+      var rows = st.rows.filter(function (r) { return r.type === tk; });
+      if (!rows.length) return;
+      var t = TYPES[tk];
+      html += '<tr class="grp"><td colspan="11">' + t.group +
+              ' <span style="font-weight:400; color:var(--ink-3)">· лимиты по техкарте фрезеровки</span></td></tr>';
+      rows.forEach(function (r) {
+        n++;
+        var e = rowErrors(r), d = rowDecor(r), ok = rowOk(r);
+        var mill = r.mill || st.mill;
+        html += '<tr data-uid="' + r.uid + '">' +
+          '<td class="idx num">' + n + '</td>' +
+          '<td>' + t.label + '</td>' +
+          '<td class="r">' + numCell(r, 'h', e.h) + '</td>' +
+          '<td class="r">' + numCell(r, 'w', e.w) + '</td>' +
+          '<td class="r">' + numCell(r, 'q', e.q, true) + '</td>' +
+          '<td>' + millCell(mill) + '</td>' +
+          '<td>' + decorCell(r, d) + '</td>' +
+          '<td class="r num" style="white-space:nowrap; color:var(--ink-2)">' + (d ? nf.format(decPrice(d)) + ' ₽/м²' : '—') + '</td>' +
+          '<td class="r num" style="color:var(--ink-2)">' + (ok ? num3(rowArea(r)) : '—') + '</td>' +
+          '<td class="r num" style="font-weight:600">' + (ok && d ? money2(rowCost(r)) : '—') + '</td>' +
+          '<td class="c"><button class="row-del" data-del="' + r.uid + '" aria-label="Удалить позицию ' + n + '">' +
+            '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+          '</button></td>' +
+        '</tr>';
+      });
+    });
+    body.innerHTML = html;
+    renderTotals();
+  }
+
+  function numCell(r, key, err, small) {
+    var v = r[key] || '';
+    var lbl = key === 'h' ? 'Высота' : key === 'w' ? 'Ширина' : 'Количество';
+    return '<input class="cell-in' + (small ? ' cell-in--q' : '') + '" type="number" inputmode="numeric"' +
+      ' value="' + v + '" data-f="' + key + '"' + (err ? ' data-bad="1"' : '') +
+      ' aria-label="' + lbl + '">' +
+      '<span class="err-cell"' + (err ? '' : ' hidden') + '>' + (err || '') + '</span>';
+  }
+
+  function millCell(cur) {
+    var o = MILLS.map(function (m) {
+      return '<option value="' + esc(m) + '"' + (m === cur ? ' selected' : '') + '>' + esc(m) + '</option>';
+    }).join('');
+    return '<select class="cell-sel" data-f="mill" aria-label="Фрезеровка">' + o + '</select>';
+  }
+
+  function decorCell(r, d) {
+    if (!d) return '<span class="hint">выберите декор</span>';
+    var own = (r.decor !== null && r.decor !== undefined);
+    return '<span style="display:flex; align-items:center; gap:0.375rem; min-width:0">' +
+      '<span class="ol__sw" style=\'background-image:' + decBg(d) + '\'></span>' +
+      '<span style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--t-xs)"' +
+        ' title="' + esc(decLabel(d)) + '">' + esc(d.art || d.name) + '</span>' +
+      (d.stock ? '' : '<span class="tag tag--warn" style="flex-shrink:0">под заказ</span>') +
+      (own ? '<span class="tag tag--mute" style="flex-shrink:0">своя</span>' : '') +
+    '</span>';
+  }
+
+  // Ввод в таблице: точечное обновление, чтобы не терять фокус
+  $('spec-body').addEventListener('input', function (e) {
+    var tr = e.target.closest('tr[data-uid]');
+    if (!tr) return;
+    var r = st.rows.filter(function (x) { return x.uid === tr.dataset.uid; })[0];
+    if (!r) return;
+    var f = e.target.dataset.f;
+    if (!f) return;
+
+    if (f === 'mill') { r.mill = e.target.value; renderSpec(); return; }
+
+    r[f] = parseInt(e.target.value, 10) || 0;
+    var err = rowErrors(r)[f];
+    if (err) e.target.dataset.bad = '1'; else e.target.removeAttribute('data-bad');
+    var box = e.target.parentNode.querySelector('.err-cell');
+    if (box) { box.textContent = err || ''; box.hidden = !err; }
+
+    var d = rowDecor(r), ok = rowOk(r), cells = tr.children;
+    cells[8].textContent = ok ? num3(rowArea(r)) : '—';
+    cells[9].textContent = (ok && d) ? money2(rowCost(r)) : '—';
+    renderTotals();
+  });
+
+  $('spec-body').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-del]');
+    if (b) delRow(b.dataset.del);
+  });
+
+  document.querySelectorAll('[data-add]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = b.dataset.add;
+      if (!st.decor) { openPick(function () { addRow(t); renderSpec(); focusLast(); }); return; }
+      addRow(t); renderSpec(); focusLast();
+    });
+  });
+  function focusLast() {
+    var rows = $('spec-body').querySelectorAll('tr[data-uid]');
+    if (rows.length) {
+      var i = rows[rows.length - 1].querySelector('.cell-in');
+      if (i) i.focus();
+    }
+  }
+
+  $('btn-clear').addEventListener('click', function () {
+    st.rows = []; renderSpec(); toast('Спецификация очищена');
+  });
+
+  $('btn-demo').addEventListener('click', function () {
+    if (!st.decor) { openPick(function () { fillDemo(); }); return; }
+    fillDemo();
+  });
+  function fillDemo() {
+    st.rows = [];
+    [[716, 396, 2], [716, 596, 2], [716, 446, 1], [2478, 640, 1], [1547, 600, 1]].forEach(function (p) {
+      addRow('blind', { h: p[0], w: p[1], q: p[2] });
+    });
+    addRow('vitrine', { h: 716, w: 596, q: 2 });
+    addRow('drawer', { h: 140, w: 596, q: 3 });
+    addRow('drawer', { h: 196, w: 446, q: 2 });
+    renderSpec();
+    toast('Заполнено: 8 позиций типовой кухни');
+  }
+
+  /* ═══════════ Вставка из Excel ═══════════ */
+
+  document.addEventListener('paste', function (e) {
+    if ($('s-work').hidden) return;
+    var t = e.target, tag = (t.tagName || '').toLowerCase();
+    if (tag === 'input' && (t.type === 'search' || t.type === 'number')) return;
+
+    var cd = e.clipboardData || window.clipboardData;
+    if (!cd) return;
+    var txt = cd.getData('text');
+    if (!txt) return;
+
+    var lines = txt.split(/\r?\n/), added = 0;
+    lines.forEach(function (ln) {
+      if (!ln.trim()) return;
+      var parts = ln.split(/[\t;,]|\s{2,}|\s*[×xX*]\s*/);
+      var nums = [];
+      parts.forEach(function (p) {
+        var v = parseInt(String(p).replace(/[^\d]/g, ''), 10);
+        if (!isNaN(v) && v > 0) nums.push(v);
+      });
+      if (nums.length < 2) return;
+      var h = nums[0], w = nums[1], q = nums[2] || 1;
+      var type = (h <= TYPES.drawer.hMax) ? 'drawer' : 'blind';
+      addRow(type, { h: h, w: w, q: q });
+      added++;
+    });
+
+    if (added) {
+      e.preventDefault();
+      renderSpec();
+      toast('Добавлено из буфера: ' + added + (added === 1 ? ' позиция' : ' позиций'));
+      if (!st.decor) openPick(function () { renderSpec(); });
+    }
+  });
+
+  /* ═══════════ Итоги ═══════════ */
+
+  function renderTotals() {
+    var t = totals(st.rows, st.discount);
+    $('t-qty').textContent = nf.format(t.qty);
+    $('t-area').textContent = fmtArea(t.area);
+    $('t-raw').textContent = money(t.raw);
+    $('t-disc-l').textContent = st.discount ? 'Скидка ' + st.discount + '%' : 'Скидка';
+    $('t-disc').textContent = t.disc > 0 ? '−' + money(t.disc) : '—';
+    $('t-total').textContent = money(t.total);
+    $('t-ready').textContent = t.ok ? 'к ' + dateRu(addWorkDays(new Date(), PROD_MAX)) : '—';
+    $('btn-act').disabled = t.ok === 0;
+
+    var warns = [];
+    var bad = st.rows.filter(function (r) { return !rowOk(r); }).length;
+    if (bad) warns.push(bad + (bad === 1 ? ' позиция' : ' позиций') + ' с недопустимым размером — проверьте подсветку в таблице');
+
+    var seen = {}, oos = [];
+    st.rows.forEach(function (r) {
+      var d = rowDecor(r);
+      if (d && !d.stock && !seen[d.id]) { seen[d.id] = 1; oos.push(decLabel(d)); }
+    });
+    if (oos.length) warns.push('Декор под заказ: ' + oos.join(', ') + ' — срок уточняет фабрика');
+
+    if (st.rows.some(function (r) { return !rowDecor(r); })) warns.push('Не выбран декор — цена не рассчитана');
+
+    $('warn-box').hidden = warns.length === 0;
+    $('warn-list').innerHTML = warns.map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('');
+  }
+
+  /* ═══════════ Параметры заказа ═══════════ */
+
+  $('f-mill').innerHTML = MILLS.map(function (m) {
+    return '<option value="' + esc(m) + '"' + (m === st.mill ? ' selected' : '') + '>' + esc(m) + '</option>';
+  }).join('');
+
+  $('f-mill').addEventListener('change', function () {
+    st.mill = this.value;
+    var fm = millByName(st.mill);
+    if (fm) {
+      // толщина не ниже минимума техкарты фрезеровки
+      var th = $('f-thick');
+      for (var i = 0; i < th.options.length; i++) th.options[i].disabled = +th.options[i].value < fm.th;
+      if (st.thick < fm.th) { st.thick = fm.th; th.value = String(fm.th); toast('Толщина по техкарте «' + fm.n + '»: от ' + fm.th + ' мм'); }
+    }
+    renderSpec(); renderVis();
+  });
+  $('f-thick').addEventListener('change', function () { st.thick = +this.value; });
+  $('f-edge').addEventListener('change', function () { st.edge = this.value; });
+  /* ═══════════ Вход ═══════════ */
+
+  function loginAs(party, note) {
+    PARTY = party;
+    st.discount = party.discount;
+    $('party-name').textContent = party.name;
+    $('party-person').textContent = party.person;
+    $('party-disc').hidden = !party.discount;
+    if (party.discount) $('party-disc').innerHTML = '<span class="dot"></span>скидка −' + party.discount + '%';
+    seedOrders(); renderOrders();
+    renderTotals(); renderVis();
+    document.getElementById('s-auth').hidden = true;
+    document.getElementById('app-top').hidden = false;
+    document.getElementById('app-main').hidden = false;
+    toast(note || ('Вы вошли: ' + party.name + (party.discount ? ' · скидка ' + party.discount + '%' : '')));
+  }
+  $('demo-artel').addEventListener('click', function () { loginAs(PARTIES[0]); });
+  $('demo-dd').addEventListener('click', function () { loginAs(PARTIES[1]); });
+  $('f-login').addEventListener('submit', function (e) { e.preventDefault(); loginAs(PARTIES[0], 'Вход выполнен (демо)'); });
+  $('f-reg').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!$('r-ok').checked) { toast('Отметьте согласие на обработку данных'); return; }
+    var nm = $('r-comp').value.trim();
+    var p = { id: 'new', name: nm || 'Новая компания', person: $('r-mail').value.trim() || 'Партнёр', phone: $('r-phone').value.trim(), discount: 0 };
+    loginAs(p, 'Готово! Подтвердите почту по ссылке из письма (демо) — и можно заказывать');
+  });
+  $('btn-logout').addEventListener('click', function () {
+    document.getElementById('s-auth').hidden = false;
+    document.getElementById('app-top').hidden = true;
+    document.getElementById('app-main').hidden = true;
+    window.scrollTo(0, 0);
+  });
+  $('tab-login').addEventListener('click', function () {
+    this.setAttribute('aria-selected', 'true'); $('tab-reg').setAttribute('aria-selected', 'false');
+    $('f-login').hidden = false; $('f-reg').hidden = true;
+  });
+  $('tab-reg').addEventListener('click', function () {
+    this.setAttribute('aria-selected', 'true'); $('tab-login').setAttribute('aria-selected', 'false');
+    $('f-reg').hidden = false; $('f-login').hidden = true;
+  });
+
+  function setDecor(d) {
+    if (!d) return;
+    st.decor = d;
+    $('pd-sw').style.backgroundImage = decBg(d);
+    $('pd-name').textContent = decLabel(d);
+    $('pd-meta').innerHTML = esc(groupLabel(d.g)) + ' · ' + nf.format(decPrice(d)) + ' ₽/м² · ' +
+      (d.stock ? '<span class="tag tag--ok"><span class="dot"></span>в наличии</span>'
+               : '<span class="tag tag--warn"><span class="dot"></span>под заказ</span>');
+    renderSpec();
+    renderVis();
+  }
+
+  /* ═══════════ Выбор декора (модальное) ═══════════ */
+
+  var dlg = $('dlg'), pickCb = null, pShown = 60;
+  var pFilter = { q: '', g: '', stock: false };
+  var cShown = 48, cFilter = { q: '', g: '', stock: false };
+
+  function chipsHtml(cur) {
+    var h = '<button class="chip" data-g="" aria-pressed="' + (cur === '' ? 'true' : 'false') + '">Все</button>';
+    Object.keys(GROUPS).forEach(function (g) {
+      h += '<button class="chip" data-g="' + g + '" aria-pressed="' + (cur === g ? 'true' : 'false') + '">' +
+           esc(GROUPS[g].label) + '</button>';
+    });
+    return h;
+  }
+
+  function filterDec(f) {
+    var q = f.q.trim().toLowerCase();
+    return DEC.filter(function (d) {
+      if (f.g && d.g !== f.g) return false;
+      if (f.stock && !d.stock) return false;
+      if (q && decLabel(d).toLowerCase().indexOf(q) === -1) return false;
+      return true;
+    });
+  }
+
+  function decCardHtml(d, sel) {
+    return '<button class="dec" data-id="' + d.id + '" aria-pressed="' + (sel ? 'true' : 'false') + '">' +
+      '<img class="dec__i" src="' + decImg(d) + '" alt="Образец ' + esc(decLabel(d)) + '" loading="lazy" decoding="async">' +
+      '<span class="dec__b">' +
+        '<span class="dec__a">' + (d.art ? esc(d.art) : '&nbsp;') + '</span>' +
+        '<span class="dec__n">' + esc(d.name) + '</span>' +
+        '<span class="dec__f">' +
+          '<span class="dec__p">' + nf.format(decPrice(d)) + ' ₽/м²</span>' +
+          (d.stock ? '<span class="tag tag--ok"><span class="dot"></span>есть</span>'
+                   : '<span class="tag tag--warn">под заказ</span>') +
+        '</span>' +
+      '</span>' +
+    '</button>';
+  }
+
+  function renderPick() {
+    var list = filterDec(pFilter), slice = list.slice(0, pShown);
+    $('p-grid').innerHTML = slice.map(function (d) {
+      return decCardHtml(d, st.decor && st.decor.id === d.id);
+    }).join('') || '<p class="hint" style="padding:1.5rem 0">Ничего не найдено. Попробуйте другой артикул или снимите фильтр наличия.</p>';
+    $('p-more').hidden = list.length <= pShown;
+    $('p-count').textContent = 'Показано ' + slice.length + ' из ' + list.length;
+  }
+
+  function openPick(cb) {
+    pickCb = cb || null;
+    pShown = 60;
+    $('p-chips').innerHTML = chipsHtml(pFilter.g);
+    renderPick();
+    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', '');
+    setTimeout(function () { $('p-q').focus(); }, 40);
+  }
+  function closePick() {
+    if (dlg.close && dlg.open) dlg.close(); else dlg.removeAttribute('open');
+  }
+
+  $('pick-dec').addEventListener('click', function () { openPick(null); });
+  $('p-x').addEventListener('click', closePick);
+  $('p-cancel').addEventListener('click', closePick);
+  $('p-q').addEventListener('input', function () { pFilter.q = this.value; pShown = 60; renderPick(); });
+  $('p-stock').addEventListener('change', function () { pFilter.stock = this.checked; pShown = 60; renderPick(); });
+  $('p-more').addEventListener('click', function () { pShown += 60; renderPick(); });
+  $('p-chips').addEventListener('click', function (e) {
+    var c = e.target.closest('[data-g]'); if (!c) return;
+    pFilter.g = c.dataset.g; pShown = 60;
+    $('p-chips').innerHTML = chipsHtml(pFilter.g);
+    renderPick();
+  });
+  $('p-grid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-id]'); if (!b) return;
+    setDecor(decById(+b.dataset.id));
+    closePick();
+    toast('Декор: ' + decLabel(st.decor));
+    if (pickCb) { var cb = pickCb; pickCb = null; cb(); }
+  });
+
+  /* ═══════════ Каталог (экран) ═══════════ */
+
+  function renderCatalog() {
+    if (!$('d-chips').innerHTML) $('d-chips').innerHTML = chipsHtml(cFilter.g);
+    var list = filterDec(cFilter), slice = list.slice(0, cShown);
+    $('d-grid').innerHTML = slice.map(function (d) {
+      return decCardHtml(d, st.decor && st.decor.id === d.id);
+    }).join('') || '<p class="hint">Ничего не найдено. Попробуйте другой артикул или снимите фильтр наличия.</p>';
+    $('d-more').hidden = list.length <= cShown;
+    var inStock = DEC.filter(function (d) { return d.stock; }).length;
+    $('d-count').textContent = 'Показано ' + slice.length + ' из ' + list.length +
+      ' · в наличии ' + inStock + ' из ' + DEC.length;
+  }
+  $('d-q').addEventListener('input', function () { cFilter.q = this.value; cShown = 48; renderCatalog(); });
+  $('d-stock').addEventListener('change', function () { cFilter.stock = this.checked; cShown = 48; renderCatalog(); });
+  $('d-more').addEventListener('click', function () { cShown += 48; renderCatalog(); });
+  $('d-chips').addEventListener('click', function (e) {
+    var c = e.target.closest('[data-g]'); if (!c) return;
+    cFilter.g = c.dataset.g; cShown = 48;
+    $('d-chips').innerHTML = chipsHtml(cFilter.g);
+    renderCatalog();
+  });
+  $('d-grid').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-id]'); if (!b) return;
+    setDecor(decById(+b.dataset.id));
+    renderCatalog();
+    toast('Выбран для заказа: ' + decLabel(st.decor));
+  });
+
+  /* ═══════════ Визуальный подбор ═══════════ */
+
+  $('v-type').innerHTML = TYPE_ORDER.map(function (k) {
+    return '<option value="' + k + '"' + (k === 'blind' ? ' selected' : '') + '>' + TYPES[k].label + '</option>';
+  }).join('');
+
+  function visVals() {
+    return {
+      type: $('v-type').value,
+      h: parseInt($('v-h').value, 10) || 0,
+      w: parseInt($('v-w').value, 10) || 0,
+      q: parseInt($('v-q').value, 10) || 0
+    };
+  }
+
+  function renderVis() {
+    var v = visVals(), t = TYPES[v.type], f = $('vis-fasad');
+    f.dataset.mill = st.mill;
+    if (st.decor) f.style.backgroundImage = decBg(st.decor);
+    $('vis-dim').textContent = (v.h || '—') + ' × ' + (v.w || '—') + ' мм' + (v.q > 1 ? ' · ' + v.q + ' шт' : '');
+    if (v.h > 0 && v.w > 0) f.style.aspectRatio = v.w + ' / ' + v.h;
+    $('v-lim').textContent = 'Допустимо для «' + t.label + '»: высота ' + t.hMin + '–' + t.hMax +
+      ' мм, ширина ' + t.wMin + '–' + t.wMax + ' мм.';
+    var r = { type: v.type, h: v.h, w: v.w, q: v.q, decor: null, mill: null };
+    var ok = rowOk(r) && !!st.decor;
+    $('v-sum').textContent = ok ? money2(rowCost(r)) + ' ₽' : '—';
+    $('v-add').disabled = !ok;
+  }
+  ['v-type', 'v-h', 'v-w', 'v-q'].forEach(function (id) {
+    $(id).addEventListener('input', renderVis);
+    $(id).addEventListener('change', renderVis);
+  });
+  $('v-add').addEventListener('click', function () {
+    var v = visVals();
+    addRow(v.type, { h: v.h, w: v.w, q: v.q });
+    renderSpec();
+    toast('Добавлено в спецификацию');
+  });
+
+  $('m-spec').addEventListener('click', function () { setMode('spec'); });
+  $('m-vis').addEventListener('click', function () { setMode('vis'); });
+  function setMode(m) {
+    st.mode = m;
+    $('m-spec').setAttribute('aria-pressed', m === 'spec' ? 'true' : 'false');
+    $('m-vis').setAttribute('aria-pressed', m === 'vis' ? 'true' : 'false');
+    $('box-vis').hidden = (m !== 'vis');   // спецификация видна всегда — она главная
+    if (m === 'vis') renderVis();
+  }
+
+  /* ═══════════ Акт сверки ═══════════ */
+
+  // Псевдо-QR: детерминированная сетка от номера заказа.
+  // В бою — реальный QR со ссылкой на заказ в кабинете.
+  function qrSvg(seed) {
+    var N = 21, cells = [], h = 0, i;
+    for (i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) % 2147483647;
+    function rnd() { h = (h * 1103515245 + 12345) % 2147483647; return h / 2147483647; }
+    for (var y = 0; y < N; y++) {
+      for (var x = 0; x < N; x++) {
+        var fin = (x < 7 && y < 7) || (x > N - 8 && y < 7) || (x < 7 && y > N - 8);
+        if (fin) {
+          var lx = x > N - 8 ? x - (N - 7) : x;
+          var ly = y > N - 8 ? y - (N - 7) : y;
+          if (lx === 0 || lx === 6 || ly === 0 || ly === 6 || (lx >= 2 && lx <= 4 && ly >= 2 && ly <= 4)) cells.push([x, y]);
+        } else if (rnd() > 0.52) cells.push([x, y]);
+      }
+    }
+    return '<svg class="act__qr" viewBox="0 0 ' + N + ' ' + N + '" role="img" aria-label="QR-код заказа" shape-rendering="crispEdges">' +
+      '<rect width="' + N + '" height="' + N + '" fill="#fff"/><g fill="#000">' +
+      cells.map(function (c) { return '<rect x="' + c[0] + '" y="' + c[1] + '" width="1" height="1"/>'; }).join('') +
+      '</g></svg>';
+  }
+
+  function buildAct() {
+    var now = new Date();
+    st.act = {
+      no: st.seq,
+      date: now,
+      ready: addWorkDays(now, PROD_MAX),
+      party: PARTY,
+      discount: st.discount,
+      thick: st.thick,
+      edge: st.edge,
+      rows: st.rows.filter(function (r) { return rowOk(r) && rowDecor(r); }).map(function (r) {
+        var d = rowDecor(r);
+        return {
+          type: r.type, h: r.h, w: r.w, q: r.q,
+          mill: r.mill || st.mill,
+          decor: decLabel(d), stock: d.stock,
+          price: decPrice(d), area: rowArea(r), cost: rowCost(r)
+        };
+      }),
+      totals: totals(st.rows, st.discount),
+      approved: null
+    };
+    return st.act;
+  }
+
+  function actDocHtml(a) {
+    // Текст предупреждения перенесён ДОСЛОВНО с бумажного бланка фабрики,
+    // включая её собственную опечатку «по электронной почта».
+    var h = '';
+    h += '<div class="act__warn">' +
+      '<b>ВНИМАНИЕ :</b> Акт сверки является официальным документом.<br>' +
+      'Подписание (или согласование) по электронной почте (факсу) данного документа является обязательным, ' +
+      'а также подписанный (или согласованный) по электронной почта (факсу) Акт сверки является согласием ' +
+      'на изготовление данного заказа в том виде (цвет, размеры, направление текстуры, фрезы), который указан в акте сверки.<br>' +
+      'В случае обнаружения ошибки в акте сверки, данный документ возвращается без подписи ' +
+      '(или согласования) изготовителю с указанием ошибок.<br>' +
+      'После подписания (или согласования) Акта сверки изготовитель не несет ответственности за ' +
+      'правильность указанных данных в Акте сверки и претензии к данному заказу не принимаются.' +
+    '</div>';
+
+    h += '<div class="act__top">' + qrSvg('KAT-' + a.no) +
+         '<div class="act__no">Заказ №&nbsp;&nbsp;' + a.no + '</div></div>';
+
+    h += '<table><tbody>' +
+      '<tr><td class="lbl" style="width:24%">Заказчик</td><td>' + esc(a.party.name) + ' (' + esc(a.party.person) + ')</td></tr>' +
+      '<tr><td class="lbl">Телефон</td><td>' + esc(a.party.phone) + '</td></tr>' +
+    '</tbody></table>';
+
+    h += '<table style="margin-top:-1px"><thead>' +
+      '<tr>' +
+        '<th rowspan="2" style="width:4%">№</th>' +
+        '<th rowspan="2" style="width:7%">Толщина</th>' +
+        '<th colspan="2" style="width:15%">Размер, мм</th>' +
+        '<th rowspan="2" style="width:6%">Кол-во</th>' +
+        '<th rowspan="2" style="width:14%">Рисунок</th>' +
+        '<th rowspan="2" style="width:9%">Завал<br>Фреза</th>' +
+        '<th rowspan="2" style="width:22%">Пленка<br>(№, название)</th>' +
+        '<th rowspan="2" style="width:10%">Цена</th>' +
+        '<th rowspan="2" style="width:13%">Стоимость<br>(руб)</th>' +
+      '</tr>' +
+      '<tr><th>Высота</th><th>Ширина</th></tr>' +
+    '</thead><tbody>';
+
+    var n = 0, lastDecor = null;
+    TYPE_ORDER.forEach(function (tk) {
+      var rows = a.rows.filter(function (r) { return r.type === tk; });
+      if (!rows.length) return;
+      h += '<tr class="grp"><td colspan="10">' + TYPES[tk].group + '</td></tr>';
+      rows.forEach(function (r) {
+        n++;
+        // плёнка печатается один раз на блок одинаковых — как в бумажном бланке
+        var show = r.decor !== lastDecor;
+        lastDecor = r.decor;
+        h += '<tr>' +
+          '<td class="r">' + n + '</td>' +
+          '<td class="c">' + a.thick + '</td>' +
+          '<td class="r">' + r.h + '</td>' +
+          '<td class="r">' + r.w + '</td>' +
+          '<td class="c">' + r.q + '</td>' +
+          '<td>' + esc(r.mill) + '</td>' +
+          '<td>' + esc(a.edge) + '|№—</td>' +
+          '<td>' + (show ? esc(r.decor) : '') + '</td>' +
+          '<td class="c">' + nf.format(r.price) + 'р/м²</td>' +
+          '<td class="r">' + money2(r.cost) + '</td>' +
+        '</tr>';
+      });
+    });
+    h += '</tbody></table>';
+
+    h += '<div class="act__by">----------------- оформлено партнёром онлайн, без менеджера</div>';
+
+    h += '<div class="act__foot">' +
+      '<dl><dt>Число:</dt><dd>' + dateRu(a.date) + '</dd></dl>' +
+      '<dl><dt>Квадратура:</dt><dd>' + num2(a.totals.area) + ' м.кв.</dd></dl>' +
+      '<dl><dt>Готовность:</dt><dd><b>' + dateRu(a.ready) + '</b></dd></dl>' +
+      '<dl><dt>Кол-во:</dt><dd>' + a.totals.qty + '</dd></dl>' +
+      '<dl></dl>' +
+      '<dl><dt>Стоимость:</dt><dd>' +
+        (a.discount
+          ? nf.format(Math.round(a.totals.raw)) + ' -' + a.discount + '%<br>= ' + nf.format(Math.round(a.totals.total)) + ' руб.'
+          : nf.format(Math.round(a.totals.raw)) + ' руб.') +
+      '</dd></dl>' +
+    '</div>';
+
+    if (a.approved) {
+      h += '<div class="act__stamp"><b>Согласовано</b>' + esc(a.approved.who) + '<br>' +
+           esc(a.approved.when) + ' · через кабинет партнёра</div>';
+    } else {
+      h += '<div class="act__sign">Подпись:<span></span></div>';
+    }
+    return h;
+  }
+
+  var STATUS = ['Принят', 'В производстве', 'Готов', 'Выдан'];
+
+  function renderAct() {
+    var a = st.act;
+    if (!a) return;
+    $('act-doc').innerHTML = actDocHtml(a);
+    $('act-title').textContent = 'Акт сверки № ' + a.no;
+
+    var p = $('act-panel'), h;
+    if (a.approved) {
+      var cur = (a.status === undefined) ? 1 : a.status;
+      h = '<div style="display:grid; gap:0.875rem">' +
+        '<span class="tag tag--ok" style="justify-self:start"><span class="dot"></span>Согласован</span>' +
+        '<div style="font-size:var(--t-sm); color:var(--ink-2)">' + esc(a.approved.who) + '<br>' + esc(a.approved.when) + '</div>' +
+        '<div class="track">' + STATUS.map(function (s, i) {
+          return '<span class="track__s" data-on="' + (i <= cur ? 1 : 0) + '"' + (i === cur ? ' data-cur="1"' : '') +
+                 '><span class="track__b"></span>' + s + '</span>';
+        }).join('') + '</div>' +
+        '<button class="btn" id="act-print">Печать / сохранить PDF</button>' +
+        '<button class="btn btn--ghost" data-go="orders">К моим заказам</button>' +
+      '</div>';
+    } else {
+      h = '<div style="display:grid; gap:0.875rem">' +
+        '<div style="font-size:var(--t-sm); color:var(--ink-2)">' +
+          'Позиций: <b class="num">' + a.totals.qty + '</b> · ' + fmtArea(a.totals.area) + '<br>' +
+          'К оплате: <b class="num">' + money(a.totals.total) + '</b>' +
+        '</div>' +
+        '<button class="btn btn--primary btn--lg" id="act-ok">Согласовать акт сверки</button>' +
+        '<button class="btn" id="act-print">Печать / сохранить PDF</button>' +
+        '<p class="hint">Согласование фиксирует состав заказа. После него правки — только через менеджера фабрики.</p>' +
+      '</div>';
+    }
+    p.innerHTML = h;
+
+    var ok = $('act-ok');
+    if (ok) ok.addEventListener('click', function () {
+      var now = new Date();
+      a.approved = {
+        who: PARTY.person + ', ' + PARTY.name,
+        when: dateRu(now) + ', ' + now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' })
+      };
+      a.status = 0;
+      st.orders.unshift(a);
+      st.seq++;
+      st.rows = [];
+      renderSpec();
+      renderAct();
+      renderOrders();
+      toast('Акт согласован — заказ передан в производство');
+    });
+
+    var pr = $('act-print');
+    if (pr) pr.addEventListener('click', function () { window.print(); });
+  }
+
+  $('btn-act').addEventListener('click', function () {
+    buildAct();
+    renderAct();
+    go('act');
+  });
+
+  /* ═══════════ Мои заказы ═══════════ */
+
+  function seedOrders() {
+    var today = new Date();
+    function mk(no, daysAgo, status, rows, disc) {
+      var d = addDays(today, -daysAgo);
+      var rr = rows.map(function (r) {
+        var dec = decById(r[4]);
+        var area = areaOf(r[1], r[2], r[3]);
+        return {
+          type: r[0], h: r[1], w: r[2], q: r[3],
+          mill: r[5], decor: decLabel(dec), stock: dec.stock,
+          price: decPrice(dec), area: area, cost: area * decPrice(dec)
+        };
+      });
+      var raw = 0, area = 0, qty = 0;
+      rr.forEach(function (r) { raw += r.cost; area += r.area; qty += r.q; });
+      return {
+        no: no, date: d, ready: addWorkDays(d, PROD_MAX), status: status,
+        rows: rr, discount: disc, thick: 16, edge: 'RМин', party: PARTY,
+        totals: { raw: raw, area: area, qty: qty, ok: rr.length, disc: raw * disc / 100, total: raw * (1 - disc / 100) },
+        approved: { who: PARTY.person + ', ' + PARTY.name, when: dateRu(d) }
+      };
+    }
+    function pick(i) { return DEC[Math.min(DEC.length - 1, i)].id; }
+    st.orders = [
+      mk(1041, 6, 1, [
+        ['blind', 2478, 640, 1, pick(3), 'Модерн'],
+        ['blind', 1547, 600, 1, pick(3), 'Модерн'],
+        ['blind', 760, 600, 1, pick(3), 'Модерн']
+      ], PARTY.discount),
+      mk(1038, 21, 2, [
+        ['blind', 716, 396, 4, pick(48), 'Сканди'],
+        ['drawer', 140, 596, 3, pick(48), 'Сканди'],
+        ['vitrine', 716, 596, 2, pick(48), 'Сканди']
+      ], PARTY.discount),
+      mk(1029, 48, 3, [
+        ['blind', 2200, 900, 2, pick(420), 'Зеркало'],
+        ['blind', 716, 446, 6, pick(420), 'Зеркало']
+      ], PARTY.discount)
+    ];
+  }
+
+  function renderOrders() {
+    var h = st.orders.map(function (o) {
+      var track = STATUS.map(function (s, i) {
+        return '<span class="track__s" data-on="' + (i <= o.status ? 1 : 0) + '"' +
+               (i === o.status ? ' data-cur="1"' : '') + '><span class="track__b"></span>' + s + '</span>';
+      }).join('');
+      var items = o.rows.slice(0, 4).map(function (r) {
+        var d = decByLabel(r.decor);
+        return '<div class="ol__i">' +
+          '<span class="ol__sw"' + (d ? ' style=\'background-image:' + decBg(d) + '\'' : '') + '></span>' +
+          '<span class="ol__t">' + TYPES[r.type].label + ' ' + r.h + '×' + r.w + ' · ' + r.q + ' шт · ' + esc(r.mill) + '</span>' +
+          '<span class="ol__s">' + money(r.cost) + '</span>' +
+        '</div>';
+      }).join('');
+      var more = o.rows.length > 4
+        ? '<div class="hint" style="padding-left:2rem">и ещё ' + (o.rows.length - 4) + '</div>' : '';
+      var total = o.totals.raw * (1 - (o.discount || 0) / 100);
+      return '<article class="card"><div class="card__b">' +
+        '<div class="order__h">' +
+          '<span class="order__n">№ ' + o.no + '</span>' +
+          '<span class="tag ' + (o.status >= 2 ? 'tag--ok' : 'tag--info') + '"><span class="dot"></span>' + STATUS[o.status] + '</span>' +
+          '<span class="order__meta">от ' + dateRu(o.date) + ' · готовность ' + dateRu(o.ready) + '</span>' +
+          '<span style="flex:1"></span>' +
+          '<span class="order__sum">' + money(total) + '</span>' +
+        '</div>' +
+        '<div class="track">' + track + '</div>' +
+        '<div class="ol">' + items + more + '</div>' +
+        '<div style="display:flex; gap:0.5rem; margin-top:0.875rem; flex-wrap:wrap">' +
+          '<button class="btn btn--sm" data-act="' + o.no + '">Акт сверки</button>' +
+          '<button class="btn btn--sm" data-repeat="' + o.no + '">Повторить заказ</button>' +
+        '</div>' +
+      '</div></article>';
+    }).join('');
+
+    $('ord-list').innerHTML = h ||
+      '<div class="card"><div class="empty"><h4>Заказов пока нет</h4>' +
+      '<p>Соберите спецификацию — заказ появится здесь со статусом производства.</p>' +
+      '<button class="btn btn--primary" data-go="work">Собрать заказ</button></div></div>';
+    $('nav-ord').textContent = st.orders.length;
+  }
+
+  $('ord-list').addEventListener('click', function (e) {
+    var a = e.target.closest('[data-act]');
+    if (a) {
+      var o = st.orders.filter(function (x) { return x.no === +a.dataset.act; })[0];
+      if (o) { st.act = o; renderAct(); go('act'); }
+      return;
+    }
+    var rp = e.target.closest('[data-repeat]');
+    if (rp) {
+      var ord = st.orders.filter(function (x) { return x.no === +rp.dataset.repeat; })[0];
+      if (!ord) return;
+      st.rows = [];
+      var first = decByLabel(ord.rows[0] && ord.rows[0].decor);
+      ord.rows.forEach(function (r) {
+        var d = decByLabel(r.decor);
+        addRow(r.type, {
+          h: r.h, w: r.w, q: r.q, mill: r.mill,
+          decor: (d && first && d.id !== first.id) ? d.id : null
+        });
+      });
+      if (first) setDecor(first);
+      renderSpec();
+      go('work');
+      toast('Позиции заказа № ' + ord.no + ' скопированы');
+    }
+  });
+
+  /* ═══════════ Документы ═══════════ */
+
+  $('lim-body').innerHTML = TYPE_ORDER.map(function (k) {
+    var t = TYPES[k];
+    return '<tr><td>' + t.label + '</td><td class="n">' + t.hMin + ' – ' + t.hMax +
+           '</td><td class="n">' + t.wMin + ' – ' + t.wMax + '</td></tr>';
+  }).join('');
+
+  /* ═══════════ Клавиатура ═══════════ */
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && dlg.open) closePick();
+  });
+
+  /* ═══════════ Старт ═══════════ */
+
+  // Подсказка вставки: на Mac показываем Cmd, остальным Ctrl
+  if (/Mac/.test(navigator.platform)) {
+    var ph = document.getElementById('paste-hint');
+    if (ph) ph.innerHTML = 'Вставка: <kbd>\u2318</kbd> + <kbd>V</kbd> в любом месте страницы';
+  }
+
+  // Заказы и итоги сеются при входе (loginAs); до него открыт экран входа.
+  setDecor(decByLabel('0101 Дуб шале натуральный') || DEC[0]);
+  setMode('spec');
+  renderSpec();
+  go('work');
+
+  // Прямые ссылки для показа (в самом конце — когда все справочники присвоены):
+  // cabinet.html#demo — базовая цена, #demo-dd — контрагент со скидкой 50%
+  if (location.hash === '#demo') loginAs(PARTIES[0]);
+  if (location.hash === '#demo-dd') loginAs(PARTIES[1]);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Декоры плёнки ПВХ — каталог КАТАЛЕЯ: 582 образца с поиском</title>
+<meta name="description" content="Каталог декоров плёнки ПВХ для мебельных фасадов: древесные, однотонные, глянцевые, текстурные. Поиск по названию и артикулу, статус наличия.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+.cat { padding: clamp(1.6rem, 4vw, 2.8rem) 0 3rem; }
+.cat__head { margin-bottom: 1.2rem; }
+.cat__head p { color: var(--ink-2); margin-top: 0.5rem; max-width: 62ch; }
+.cnt-line { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-3); margin: 0 0 0.9rem; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 0.7rem; }
+/* Подпись видна всегда: дизайнер ищет артикул глазами, а не курсором */
+.grid .swatch-tile .cap { opacity: 1; }
+.grid .swatch-tile .dot { position: absolute; top: 7px; right: 7px; width: 9px; height: 9px; border-radius: 99px; border: 1.5px solid #fff; box-shadow: 0 0 0 1px oklch(0% 0 0 / 0.15); }
+.dot--y { background: oklch(60% 0.14 150); }
+.dot--n { background: oklch(70% 0.13 70); }
+.nores { padding: 3rem 1rem; text-align: center; color: var(--ink-3); }
+.nores b { display: block; color: var(--ink-2); font-size: 1.05rem; margin-bottom: 0.3rem; }
+/* карточка декора в диалоге */
+.dv { display: grid; grid-template-columns: 220px 1fr; }
+.dv__img { aspect-ratio: 1; background-size: cover; background-position: center; border-radius: var(--r-lg) 0 0 var(--r-lg); }
+.dv__b { padding: 1.3rem 1.4rem; display: grid; gap: 0.55rem; align-content: start; }
+.dv__b h3 { font-family: var(--font); text-transform: none; letter-spacing: 0; font-size: 1.15rem; font-weight: 700; }
+.dv__art { font-family: var(--mono); font-size: 0.82rem; color: var(--ink-3); }
+.dv__meta { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; font-size: 0.88rem; color: var(--ink-2); }
+.dv__note { font-size: 0.82rem; color: var(--ink-3); border-top: 1px dashed var(--line-2); padding-top: 0.7rem; margin-top: 0.3rem; }
+.dv .btn { justify-self: start; margin-top: 0.4rem; }
+.loadhint { text-align:center; padding: 1.2rem 0 0; }
+@media (max-width: 640px) {
+  .grid { grid-template-columns: repeat(auto-fill, minmax(108px, 1fr)); gap: 0.5rem; }
+  .dv { grid-template-columns: 1fr; }
+  .dv__img { border-radius: var(--r-lg) var(--r-lg) 0 0; aspect-ratio: 16/10; }
+}
+</style>
+</head>
+<body>
+
+<div class="protobar">Прототип нового сайта «КАТАЛЕЯ». Статусы наличия условные — в работе подтягиваются со склада фабрики.</div>
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a class="brand" href="index.html"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
+    <nav class="nav" aria-label="Разделы сайта">
+      <a href="dekory.html" aria-current="page">Декоры</a>
+      <a href="frezerovki.html">Фрезеровки</a>
+      <a href="index.html#work">Как работаем</a>
+      <a href="index.html#contacts">Контакты</a>
+    </nav>
+    <span class="hdr__sp"></span>
+    <a class="hdr__tel" href="tel:+79219492334">+7 921 949-23-34</a>
+    <a class="btn" href="cabinet.html">Войти в кабинет</a>
+  </div>
+</header>
+
+<main class="cat">
+  <div class="wrap">
+    <div class="cat__head">
+      <h1>Декоры плёнки ПВХ</h1>
+      <p>582 образца из каталога фабрики. Артикул и название — на каждом образце; нажмите — карточка декора. Цены — в <a href="cabinet.html">кабинете партнёра</a>.</p>
+    </div>
+
+    <div class="filter" role="group" aria-label="Фильтр каталога">
+      <button class="chip" data-g="" aria-pressed="true">Все группы</button>
+      <button class="chip" data-g="D" aria-pressed="false">Древесные</button>
+      <button class="chip" data-g="O" aria-pressed="false">Однотонные</button>
+      <button class="chip" data-g="G" aria-pressed="false">Глянцевые</button>
+      <button class="chip" data-g="T" aria-pressed="false">Текстурные</button>
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="search" placeholder="Название или артикул: венге, 0101, софт…" aria-label="Поиск по декорам">
+      </label>
+      <label class="check"><input type="checkbox" id="only-stock"> Только в наличии</label>
+    </div>
+
+    <p class="cnt-line" id="cnt" role="status"></p>
+    <div class="grid" id="grid"></div>
+    <div class="nores" id="nores" hidden>
+      <b>Ничего не нашлось</b>
+      Попробуйте короче: «дуб», «877», «белый» — или снимите фильтры.
+    </div>
+  </div>
+</main>
+
+<dialog id="dlg" aria-label="Карточка декора">
+  <button class="dlg__x" id="dlg-x" aria-label="Закрыть"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
+  <div class="dv">
+    <div class="dv__img" id="dv-img"></div>
+    <div class="dv__b">
+      <p class="dv__art" id="dv-art"></p>
+      <h3 id="dv-name"></h3>
+      <div class="dv__meta">
+        <span id="dv-group"></span>
+        <span class="avail" id="dv-avail"></span>
+      </div>
+      <p class="dv__note">Образец с действующего каталога фабрики. Точную передачу цвета смотрите на физическом образце — запросите выкрас у менеджера.</p>
+      <a class="btn" id="dv-go" href="cabinet.html">Рассчитать с этой плёнкой</a>
+    </div>
+  </div>
+</dialog>
+
+<footer class="foot">
+  <div class="wrap foot__legal" style="border-top:0">
+    <span>© 2026 ООО «КАТЕНЬКА» · КАТАЛЕЯ</span>
+    <a href="politika.html">Политика обработки персональных данных</a>
+    <a href="index.html" style="margin-left:auto">На главную</a>
+  </div>
+</footer>
+
+<script src="dekory.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  function decImg(d) { return 'img/dekory/' + d[4] + '.webp'; }
+  function decBg(d) { return 'url("' + decImg(d) + '")'; }
+  var GN = { D: 'Древесные', O: 'Однотонные', G: 'Глянцевые', T: 'Текстурные' };
+
+  var grid = $('#grid'), state = { g: '', q: '', stock: false };
+
+  // По хэшу с главной: dekory.html#D открывает группу
+  if (location.hash && GN[location.hash.slice(1)]) {
+    state.g = location.hash.slice(1);
+    document.querySelectorAll('.filter .chip').forEach(function (c) {
+      c.setAttribute('aria-pressed', c.dataset.g === state.g ? 'true' : 'false');
+    });
+  }
+
+  function norm(s) { return (s || '').toString().toLowerCase().replace(/ё/g, 'е'); }
+
+  function render() {
+    var q = norm(state.q);
+    var out = [];
+    for (var i = 0; i < window.DECORS.length; i++) {
+      var d = window.DECORS[i];
+      if (state.g && d[2] !== state.g) continue;
+      if (state.stock && d[5] === 0) continue;
+      if (q && norm(d[0]).indexOf(q) === -1 && norm(d[1]).indexOf(q) === -1) continue;
+      out.push(d);
+    }
+    var html = '';
+    for (var j = 0; j < out.length; j++) {
+      var d2 = out[j];
+      html += '<button class="swatch-tile" data-i="' + window.DECORS.indexOf(d2) + '" aria-label="' + (d2[0] ? d2[0] + ' ' : '') + d2[1] + '">' +
+        '<span class="sw" style=' + "'" + 'background-image:' + decBg(d2) + "'" + '></span>' +
+        '<span class="dot ' + (d2[5] !== 0 ? 'dot--y' : 'dot--n') + '" title="' + (d2[5] !== 0 ? 'В наличии' : 'Под заказ') + '"></span>' +
+        '<span class="cap"><b>' + (d2[0] || '·') + '</b>' + d2[1] + '</span>' +
+      '</button>';
+    }
+    grid.innerHTML = html;
+    $('#nores').hidden = out.length > 0;
+    $('#cnt').textContent = 'Показано: ' + out.length + ' из ' + window.DECORS.length +
+      (state.g ? ' · группа «' + GN[state.g] + '»' : '') + (state.stock ? ' · только в наличии' : '');
+  }
+
+  document.querySelectorAll('.filter .chip').forEach(function (ch) {
+    ch.addEventListener('click', function () {
+      document.querySelectorAll('.filter .chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      ch.setAttribute('aria-pressed', 'true');
+      state.g = ch.dataset.g;
+      history.replaceState(null, '', state.g ? '#' + state.g : location.pathname);
+      render();
+    });
+  });
+  var qt;
+  $('#q').addEventListener('input', function () {
+    clearTimeout(qt);
+    var v = this.value;
+    qt = setTimeout(function () { state.q = v; render(); }, 120);
+  });
+  $('#only-stock').addEventListener('change', function () { state.stock = this.checked; render(); });
+
+  /* Карточка декора */
+  var dlg = $('#dlg');
+  grid.addEventListener('click', function (e) {
+    var t = e.target.closest('.swatch-tile'); if (!t) return;
+    var d = window.DECORS[+t.dataset.i];
+    $('#dv-img').style.backgroundImage = decBg(d);
+    $('#dv-art').textContent = d[0] ? 'Артикул ' + d[0] : 'Без артикула в каталоге';
+    $('#dv-name').textContent = d[1];
+    $('#dv-group').textContent = GN[d[2]] + ' декоры';
+    var av = $('#dv-avail'), inS = d[5] !== 0;
+    av.textContent = inS ? 'В наличии' : 'Под заказ';
+    av.className = 'avail ' + (inS ? 'avail--y' : 'avail--n');
+    dlg.showModal();
+  });
+  $('#dlg-x').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
