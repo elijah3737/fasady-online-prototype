@@ -1,0 +1,18 @@
+/* Реестр материалов блога КАТАЛЕИ. Общий для списка и блока «Ещё материалы».
+   Одна реальная запись фабрики (10.02.2025) и черновики разборов на её же фактах. */
+window.STATI = [{"id": "novye-plenki","u": "st-novye-plenki.html","rub": "Новости","rk": "news","d": "10 февраля 2025","iso": "2025-02-10","t": "Новые плёнки в каталоге","ex": "В офисах продаж появились веерные каталоги новых плёнок. Электронная версия — по ссылке на Яндекс.Диск.","img": "img/works/w03.webp","alt": "Кухня с фисташковыми фасадами и витриной — плёнка ПВХ из каталога КАТАЛЕЯ","read": 1,"draft": false,"fit": false},{"id": "tehkarta-frezerovki","u": "st-tehkarta-frezerovki.html","rub": "Технология","rk": "tech","d": "","iso": "","t": "Как читать техкарту фрезеровки","ex": "У каждой фрезеровки свои лимиты размеров — общей таблицы «от и до» не существует. Разбираем, что означают числа и как не отправить в заказ деталь, которую нельзя изготовить.","img": "img/frez/60175213.webp","alt": "Фрезеровка «Арка» на древесном декоре — образец из каталога КАТАЛЕЯ","read": 2,"draft": true,"fit": true},{"id": "tolshchina-fasada","u": "st-tolshchina-fasada.html","rub": "Технология","rk": "tech","d": "","iso": "","t": "Толщина фасада: 10, 16 или 19 мм","ex": "Три серийные толщины, для чего нужна каждая и что делать, если проекту требуется 22–50 мм или стеновая панель.","img": "img/works/w18.webp","alt": "Фасад с арочной фрезеровкой до сборки — виден торец и кромка","read": 1,"draft": true,"fit": false},{"id": "plenka-na-solnce","u": "st-plenka-na-solnce.html","rub": "Декоры","rk": "dec","d": "","iso": "","t": "Плёнка на солнечной стороне","ex": "Выгорает любой декор — вопрос только в скорости. Что честно сказать заказчику и что можно сделать на этапе подбора.","img": "img/works/w07.webp","alt": "Кухня у окна со светлыми фасадами в плёнке ПВХ","read": 1,"draft": true,"fit": false},{"id": "nalichie-dekora","u": "st-nalichie-dekora.html","rub": "Декоры","rk": "dec","d": "","iso": "","t": "Что значит «в наличии» и почему это меняет срок","ex": "Статус декора виден в каталоге и в спецификации. Как он связан с датой готовности и что делать, если нужной плёнки на складе нет.","img": "img/dekory/kypah7fgr5s0484owwowgkg0cc0oow.webp","alt": "Образец древесного декора плёнки ПВХ из каталога КАТАЛЕЯ","read": 1,"draft": true,"fit": false},{"id": "chto-nuzhno-dlya-rascheta","u": "st-chto-nuzhno-dlya-rascheta.html","rub": "Работа с фабрикой","rk": "work","d": "","iso": "","t": "Что нужно, чтобы посчитать заказ","ex": "Четыре параметра по каждой позиции — и спецификация считается сама. Минимальной площади у нас нет: 0,456 м² считаются как 0,456 м².","img": "img/works/w00.webp","alt": "Угловая кухня под потолок на фасадах КАТАЛЕЯ","read": 1,"draft": true,"fit": false}];
+window.STAT_RUBS = [["news", "Новости"], ["tech", "Технология"], ["dec", "Декоры"], ["work", "Работа с фабрикой"]];
+window.statMeta = function (a) {
+  return '<div class="bmeta"><span class="bmeta__tag">' + a.rub + '</span>' +
+    (a.draft ? '<span class="bmeta__draft">черновик</span>' : '<span class="bmeta__d">' + a.d + '</span>') +
+    '<span>· ' + a.read + ' мин</span></div>';
+};
+window.statCard = function (a) {
+  return '<article class="bcard" data-rk="' + a.rk + '">' +
+    '<a class="bcard__img' + (a.fit ? ' bcard__img--fit' : '') + '" href="' + a.u + '" tabindex="-1" aria-hidden="true">' +
+    '<img src="' + a.img + '" alt="" loading="lazy" decoding="async"></a>' +
+    '<div class="bcard__b">' + window.statMeta(a) +
+    '<h3 class="bcard__t"><a href="' + a.u + '">' + a.t + '</a></h3>' +
+    '<p class="bcard__ex">' + a.ex + '</p>' +
+    '<span class="bmore">Читать →</span></div></article>';
+};

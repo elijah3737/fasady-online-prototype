@@ -11,12 +11,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
-.art { display: grid; grid-template-columns: minmax(0, 1fr) 19rem; gap: clamp(1.6rem, 4vw, 3.5rem); align-items: start; }
-.art__meta { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-3); margin-bottom: 0.8rem; }
-.art h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin-bottom: 1.4rem; }
-.art .film { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; margin: 1.6rem 0; }
-.art .film .sw { aspect-ratio: 1; border-radius: 6px; box-shadow: inset 0 0 0 1px oklch(23% 0.012 60 / 0.14); }
-@media (max-width: 900px) { .art { grid-template-columns: 1fr; } }
+.artwrap { display: grid; grid-template-columns: minmax(0, 1fr) 19rem; gap: clamp(1.6rem, 4vw, 3.5rem); align-items: start; }
+.film { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; margin: 1.6rem 0 0.6rem; }
+.film .sw { aspect-ratio: 1; border-radius: 6px; box-shadow: inset 0 0 0 1px oklch(23% 0.012 60 / 0.14); }
+@media (max-width: 1000px) { .artwrap { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -52,34 +50,51 @@
 <div class="wrap crumbs">
   <ol>
     <li><a href="index.html">Главная</a></li>
-    <li><a href="novosti.html">Новости</a></li>
+    <li><a href="novosti.html">Блог и новости</a></li>
     <li>Новые плёнки в каталоге</li>
   </ol>
 </div>
 
 <section class="sec sec--tight">
-  <div class="wrap art">
-    <article class="prose">
-      <p class="art__meta">10 февраля 2025</p>
+  <div class="wrap artwrap">
+    <article class="post prose">
+      <div class="post__meta">
+        <span class="bmeta__tag">Новости</span>
+        <span class="bmeta__d">10 февраля 2025</span>
+        <span>· 1 мин</span>
+      </div>
       <h1>Новые плёнки в каталоге</h1>
-      <p>Уважаемые заказчики! У нас появились новые плёнки.</p>
+      <p class="post__lead">Уважаемые заказчики! У нас появились новые плёнки.</p>
+      <figure class="post__fig">
+        <img src="img/works/w03.webp" alt="Кухня с фисташковыми фасадами и витриной — плёнка ПВХ из каталога КАТАЛЕЯ" loading="eager">
+        <figcaption>Фасады в плёнке ПВХ из каталога фабрики</figcaption>
+      </figure>
       <p>Веерные каталоги новых декоров можно приобрести в наших офисах продаж:</p>
-      <ul>
-        <li>Великий Новгород, пр. Мира, 9</li>
-        <li>Санкт-Петербург, ул. Дыбенко, 16, офис 5</li>
-      </ul>
-      <p>Электронная версия каталогов доступна по ссылке: <a href="https://disk.yandex.ru/d/sQs4Gs3OYIVL9g/" rel="noopener" target="_blank" style="color:var(--green)">каталоги на Яндекс.Диске</a>.</p>
-      <div class="film" id="film" aria-hidden="true"></div>
-      <p style="font-size:0.85rem;color:var(--ink-3)">Образцы плёнки из каталога. Актуальное наличие каждого декора видно в каталоге на сайте.</p>
-      <p style="margin-top:1.8rem"><a class="sec__more" href="novosti.html">← Все новости</a></p>
+<ul>
+  <li>Великий Новгород, пр. Мира, 9;</li>
+  <li>Санкт-Петербург, ул. Дыбенко, 16, офис 5.</li>
+</ul>
+<p>Электронная версия каталогов доступна по ссылке: <a href="https://disk.yandex.ru/d/sQs4Gs3OYIVL9g/" rel="noopener" target="_blank">каталоги на Яндекс.Диске</a>.</p>
+<div class="film" id="film" aria-hidden="true"></div>
+<p style="font-size:0.86rem;color:var(--ink-3)">Образцы плёнки из каталога. Актуальное наличие каждого декора видно в каталоге на сайте.</p>
+<h2>Не обязательно ждать новостей</h2>
+<p>Поступления не нужно отслеживать по этому разделу: у каждого декора в каталоге стоит отметка наличия, а в кабинете партнёра статус виден прямо в спецификации — позиция подсвечивается ещё до отправки заказа.</p>
+      <a class="post__back" href="novosti.html">← Все материалы</a>
     </article>
     <aside class="aside">
-      <h3>Наличие декора — без звонка</h3>
-      <p>Статус «в наличии» проставлен у каждого образца в каталоге. В кабинете партнёра он виден прямо в спецификации: если плёнки нет на складе, позиция подсвечивается до отправки заказа.</p>
-      <a class="btn" href="dekory.html">Открыть каталог</a>
-      <p style="margin-top:1.2rem;font-size:0.86rem;color:var(--ink-3)">Нужен веерный каталог в руки — напишите менеджеру, он есть в обоих офисах.</p>
-      <a class="btn btn--ghost" href="kontakty.html" style="margin-top:0.6rem">Контакты офисов</a>
+      <h3>Считайте сами, без прайса по запросу</h3>
+      <p>Кабинет партнёра: 582 декора с наличием, 79 техкарт, расчёт спецификации и история заказов. Регистрация бесплатная и не обязывает к заказу.</p>
+      <a class="btn" href="cabinet.html">Открыть кабинет</a>
+      <p style="margin-top:1.2rem;font-size:0.86rem;color:var(--ink-3)">Вопрос по технологии — менеджеру вашего города.</p>
+      <a class="btn btn--ghost" href="kontakty.html" style="margin-top:0.6rem">Контакты</a>
     </aside>
+  </div>
+</section>
+
+<section class="sec sec--tight">
+  <div class="wrap pmore">
+    <h2>Ещё материалы</h2>
+    <div class="pmore__g" id="pmore"></div>
   </div>
 </section>
 
@@ -126,14 +141,21 @@
   </div>
 </footer>
 <script src="dekory.js"></script>
+<script src="stati.js"></script>
 <script src="site.js"></script>
+<script>
+(function () {
+  'use strict';
+  var box = document.getElementById('pmore');
+  if (box && window.STATI) box.innerHTML = window.STATI.filter(function (a) { return a.id !== 'novye-plenki'; }).slice(0, 3).map(window.statCard).join('');
+})();
+</script>
 <script>
 (function () {
   'use strict';
   var box = document.getElementById('film');
   if (!box || !window.DECORS) return;
-  var pick = window.DECORS.filter(function (d) { return d[5]; }).slice(-6);
-  box.innerHTML = pick.map(function (d) {
+  box.innerHTML = window.DECORS.filter(function (d) { return d[5]; }).slice(-6).map(function (d) {
     return '<i class="sw" style="background-image:url(img/dekory/' + d[4] + '.webp)" title="' + d[1] + '"></i>';
   }).join('');
 })();

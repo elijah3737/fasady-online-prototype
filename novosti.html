@@ -3,23 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Новости фабрики КАТАЛЕЯ — новые плёнки, фрезеровки, режим работы</title>
-<meta name="description" content="Новости производства мебельных фасадов КАТАЛЕЯ: поступления плёнки ПВХ, новые фрезеровки в каталоге, режим работы офисов в Великом Новгороде и Санкт-Петербурге.">
+<title>Блог и новости КАТАЛЕЯ — разборы по фасадам МДФ, плёнке и фрезеровкам</title>
+<meta name="description" content="Как выбрать декор, прочитать техкарту фрезеровки, подобрать толщину фасада и посчитать заказ. Разборы фабрики мебельных фасадов КАТАЛЕЯ и новости производства.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <style>
-.news__b { display: inline-block; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em; text-transform: uppercase; border-radius: 5px; padding: 0.1rem 0.45rem; margin-left: 0.5rem; vertical-align: 2px; }
-.news__b--draft { background: oklch(96% 0.03 70); color: oklch(43% 0.09 70); }
-.news__go { font-size: 0.9rem; color: var(--green); font-weight: 600; white-space: nowrap; }
-.news__i[data-draft] .news__go { color: var(--ink-3); font-weight: 400; }
+.bnote { font-size: 0.9rem; color: var(--ink-3); max-width: 78ch; margin: -0.4rem 0 1.6rem; }
+.bnote b { color: var(--ink-2); }
 </style>
 </head>
 <body>
 
-<div class="protobar">Прототип нового сайта «КАТАЛЕЯ». Опубликована одна реальная запись фабрики, остальные — черновики тем для наполнения.</div>
+<div class="protobar">Прототип нового сайта «КАТАЛЕЯ». Раскладка раздела — как в блоге «Монолита»: рубрики, свежая запись крупно, сетка материалов.</div>
 
 <header class="hdr">
   <div class="wrap hdr__in">
@@ -50,62 +48,30 @@
 <div class="wrap crumbs">
   <ol>
     <li><a href="index.html">Главная</a></li>
-    <li>Новости</li>
+    <li id="crumb-last">Блог и новости</li>
   </ol>
 </div>
 
 <div class="phead">
   <div class="wrap phead__in">
-    <h1>Новости производства</h1>
+    <h1 id="bh1">Блог и новости</h1>
     <div>
-      <p class="phead__lead">Поступления плёнки, новые фрезеровки в каталоге, режим работы офисов. Раздел ведёт менеджер фабрики — новые записи появляются в кабинете партнёра на главном экране.</p>
+      <p class="phead__lead" id="blead">Как подобрать декор, прочитать техкарту фрезеровки, выбрать толщину фасада и посчитать заказ. Разборы пишет производство — с настоящими лимитами из каталога, а не общими словами.</p>
     </div>
   </div>
 </div>
 
 <section class="sec sec--tight">
   <div class="wrap">
-    <div class="news">
 
-      <a class="news__i" href="novost-plenki.html">
-        <span class="news__d">10.02.2025</span>
-        <span>
-          <span class="news__t">Новые плёнки в каталоге</span>
-          <span class="news__x">В офисах продаж появились веерные каталоги новых плёнок. Электронная версия — по ссылке на Яндекс.Диск.</span>
-        </span>
-        <span class="news__go">Читать →</span>
-      </a>
+    <div class="btabs" id="btabs" role="group" aria-label="Рубрики"></div>
 
-      <span class="news__i" data-draft>
-        <span class="news__d">дата не задана</span>
-        <span>
-          <span class="news__t">Новые фрезеровки в каталоге<span class="news__b news__b--draft">черновик</span></span>
-          <span class="news__x">Тема для наполнения: анонс новых моделей фрезеровок с техкартами. У конкурентов такие записи выходят почти каждую неделю — это то, что делает сайт живым в глазах дизайнера.</span>
-        </span>
-        <span class="news__go">заполняет КАТАЛЕЯ</span>
-      </span>
+    <p class="bnote">Опубликована одна запись фабрики — <b>«Новые плёнки в каталоге»</b> от 10.02.2025. Остальные материалы помечены как <b>черновики</b>: тексты собраны на фактах фабрики (техкарты каталога, раздел «Вопрос–ответ», данные о плёнке) и публикуются после того, как КАТАЛЕЯ их утвердит.</p>
 
-      <span class="news__i" data-draft>
-        <span class="news__d">дата не задана</span>
-        <span>
-          <span class="news__t">Кабинет партнёра: расчёт стоимости онлайн<span class="news__b news__b--draft">черновик</span></span>
-          <span class="news__x">Тема для наполнения: запуск кабинета — регистрация, расчёт спецификации, история заказов. Публикуется в день запуска сайта.</span>
-        </span>
-        <span class="news__go">заполняет КАТАЛЕЯ</span>
-      </span>
+    <div id="bhero"></div>
+    <div class="blog" id="blog"></div>
+    <div class="bempty" id="bempty" hidden>В этой рубрике пока нет материалов. <a href="novosti.html" style="color:var(--green)">Смотреть все</a></div>
 
-      <span class="news__i" data-draft>
-        <span class="news__d">дата не задана</span>
-        <span>
-          <span class="news__t">Режим работы в праздничные дни<span class="news__b news__b--draft">черновик</span></span>
-          <span class="news__x">Тема для наполнения: график производства и офисов продаж, крайняя дата приёма заказов перед выходными.</span>
-        </span>
-        <span class="news__go">заполняет КАТАЛЕЯ</span>
-      </span>
-
-    </div>
-
-    <p style="margin-top:1.6rem;font-size:0.92rem;color:var(--ink-3);max-width:70ch">Записи добавляются из админ-панели сайта: заголовок, дата, текст и фотографии. Черновики выше — предложенные темы, они не публикуются, пока фабрика не заполнит текст.</p>
   </div>
 </section>
 
@@ -113,8 +79,8 @@
   <div class="wrap">
     <div class="cols2 cols2--wide" style="align-items:center">
       <div>
-        <h2>Новые плёнки — сразу в каталоге</h2>
-        <p style="margin-top:0.9rem;max-width:52ch">Поступления не нужно ждать в новостях: наличие декора видно в каталоге и в кабинете партнёра.</p>
+        <h2>Наличие декора не нужно ждать в новостях</h2>
+        <p style="margin-top:0.9rem;max-width:52ch">Отметка наличия стоит у каждого из 582 образцов в каталоге, а в кабинете партнёра позиция подсвечивается прямо в спецификации.</p>
       </div>
       <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
         <a class="btn btn--onGreen btn--lg" href="dekory.html">Каталог декоров</a>
@@ -166,6 +132,76 @@
     <span style="margin-left:auto">Прототип · Silver ML</span>
   </div>
 </footer>
+
+<script src="stati.js"></script>
 <script src="site.js"></script>
+<script>
+(function () {
+  'use strict';
+  var A = window.STATI, RUBS = window.STAT_RUBS;
+  var tabs = document.getElementById('btabs'), heroBox = document.getElementById('bhero'),
+      grid = document.getElementById('blog'), empty = document.getElementById('bempty');
+  var cur = '';
+
+  var LEAD = {
+    '':     'Как подобрать декор, прочитать техкарту фрезеровки, выбрать толщину фасада и посчитать заказ. Разборы пишет производство — с настоящими лимитами из каталога, а не общими словами.',
+    news:   'Что происходит на производстве: поступления плёнки, новые фрезеровки в каталоге, режим работы офисов продаж.',
+    tech:   'Толщины, кромки, лимиты размеров и техкарты — то, что нужно знать до того, как размеры уйдут в заказ.',
+    dec:    'Плёнка ПВХ: как подбирать декор под условия объекта и что означает отметка наличия в каталоге.',
+    work:   'Как устроен заказ на фабрике: что нужно для расчёта, как проходит подтверждение и что видно в кабинете партнёра.'
+  };
+
+  function count(rk) { return A.filter(function (a) { return !rk || a.rk === rk; }).length; }
+
+  function drawTabs() {
+    var html = '<button class="btab" type="button" data-rk="" aria-pressed="' + (cur === '') + '">Все<span class="btab__n">' + A.length + '</span></button>';
+    RUBS.forEach(function (r) {
+      var n = count(r[0]);
+      if (!n) return;
+      html += '<button class="btab" type="button" data-rk="' + r[0] + '" aria-pressed="' + (cur === r[0]) + '">' +
+              r[1] + '<span class="btab__n">' + n + '</span></button>';
+    });
+    tabs.innerHTML = html;
+  }
+
+  function heroCard(a) {
+    return '<article class="bhero">' +
+      '<a class="bhero__img' + (a.fit ? ' bhero__img--fit' : '') + '" href="' + a.u + '" tabindex="-1" aria-hidden="true">' +
+      '<img src="' + a.img + '" alt="" loading="eager" fetchpriority="high" decoding="async"></a>' +
+      '<div class="bhero__b">' + window.statMeta(a) +
+      '<h2 class="bhero__t"><a href="' + a.u + '">' + a.t + '</a></h2>' +
+      '<p class="bhero__ex">' + a.ex + '</p>' +
+      '<span class="bmore">Читать материал →</span></div></article>';
+  }
+
+  function render() {
+    var list = A.filter(function (a) { return !cur || a.rk === cur; });
+    // свежая запись фабрики всегда впереди черновиков
+    list = list.slice().sort(function (x, y) { return (x.draft ? 1 : 0) - (y.draft ? 1 : 0); });
+    heroBox.innerHTML = list.length ? heroCard(list[0]) : '';
+    grid.innerHTML = list.slice(1).map(window.statCard).join('');
+    empty.hidden = list.length > 0;
+
+    var rub = cur ? (RUBS.filter(function (r) { return r[0] === cur; })[0] || [])[1] : '';
+    document.getElementById('bh1').textContent = cur ? rub + ': материалы' : 'Блог и новости';
+    document.getElementById('blead').textContent = LEAD[cur] || LEAD[''];
+    document.getElementById('crumb-last').textContent = cur ? rub : 'Блог и новости';
+    document.title = (cur ? rub + ' — блог КАТАЛЕЯ' : 'Блог и новости КАТАЛЕЯ — разборы по фасадам МДФ, плёнке и фрезеровкам');
+    drawTabs();
+  }
+
+  tabs.addEventListener('click', function (e) {
+    var b = e.target.closest('.btab');
+    if (!b) return;
+    cur = b.dataset.rk;
+    history.replaceState(null, '', cur ? '?t=' + cur : location.pathname);
+    render();
+  });
+
+  var q = (location.search.match(/[?&]t=([a-z]+)/) || [])[1] || '';
+  if (RUBS.some(function (r) { return r[0] === q; })) cur = q;
+  render();
+})();
+</script>
 </body>
 </html>
