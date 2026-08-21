@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="site.css">
@@ -17,10 +17,12 @@ THESIS: сайт-инструмент производителя: единств
 на экране, без запроса прайса у менеджера» — показан работающей демкой, а не
 обещанием. Отказ от категорийного дефолта: маркетинговый герой со стоковым фото
 и формой «оставьте заявку».
-OWN-WORLD: тёплый бумажный грунт и глубокий зелёный их действующего сайта и их
-же фасадов; реальные образцы плёнки как графическая система; Oswald голосом
-производственного каталога, IBM Plex Sans как связь с кабинетом, Plex Mono для
-размеров и артикулов.
+OWN-WORLD: грунт печатного каталога (хрома 0.0015, оттенок 110 — не тёплый
+крем), глубокий зелёный их действующего бренда, реальные образцы плёнки как
+графическая система. Одна гарнитура Onest несёт заголовки и интерфейс — гротеск
+2022 года с настоящей кириллицей; размеры и артикулы — JetBrains Mono. Капса нет:
+сжатый прописной был главной приметой генерации. Радиус один на весь сайт, 4px —
+завал кромки R3 у их же фасада.
 STORY: мебельщик понимает «это фабрика, у неё каталог и кабинет, где я сам
 считаю цену» → регистрируется.
 FIRST VIEWPORT: слева заголовок, два действия (кабинет / каталог), строка
@@ -35,14 +37,14 @@ finish review, the verdict, and DESIGN.md
 .hero { border-bottom: 1px solid var(--line); overflow: hidden; }
 .hero__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: center; }
 .hero__txt { padding: clamp(2.5rem, 6vw, 5rem) 0; }
-.hero__txt h1 { max-width: 13ch; }
-.hero__sub { margin: 1.2rem 0 1.8rem; font-size: 1.08rem; color: var(--ink-2); max-width: 44ch; }
+.hero__txt h1 { max-width: 17ch; }
+.hero__sub { margin: 1.3rem 0 2rem; font-size: 1.06rem; line-height: 1.5; color: var(--ink-2); max-width: 46ch; }
 .hero__sub b { color: var(--ink); }
 .hero__cta { display: flex; gap: 0.8rem; flex-wrap: wrap; }
 .hero__note { margin-top: 0.9rem; font-size: 0.83rem; color: var(--ink-3); }
 .hero__img { position: relative; align-self: stretch; min-height: 420px; }
 .hero__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-.hero__img figcaption { position: absolute; left: 0; bottom: 0; background: color-mix(in oklab, var(--paper) 92%, transparent); backdrop-filter: blur(6px); padding: 0.5rem 0.9rem; font-size: 0.76rem; color: var(--ink-2); border-top-right-radius: var(--r); }
+/* подписи поверх фотографии больше нет: плашка на снимке — приём-примета */
 .facts { border-top: 1px solid var(--line); background: var(--surface); }
 .facts__in { display: flex; flex-wrap: wrap; gap: 0.4rem 2.2rem; padding: 0.85rem 0; font-family: var(--mono); font-size: 0.84rem; color: var(--ink-2); }
 .facts__in b { color: var(--ink); font-weight: 500; }
@@ -142,17 +144,23 @@ finish review, the verdict, and DESIGN.md
 .spec th { width: 38%; font-weight: 600; color: var(--ink-2); background: var(--paper); }
 .spec tr:last-child th, .spec tr:last-child td { border-bottom: 0; }
 .spec td .mono { font-size: 0.88rem; }
-.prod__ph { position: relative; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-2); }
-.prod__ph img { display: block; width: 100%; aspect-ratio: 3.2/4; object-fit: cover; }
-.prod__ph figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 1.6rem 1rem 0.8rem; background: linear-gradient(transparent, oklch(20% 0.02 60 / 0.8)); color: #fff; font-size: 0.82rem; }
+.prod__ph { border-radius: var(--r); overflow: visible; }
+.prod__ph img { display: block; width: 100%; aspect-ratio: 3.2/4; object-fit: cover; border-radius: var(--r); }
+.prod__ph figcaption { padding: 0.6rem 0.1rem 0; font-size: 0.83rem; color: var(--ink-3); }
 .tw { overflow-x: auto; max-width: 100%; border-radius: var(--r-lg); }
 
 /* ── Как работаем ── */
-.steps { counter-reset: st; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-.step { counter-increment: st; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.1rem 1.2rem 1.25rem; position: relative; }
-.step::before { content: counter(st); font-family: var(--disp); font-weight: 600; font-size: 1.6rem; color: var(--green); display: block; margin-bottom: 0.35rem; }
-.step b { display: block; margin-bottom: 0.3rem; font-size: 0.98rem; }
-.step p { font-size: 0.85rem; color: var(--ink-2); }
+.steps { counter-reset: st; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line-2); }
+.step { counter-increment: st; padding: 1.25rem 1.5rem 1.5rem 0; border-right: 1px solid var(--line); }
+.step:last-child { border-right: 0; }
+.step + .step { padding-left: 1.5rem; }
+.step::before {
+  content: counter(st, decimal-leading-zero);
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 500; color: var(--ink-3);
+  display: block; margin-bottom: 0.9rem;
+}
+.step b { display: block; margin-bottom: 0.4rem; font-size: 1rem; letter-spacing: -0.012em; }
+.step p { font-size: 0.88rem; color: var(--ink-2); line-height: 1.5; }
 .steps__note { margin-top: 1.1rem; font-size: 0.9rem; color: var(--ink-2); }
 .steps__note b { color: var(--ink); }
 
@@ -193,6 +201,8 @@ finish review, the verdict, and DESIGN.md
   .dg { grid-template-columns: 1fr 1fr; }
   .fz { grid-template-columns: repeat(3, 1fr); }
   .steps { grid-template-columns: 1fr 1fr; }
+  .step:nth-child(2n) { border-right: 0; }
+  .step:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
   .pf { grid-template-columns: 1fr 1fr; }
   .who, .cont { grid-template-columns: 1fr; }
 }
@@ -200,6 +210,8 @@ finish review, the verdict, and DESIGN.md
   .fz { grid-template-columns: 1fr 1fr; }
   .pf { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
+  .step { border-right: 0; border-bottom: 1px solid var(--line); padding-left: 0 !important; }
+  .step:last-child { border-bottom: 0; }
 }
 </style>
 </head>
@@ -237,17 +249,15 @@ finish review, the verdict, and DESIGN.md
 <section class="hero">
   <div class="wrap hero__grid">
     <div class="hero__txt">
-      <h1>Фасады МДФ в&nbsp;плёнке ПВХ от&nbsp;производителя</h1>
-      <p class="hero__sub">Собственное производство в Великом Новгороде, офисы в двух городах. <b>582 декора, 79 фрезеровок</b> — и кабинет партнёра, где вы сами считаете стоимость заказа, не запрашивая прайс у менеджера.</p>
+      <h1>Фасады МДФ в&nbsp;плёнке ПВХ</h1>
+      <p class="hero__sub">Производство в Великом Новгороде. <b>582 декора и 79 фрезеровок</b> в кабинете партнёра, где стоимость заказа вы считаете сами.</p>
       <div class="hero__cta">
         <a class="btn btn--lg" href="cabinet.html">Зарегистрироваться</a>
         <a class="btn btn--lg btn--ghost" href="dekory.html">Каталог декоров</a>
       </div>
-      <p class="hero__note">Регистрация бесплатная. Через две минуты после неё вы видите цену любого фасада.</p>
     </div>
     <figure class="hero__img">
       <img src="img/works/w08.webp" alt="Шкаф с арочными фасадами в оливковой плёнке ПВХ — работа на фасадах КАТАЛЕЯ">
-      <figcaption>Работа фабрики: арочная фрезеровка, плёнка ПВХ</figcaption>
     </figure>
   </div>
   <div class="facts">

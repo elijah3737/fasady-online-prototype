@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="favicon.svg">
 <link rel="stylesheet" href="site.css">
@@ -34,9 +34,9 @@
 .film .sw { aspect-ratio: 1; border-radius: 6px; box-shadow: inset 0 0 0 1px oklch(23% 0.012 60 / 0.14); }
 
 .ph2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.ph2 figure { margin: 0; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-1); position: relative; }
-.ph2 img { display: block; width: 100%; aspect-ratio: 4/3.2; object-fit: cover; }
-.ph2 figcaption { position: absolute; inset: auto 0 0 0; padding: 2rem 0.9rem 0.7rem; color: #fff; font-size: 0.82rem; background: linear-gradient(transparent, oklch(20% 0.02 60 / 0.8)); }
+.ph2 figure { margin: 0; }
+.ph2 img { display: block; width: 100%; aspect-ratio: 4/3.2; object-fit: cover; border-radius: var(--r); }
+.ph2 figcaption { padding: 0.55rem 0.1rem 0; font-size: 0.83rem; color: var(--ink-3); }
 
 @media (max-width: 1000px) { .film { grid-template-columns: repeat(5, 1fr); } }
 @media (max-width: 700px)  { .ph2 { grid-template-columns: 1fr; } .hist { grid-template-columns: 1fr; gap: 0.3rem; } }
