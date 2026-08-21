@@ -269,8 +269,21 @@ main { padding: 1.5rem 0 5rem; }
 .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
 
 /* ── Параметры заказа ───────────────────────────────────────────── */
-.params { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 0.875rem; }
-.field { min-width: 0; }
+/* Четыре параметра — один ряд равных ячеек. auto-fit с порогом 210px ломал
+   ряд на 3 + 1 в полосе 1100–1280 px (боковая колонка сужает главную до
+   ~690–865 px): последнее поле уезжало на свою строку и выглядело чужим.
+   Раскладка задана явно: 4 → 2 → 1, ширины равны на любой ширине. */
+.params { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.875rem; align-items: start; }
+@media (max-width: 1320px) { .params { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px)  { .params { grid-template-columns: minmax(0, 1fr); } }
+.field { min-width: 0; display: grid; grid-template-rows: auto 40px auto; align-content: start; }
+.field__h {
+  font-size: var(--t-xs); color: var(--ink-3); margin-top: 0.375rem;
+  display: flex; align-items: center; gap: 0.375rem; height: 1.25rem;
+  white-space: nowrap; overflow: hidden;
+}
+/* бейдж наличия не должен делать эту строку выше соседних */
+.field__h .tag { line-height: 1; padding-top: 0.125rem; padding-bottom: 0.125rem; }
 .field > label { display: block; font-size: var(--t-xs); color: var(--ink-2); font-weight: 500; margin-bottom: 0.3125rem; }
 .ctl {
   width: 100%; padding: 0.5rem 0.6875rem; background: var(--surface);
@@ -285,20 +298,20 @@ select.ctl { appearance: none; cursor: pointer; padding-right: 2rem;
 
 /* Выбранный декор */
 .decor-pick {
-  display: flex; align-items: center; gap: 0.6875rem; width: 100%;
-  padding: 0.375rem 0.6875rem 0.375rem 0.375rem; background: var(--surface);
+  display: flex; align-items: center; gap: 0.5rem; width: 100%; height: 100%;
+  padding: 0 0.6875rem 0 0.3125rem; background: var(--surface);
   border: 1px solid var(--line-2); border-radius: var(--r-sm); cursor: pointer; text-align: left;
   transition: border-color 0.15s var(--ease), box-shadow 0.15s var(--ease);
 }
 .decor-pick:hover { border-color: var(--ink-3); }
 .decor-pick__sw {
-  width: 38px; height: 38px; border-radius: var(--r-sm); flex-shrink: 0;
+  width: 28px; height: 28px; border-radius: 4px; flex-shrink: 0;
   background: var(--panel-2) center/cover no-repeat;
   border: 1px solid var(--line-2);
 }
-.decor-pick__t { min-width: 0; flex: 1; line-height: 1.3; }
+.decor-pick__t { min-width: 0; flex: 1; line-height: 1.2; }
 .decor-pick__n { font-size: var(--t-sm); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.decor-pick__m { font-size: var(--t-xs); color: var(--ink-3); display: flex; align-items: center; gap: 0.375rem; flex-wrap: wrap; }
+.decor-pick__c { flex-shrink: 0; color: var(--ink-3); }
 
 /* ── Таблица спецификации ───────────────────────────────────────── */
 .tw { overflow-x: auto; max-width: 100%; }
@@ -699,17 +712,19 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
           <div class="params">
             <div class="field">
               <label for="pick-dec">Плёнка (декор)</label>
-              <button class="decor-pick" id="pick-dec" type="button" aria-haspopup="dialog">
+              <button class="decor-pick" id="pick-dec" type="button" aria-haspopup="dialog" aria-describedby="pd-meta">
                 <span class="decor-pick__sw" id="pd-sw"></span>
                 <span class="decor-pick__t">
                   <span class="decor-pick__n" id="pd-name">Выбрать декор</span>
-                  <span class="decor-pick__m" id="pd-meta">582 в каталоге</span>
                 </span>
+                <svg class="decor-pick__c" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
+              <span class="field__h" id="pd-meta">582 декора в каталоге</span>
             </div>
             <div class="field">
               <label for="f-mill">Рисунок (фрезеровка)</label>
               <select class="ctl" id="f-mill"></select>
+              <span class="field__h" id="h-mill"></span>
             </div>
             <div class="field">
               <label for="f-thick">Толщина, мм</label>
@@ -718,6 +733,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
                 <option value="19">19</option>
                 <option value="22">22</option>
               </select>
+              <span class="field__h" id="h-thick"></span>
             </div>
             <div class="field">
               <label for="f-edge">Завал / фреза</label>
@@ -727,6 +743,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
                 <option value="R5">R5</option>
                 <option value="без завала">Без завала</option>
               </select>
+              <span class="field__h" id="h-edge">скругление кромки фасада</span>
             </div>
           </div>
         </div>
@@ -1558,6 +1575,17 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
   /* ═══════════ Итоги ═══════════ */
 
+  // Справки под полями берутся из техкарты выбранной фрезеровки: те же числа,
+  // по которым проверяются размеры. Заодно четыре поля становятся одной формы.
+  function renderParamHints() {
+    var f = millByName(st.mill);
+    var hm = $('h-mill'), ht = $('h-thick');
+    if (hm) hm.textContent = f
+      ? 'отступ ' + f.off + ' мм' + (f.vf ? ' · рамка витрины ' + f.vf + ' мм' : '')
+      : 'типовая техкарта';
+    if (ht) ht.textContent = f ? 'по техкарте «' + f.n + '»: от ' + f.th + ' мм' : 'по согласованию с 22 до 50 мм';
+  }
+
   function renderTotals() {
     var t = totals(st.rows, st.discount);
     $('t-pos').textContent = st.rows.length === t.ok
@@ -1629,7 +1657,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       for (var i = 0; i < th.options.length; i++) th.options[i].disabled = +th.options[i].value < fm.th;
       if (st.thick < fm.th) { st.thick = fm.th; th.value = String(fm.th); toast('Толщина по техкарте «' + fm.n + '»: от ' + fm.th + ' мм'); }
     }
-    renderSpec(); renderVis();
+    renderSpec(); renderVis(); renderParamHints();
   });
   $('f-thick').addEventListener('change', function () { st.thick = +this.value; saveDraft(); });
   $('f-edge').addEventListener('change', function () { st.edge = this.value; saveDraft(); });
@@ -1753,16 +1781,17 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       st.decor = null;
       $('pd-sw').style.backgroundImage = 'none';
       $('pd-name').textContent = 'Декор не выбран';
-      $('pd-meta').textContent = 'Нажмите, чтобы выбрать плёнку';
+      $('pd-meta').textContent = '582 декора в каталоге';
       renderSpec(); renderVis();
       return;
     }
     st.decor = d;
     $('pd-sw').style.backgroundImage = decBg(d);
     $('pd-name').textContent = decLabel(d);
-    $('pd-meta').innerHTML = esc(groupLabel(d.g)) + ' · ' + nf.format(decPrice(d)) + ' ₽/м² · ' +
+    $('pd-meta').innerHTML = nf.format(decPrice(d)) + ' ₽/м² · ' +
       (d.stock ? '<span class="tag tag--ok"><span class="dot"></span>в наличии</span>'
                : '<span class="tag tag--warn"><span class="dot"></span>под заказ</span>');
+    $('pick-dec').title = decLabel(d) + ' · ' + groupLabel(d.g) + ' · ' + nf.format(decPrice(d)) + ' ₽/м²';
     renderSpec();
     renderVis();
   }
@@ -2303,9 +2332,10 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   }).join('');
   $('lim-mill').addEventListener('change', function () {
     st.mill = this.value; $('f-mill').value = this.value;
-    renderLimits(); renderSpec(); renderVis();
+    renderLimits(); renderSpec(); renderVis(); renderParamHints();
   });
   renderLimits();
+  renderParamHints();
 
   /* ═══════════ Клавиатура ═══════════ */
 
