@@ -157,7 +157,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .party__lvl { font-size: var(--t-xs); color: var(--ink-3); }
 .party__out {
   background: var(--surface); border: 1px solid var(--line-2); border-radius: 999px;
-  padding: 0.3125rem 0.8125rem; font-size: var(--t-sm); font-weight: 600; cursor: pointer;
+  padding: 0.3125rem 0.8125rem; min-height: 32px; font-size: var(--t-sm); font-weight: 600; cursor: pointer;
   transition: border-color 0.15s var(--ease), background 0.15s;
 }
 .party__out:hover { border-color: var(--ink-3); background: var(--panel-2); }
@@ -232,7 +232,7 @@ main { padding: 1.5rem 0 5rem; }
 .btn--primary:hover:not(:disabled) { background: var(--btn-hover); border-color: var(--btn-hover); }
 .btn--ghost { background: none; border-color: transparent; color: var(--ink-2); }
 .btn--ghost:hover { background: var(--panel); color: var(--ink); border-color: transparent; }
-.btn--sm { padding: 0.3125rem 0.625rem; font-size: var(--t-xs); }
+.btn--sm { padding: 0.3125rem 0.625rem; font-size: var(--t-xs); min-height: 32px; }
 .btn--lg { padding: 0.6875rem 1.375rem; font-size: var(--t-base); }
 .btn--danger { color: var(--danger); }
 .btn--danger:hover { background: var(--danger-wash); border-color: var(--danger); }
@@ -249,7 +249,7 @@ main { padding: 1.5rem 0 5rem; }
   display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
   padding: 0.875rem 1.125rem; border-bottom: 1px solid var(--line);
 }
-.card__h h3 { font-size: var(--t-base); }
+.card__h h3, .card__t { font-size: var(--t-base); font-weight: 600; margin: 0; }
 .card__h .sp { flex: 1; }
 .card__b { padding: 1.125rem; }
 .card__b--flush { padding: 0; }
@@ -342,9 +342,28 @@ table.spec .idx { color: var(--ink-3); font-size: var(--t-xs); width: 26px; }
 
 .err-cell { display: block; margin-top: 0.1875rem; font-size: 0.6875rem; color: var(--danger); line-height: 1.3; max-width: 140px; }
 
+.dec-cell {
+  background: none; border: 0; padding: 0.25rem; margin: -0.25rem;
+  border-radius: var(--r-sm); cursor: pointer; font: inherit; color: inherit;
+  min-height: 32px; text-align: left; max-width: 100%; white-space: nowrap;
+}
+.dec-cell > span { min-width: 0; }
+.col-dec { white-space: nowrap; }
+.dec-cell:hover { background: var(--panel-2); }
+.dec-cell.hint { color: var(--ink-3); text-decoration: underline dotted; }
+
+/* статусы заказов должны различаться глазами, а не только текстом */
+.tag--info { background: oklch(94% 0.03 250); color: oklch(42% 0.10 250); }
+.tag--info .dot { background: oklch(52% 0.12 250); }
+.tag--work { background: oklch(95% 0.05 75); color: oklch(42% 0.10 70); }
+.tag--work .dot { background: oklch(60% 0.12 70); }
+
 .row-del {
   background: none; border: 0; cursor: pointer; color: var(--ink-3);
   padding: 0.25rem; border-radius: var(--r-sm); line-height: 1;
+  /* минимальная сторона тап-зоны: было 23×25 — мимо на тачскрине */
+  min-width: 32px; min-height: 32px; display: inline-flex;
+  align-items: center; justify-content: center;
   transition: color 0.15s var(--ease), background 0.15s var(--ease);
 }
 .row-del:hover { color: var(--danger); background: var(--danger-wash); }
@@ -381,7 +400,7 @@ kbd {
 /* ── Режимы ввода ───────────────────────────────────────────────── */
 .seg { display: inline-flex; background: var(--panel-2); border-radius: var(--r-sm); padding: 2px; gap: 2px; }
 .seg button {
-  background: none; border: 0; cursor: pointer; padding: 0.3125rem 0.75rem;
+  background: none; border: 0; cursor: pointer; padding: 0.4375rem 0.75rem; min-height: 32px;
   border-radius: 4px; font-size: var(--t-xs); font-weight: 500; color: var(--ink-2);
   transition: background 0.15s var(--ease), color 0.15s var(--ease), box-shadow 0.15s var(--ease);
 }
@@ -514,7 +533,22 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   max-width: calc(100vw - 2rem); text-align: center;
   transition: opacity 0.2s var(--ease), transform 0.25s var(--ease);
 }
-.toast[data-on="1"] { opacity: 1; transform: translate(-50%, 0); }
+.toast[data-on="1"] { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+.toast { display: inline-flex; align-items: center; gap: 0.875rem; }
+.toast__do {
+  background: none; border: 0; cursor: pointer; color: oklch(85% 0.09 240);
+  font: inherit; font-weight: 700; padding: 0.25rem 0.125rem; min-height: 32px;
+  border-radius: var(--r-sm); white-space: nowrap;
+}
+.toast__do:hover { color: #fff; text-decoration: underline; }
+
+/* причина, по которой акт пока нельзя сформировать */
+.act-why { margin-top: 0.5rem; color: var(--warn); }
+.linkbtn {
+  background: none; border: 0; padding: 0; cursor: pointer; font: inherit;
+  color: var(--accent); font-weight: 600; text-decoration: underline;
+}
+.lbl { display: block; font-size: var(--t-xs); font-weight: 600; color: var(--ink-2); margin-bottom: 0.25rem; }
 
 /* ═══ АКТ СВЕРКИ — печатная форма по бумажному бланку фабрики ════ */
 .act-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 290px; gap: 1.25rem; align-items: start; }
@@ -606,7 +640,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
 <header class="topbar" id="app-top" hidden>
   <div class="topbar__in">
-    <a class="brand" href="index.html" style="text-decoration:none; color:inherit" title="На сайт КАТАЛЕЯ">
+    <a class="brand" href="index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit" title="Открыть сайт КАТАЛЕЯ в новой вкладке — спецификация останется здесь">
       <!-- Wordmark, а не файл логотипа с их сайта: в шапке fasad-kat.ru до сих
            стоит лого прежнего бренда «KatiSSo», хотя ребрендинг в «КАТАЛЕЯ»
            на сайте уже объявлен. Тащить устаревшую марку в прототип незачем. -->
@@ -657,7 +691,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       <!-- Общие параметры -->
       <div class="card">
         <div class="card__h">
-          <h3>Параметры заказа</h3>
+          <h2 class="card__t">Параметры заказа</h2>
           <span class="sp"></span>
           <span class="hint">Действуют на все позиции</span>
         </div>
@@ -701,7 +735,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       <!-- Режим: спецификация -->
       <div class="card" id="box-spec">
         <div class="card__h">
-          <h3>Позиции</h3>
+          <h2 class="card__t">Позиции</h2>
           <span class="sp"></span>
           <span class="hint">Размеры проверяются по лимитам фабрики</span>
         </div>
@@ -797,10 +831,11 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     <!-- Итоги -->
     <aside class="side side--sticky">
       <div class="card">
-        <div class="card__h"><h3>Расчёт</h3></div>
+        <div class="card__h"><h2 class="card__t">Расчёт</h2></div>
         <div class="card__b">
           <dl class="sum">
-            <div class="sum__r"><dt>Позиций</dt><dd id="t-qty">0</dd></div>
+            <div class="sum__r"><dt>Позиций</dt><dd id="t-pos">0</dd></div>
+            <div class="sum__r"><dt>Деталей</dt><dd id="t-qty">0</dd></div>
             <div class="sum__r"><dt>Квадратура</dt><dd id="t-area">0 м²</dd></div>
             <div class="sum__r"><dt>Стоимость</dt><dd id="t-raw">0 ₽</dd></div>
             <div class="sum__r sum__r--disc"><dt id="t-disc-l">Скидка 25%</dt><dd id="t-disc">—</dd></div>
@@ -811,6 +846,8 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
         </div>
         <div class="addrow">
           <button class="btn btn--primary btn--lg" id="btn-act" disabled style="width:100%">Сформировать акт сверки</button>
+          <p class="hint act-why" id="act-why" role="status" hidden></p>
+          <p class="hint" style="margin-top:0.375rem">Клавиши <kbd>⌘</kbd>/<kbd>Ctrl</kbd> + <kbd>Enter</kbd> — сформировать акт, не доходя табом до кнопки.</p>
         </div>
       </div>
 
@@ -838,7 +875,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       <div class="filters" style="flex:1">
         <div class="search">
           <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="6.8" cy="6.8" r="4.6" stroke="currentColor" stroke-width="1.5"/><path d="M10.4 10.4L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <input class="ctl" id="d-q" type="search" placeholder="Артикул или название" autocomplete="off">
+          <input class="ctl" id="d-q" type="search" placeholder="Артикул или название" autocomplete="off" aria-label="Поиск по декорам: артикул или название">
         </div>
         <div class="chips" id="d-chips"></div>
         <label class="sw"><input type="checkbox" id="d-stock"> только в наличии</label>
@@ -876,7 +913,11 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
   <div class="docs">
     <div class="card">
-      <div class="card__h"><h3>Типовая техкарта: лимиты, мм</h3></div>
+      <div class="card__h"><h2 class="card__t">Техкарта фрезеровки: лимиты, мм</h2></div>
+      <div class="card__b" style="padding-bottom:0.75rem">
+        <label class="lbl" for="lim-mill">Фрезеровка</label>
+        <select class="ctl" id="lim-mill" style="width:100%"></select>
+      </div>
       <div class="card__b card__b--flush">
         <table class="lim">
           <thead><tr><th>Тип фасада</th><th>Высота</th><th>Ширина</th></tr></thead>
@@ -884,7 +925,8 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
         </table>
       </div>
       <div class="card__b">
-        <p class="hint">Это типовые значения. <b>У каждой фрезеровки — своя техкарта</b>: лимиты, кромка (R3/R4/Rмин), отступ и ширина фрезеровки, рамка витрины. Все 79 техкарт — <a href="frezerovki.html" target="_blank" rel="noopener">в каталоге фрезеровок</a>.</p>
+        <p class="hint" id="lim-meta"></p>
+        <p class="hint" style="margin-top:0.5rem">Общей таблицы «от и до» не существует — <b>у каждой из 79 фрезеровок своя техкарта</b>. Выбор здесь меняет фрезеровку и в спецификации. Все карты — <a href="frezerovki.html" target="_blank" rel="noopener">в каталоге фрезеровок</a>.</p>
         <p class="hint" style="margin-top:0.5rem">Спецификация проверяет размеры по техкарте выбранной фрезеровки — заказ с недопустимым размером не уйдёт в производство.</p>
       </div>
     </div>
@@ -1081,6 +1123,13 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   function money2(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
   function num3(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 3, maximumFractionDigits: 3 }); }
   function num2(n) { return n.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  function plural(n, one, few, many) {
+    var a = Math.abs(n) % 100, b = a % 10;
+    if (a > 10 && a < 20) return many;
+    if (b > 1 && b < 5) return few;
+    if (b === 1) return one;
+    return many;
+  }
   function areaOf(h, w, q) { return (h * w / 1000000) * q; }
   function fmtArea(a) { return num2(a) + ' м²'; }
   function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
@@ -1090,13 +1139,26 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   function dateRu(d) { return d.getDate() + ' ' + MON[d.getMonth()] + ' ' + d.getFullYear() + ' г.'; }
   function addDays(d, n) { var x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
 
-  function toast(msg) {
+  // Тост умеет нести одно действие («Вернуть»). Отмена лучше подтверждения:
+  // не задерживает того, кто знает, что делает, и спасает того, кто промахнулся.
+  function toast(msg, undo, label) {
     var t = $('toast');
-    t.textContent = msg;
-    t.dataset.on = '1';
     clearTimeout(toast._t);
-    toast._t = setTimeout(function () { t.dataset.on = '0'; }, 2800);
+    t.innerHTML = '<span></span>';
+    t.firstChild.textContent = msg;
+    if (undo) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'toast__do';
+      b.textContent = label || 'Вернуть';
+      b.addEventListener('click', function () { t.dataset.on = '0'; undo(); });
+      t.appendChild(b);
+    }
+    t.dataset.on = '1';
+    toast._t = setTimeout(function () { t.dataset.on = '0'; }, undo ? 7000 : 2800);
   }
+  function snapshot() { return JSON.parse(JSON.stringify(st.rows)); }
+  function restore(rows) { st.rows = rows; renderSpec(); toast('Возвращено'); }
 
   /* ═══════════ Расчёт ═══════════
      Формула бумажного бланка фабрики, сверена до копейки:
@@ -1110,18 +1172,40 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   function rowArea(r) { return areaOf(r.h || 0, r.w || 0, r.q || 0); }
   function rowCost(r) { return rowArea(r) * rowPrice(r); }
 
+  var QMAX = 500;
   function rowErrors(r) {
-    var t = rowLim(r), e = {};
-    if (!r.h) e.h = 'укажите высоту';
+    var t = rowLim(r), e = {}, fresh = !r.touched;
+    if (r.frac) e.h = e.h || null;                       // заполняется ниже
+    if (r.nanH) e.h = 'только цифры';
+    else if (r.fracH) e.h = 'только целые миллиметры';
+    else if (!r.h) { if (!fresh) e.h = 'укажите высоту'; }
     else if (r.h < t.hMin || r.h > t.hMax) e.h = t.hMin + '–' + t.hMax + ' мм';
-    if (!r.w) e.w = 'укажите ширину';
+    if (r.nanW) e.w = 'только цифры';
+    else if (r.fracW) e.w = 'только целые миллиметры';
+    else if (!r.w) { if (!fresh) e.w = 'укажите ширину'; }
     else if (r.w < t.wMin || r.w > t.wMax) e.w = t.wMin + '–' + t.wMax + ' мм';
-    if (!r.q || r.q < 1) e.q = 'от 1';
+    if (r.nanQ) e.q = 'только цифры';
+    else if (r.fracQ) e.q = 'целое число';
+    else if (!r.q) { if (!fresh) e.q = 'от 1'; }
+    else if (r.q < 1) e.q = 'от 1';
+    else if (r.q > QMAX) e.q = 'не больше ' + QMAX + ' шт — проверьте, нет ли лишнего нуля';
+    if (e.h === null) delete e.h;
     return e;
   }
+  // Строка «готова к отправке» — это не то же, что «без подсветки»: у свежей
+  // пустой строки подсветки нет, но в акт она не идёт.
+  function rowFilled(r) { return !!(r.h && r.w && r.q); }
   function rowOk(r) {
-    for (var k in rowErrors(r)) { if (Object.prototype.hasOwnProperty.call(rowErrors(r), k)) return false; }
+    if (!rowFilled(r)) return false;
+    var e = rowErrors(r);
+    for (var k in e) { if (Object.prototype.hasOwnProperty.call(e, k)) return false; }
     return true;
+  }
+  // Показываем ошибку только там, где человек уже что-то сделал.
+  function rowBad(r) {
+    var e = rowErrors(r);
+    for (var k in e) { if (Object.prototype.hasOwnProperty.call(e, k)) return true; }
+    return false;
   }
 
   function totals(rows, discount) {
@@ -1133,8 +1217,12 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       area += rowArea(r);
       qty += r.q;
     });
-    var disc = raw * (discount / 100);
-    return { raw: raw, area: area, qty: qty, ok: ok, disc: disc, total: raw - disc };
+    // Скидка берётся от неокруглённой суммы (правило бланка), но показанные
+    // числа должны сходиться: округляем итог и выводим скидку как разницу,
+    // иначе «12 475 − 6 237 = 6 238» на экране не сходится на рубль.
+    var rawR = Math.round(raw);
+    var totalR = Math.round(raw - raw * (discount / 100));
+    return { raw: rawR, area: area, qty: qty, ok: ok, disc: rawR - totalR, total: totalR, rawExact: raw };
   }
 
   /* ═══════════ Навигация ═══════════ */
@@ -1174,8 +1262,14 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   }
 
   function delRow(uid) {
+    var was = snapshot();
+    var gone = st.rows.filter(function (x) { return x.uid === uid; })[0];
     st.rows = st.rows.filter(function (r) { return r.uid !== uid; });
     renderSpec();
+    if (gone) {
+      toast('Позиция удалена: ' + TYPES[gone.type].label +
+            (gone.h && gone.w ? ' ' + gone.h + '×' + gone.w : ''), function () { restore(was); });
+    }
   }
 
   function renderSpec() {
@@ -1187,45 +1281,54 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     $('nav-cnt').hidden = !has;
     $('nav-cnt').textContent = st.rows.length;
 
-    var n = 0;
-    TYPE_ORDER.forEach(function (tk) {
-      var rows = st.rows.filter(function (r) { return r.type === tk; });
-      if (!rows.length) return;
-      var t = TYPES[tk];
-      html += '<tr class="grp"><td colspan="11">' + t.group +
-              ' <span style="font-weight:400; color:var(--ink-3)">· лимиты по техкарте фрезеровки</span></td></tr>';
-      rows.forEach(function (r) {
-        n++;
-        var e = rowErrors(r), d = rowDecor(r), ok = rowOk(r);
-        var mill = r.mill || st.mill;
-        html += '<tr data-uid="' + r.uid + '">' +
-          '<td class="idx num">' + n + '</td>' +
-          '<td>' + t.label + '</td>' +
-          '<td class="r">' + numCell(r, 'h', e.h) + '</td>' +
-          '<td class="r">' + numCell(r, 'w', e.w) + '</td>' +
-          '<td class="r">' + numCell(r, 'q', e.q, true) + '</td>' +
-          '<td>' + millCell(mill) + '</td>' +
-          '<td>' + decorCell(r, d) + '</td>' +
-          '<td class="r num" style="white-space:nowrap; color:var(--ink-2)">' + (d ? nf.format(decPrice(d)) + ' ₽/м²' : '—') + '</td>' +
-          '<td class="r num" style="color:var(--ink-2)">' + (ok ? num3(rowArea(r)) : '—') + '</td>' +
-          '<td class="r num" style="font-weight:600">' + (ok && d ? money2(rowCost(r)) : '—') + '</td>' +
-          '<td class="c"><button class="row-del" data-del="' + r.uid + '" aria-label="Удалить позицию ' + n + '">' +
-            '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
-          '</button></td>' +
-        '</tr>';
-      });
-    });
+    st.rows.forEach(function (r, i) { html += rowHtml(r, i + 1); });
     body.innerHTML = html;
     renderTotals();
   }
 
   function numCell(r, key, err, small) {
-    var v = r[key] || '';
+    var v = (r.raw && r.raw[key] !== undefined && r.raw[key] !== '') ? r.raw[key] : (r[key] || '');
     var lbl = key === 'h' ? 'Высота' : key === 'w' ? 'Ширина' : 'Количество';
-    return '<input class="cell-in' + (small ? ' cell-in--q' : '') + '" type="number" inputmode="numeric"' +
+    var lim = rowLim(r);
+    var mn = key === 'q' ? 1 : (key === 'h' ? lim.hMin : lim.wMin);
+    var mx = key === 'q' ? 999 : (key === 'h' ? lim.hMax : lim.wMax);
+    var eid = 'e-' + r.uid + '-' + key;
+    // Ошибка связана с полем через aria-describedby, а состояние — через
+    // aria-invalid: без этого скринридер не сообщает, что именно не так.
+    return '<input class="cell-in' + (small ? ' cell-in--q' : '') + '" type="text" inputmode="numeric"' +
+      ' autocomplete="off" data-min="' + mn + '" data-max="' + mx + '"' +
       ' value="' + v + '" data-f="' + key + '"' + (err ? ' data-bad="1"' : '') +
-      ' aria-label="' + lbl + '">' +
-      '<span class="err-cell"' + (err ? '' : ' hidden') + '>' + (err || '') + '</span>';
+      ' aria-invalid="' + (err ? 'true' : 'false') + '" aria-describedby="' + eid + '"' +
+      ' aria-label="' + lbl + ', ' + mn + '–' + mx + '">' +
+      '<span class="err-cell" id="' + eid + '"' + (err ? '' : ' hidden') + '>' + (err || '') + '</span>';
+  }
+
+  function rowHtml(r, n) {
+    var e = rowErrors(r), d = rowDecor(r), ok = rowOk(r);
+    var mill = r.mill || st.mill;
+    return '<tr data-uid="' + r.uid + '"' + (rowBad(r) ? ' data-row-bad="1"' : '') + '>' +
+      '<td class="idx num">' + n + '</td>' +
+      '<td>' + typeCell(r) + '</td>' +
+      '<td class="r">' + numCell(r, 'h', e.h) + '</td>' +
+      '<td class="r">' + numCell(r, 'w', e.w) + '</td>' +
+      '<td class="r">' + numCell(r, 'q', e.q, true) + '</td>' +
+      '<td>' + millCell(mill) + '</td>' +
+      '<td>' + decorCell(r, d) + '</td>' +
+      '<td class="r num" style="white-space:nowrap; color:var(--ink-2)">' + (d ? nf.format(decPrice(d)) + ' ₽/м²' : '—') + '</td>' +
+      '<td class="r num" style="color:var(--ink-2)">' + (ok ? num3(rowArea(r)) : '—') + '</td>' +
+      '<td class="r num" style="font-weight:600">' + (ok && d ? money2(rowCost(r)) : '—') + '</td>' +
+      '<td class="c"><button class="row-del" tabindex="-1" data-del="' + r.uid + '"' +
+        ' title="Удалить позицию ' + n + '" aria-label="Удалить позицию ' + n + '">' +
+        '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+      '</button></td>' +
+    '</tr>';
+  }
+
+  function typeCell(r) {
+    var o = TYPE_ORDER.map(function (k) {
+      return '<option value="' + k + '"' + (k === r.type ? ' selected' : '') + '>' + TYPES[k].label + '</option>';
+    }).join('');
+    return '<select class="cell-sel" data-f="type" aria-label="Тип детали">' + o + '</select>';
   }
 
   function millCell(cur) {
@@ -1236,15 +1339,17 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   }
 
   function decorCell(r, d) {
-    if (!d) return '<span class="hint">выберите декор</span>';
+    if (!d) return '<button type="button" class="dec-cell hint" data-dec="' + r.uid + '">выбрать декор</button>';
     var own = (r.decor !== null && r.decor !== undefined);
-    return '<span style="display:flex; align-items:center; gap:0.375rem; min-width:0">' +
+    return '<button type="button" class="dec-cell" data-dec="' + r.uid + '"' +
+      ' title="Плёнка этой позиции: ' + esc(decLabel(d)) + '. Нажмите, чтобы сменить"' +
+      ' style="display:flex; align-items:center; gap:0.375rem; min-width:0">' +
       '<span class="ol__sw" style=\'background-image:' + decBg(d) + '\'></span>' +
-      '<span style="min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--t-xs)"' +
+      '<span style="flex:0 0 auto; white-space:nowrap; font-size:var(--t-xs)"' +
         ' title="' + esc(decLabel(d)) + '">' + esc(d.art || d.name) + '</span>' +
       (d.stock ? '' : '<span class="tag tag--warn" style="flex-shrink:0">под заказ</span>') +
       (own ? '<span class="tag tag--mute" style="flex-shrink:0">своя</span>' : '') +
-    '</span>';
+    '</button>';
   }
 
   // Ввод в таблице: точечное обновление, чтобы не терять фокус
@@ -1256,11 +1361,23 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     var f = e.target.dataset.f;
     if (!f) return;
 
-    if (f === 'mill') { r.mill = e.target.value; renderSpec(); return; }
+    // select слушаем в change (ниже), здесь только числа — иначе перерисовка
+    // таблицы уничтожает открытый список и роняет фокус на body
+    if (f === 'mill' || f === 'type') return;
 
-    r[f] = parseInt(e.target.value, 10) || 0;
+    r.touched = 1;
+    if (!r.raw) r.raw = {};
+    r.raw[f] = e.target.value;
+    var raw = String(e.target.value).trim().replace(',', '.');
+    var fracKey = f === 'h' ? 'fracH' : f === 'w' ? 'fracW' : 'fracQ';
+    var num = raw === '' ? 0 : Number(raw);
+    var badNum = raw !== '' && (raw !== String(num) || !isFinite(num));
+    r[fracKey] = (raw !== '' && isFinite(num) && num !== Math.floor(num)) ? 1 : 0;
+    r[f === 'h' ? 'nanH' : f === 'w' ? 'nanW' : 'nanQ'] = badNum && !r[fracKey] ? 1 : 0;
+    r[f] = (isFinite(num) && !badNum) ? Math.trunc(num) : (r[fracKey] ? Math.trunc(num) : 0);
     var err = rowErrors(r)[f];
     if (err) e.target.dataset.bad = '1'; else e.target.removeAttribute('data-bad');
+    e.target.setAttribute('aria-invalid', err ? 'true' : 'false');
     var box = e.target.parentNode.querySelector('.err-cell');
     if (box) { box.textContent = err || ''; box.hidden = !err; }
 
@@ -1270,9 +1387,88 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     renderTotals();
   });
 
+  // Прокрутка страницы над числовым полем не должна менять размер фасада.
+  document.addEventListener('wheel', function (e) {
+    var t = e.target;
+    if (t && t.tagName === 'INPUT' && t.type === 'number' && t === document.activeElement) t.blur();
+  }, { passive: true });
+
+  // Enter в строке — новая строка того же типа. 40 позиций подряд набираются
+  // без мыши; раньше Enter не делал ничего, а Tab вёл через кнопку удаления.
+  $('spec-body').addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter') return;
+    var tr = e.target.closest('tr[data-uid]');
+    if (!tr || !e.target.classList.contains('cell-in')) return;
+    e.preventDefault();
+    var r = st.rows.filter(function (x) { return x.uid === tr.dataset.uid; })[0];
+    if (!r) return;
+    var i = st.rows.indexOf(r);
+    if (i === st.rows.length - 1) {
+      addRow(r.type, { mill: r.mill });
+      renderSpec(); focusLast();
+    } else {
+      var next = $('spec-body').querySelectorAll('tr[data-uid]')[i + 1];
+      var cell = next && next.querySelector('.cell-in');
+      if (cell) { cell.focus(); cell.select(); }
+    }
+  });
+
+  $('spec-body').addEventListener('change', function (e) {
+    var tr = e.target.closest('tr[data-uid]');
+    if (!tr) return;
+    var r = st.rows.filter(function (x) { return x.uid === tr.dataset.uid; })[0];
+    if (!r) return;
+    var f = e.target.dataset.f;
+    if (f !== 'mill' && f !== 'type') return;
+    if (f === 'mill') r.mill = e.target.value; else r.type = e.target.value;
+    // перерисовываем строку, а не таблицу, и возвращаем фокус на тот же контрол
+    var key = e.target.dataset.f;
+    redrawRow(r);
+    var again = $('spec-body').querySelector('tr[data-uid="' + r.uid + '"] [data-f="' + key + '"]');
+    if (again) again.focus();
+    renderTotals();
+  });
+
+  function redrawRow(r) {
+    var tr = $('spec-body').querySelector('tr[data-uid="' + r.uid + '"]');
+    if (!tr) { renderSpec(); return; }
+    var i = st.rows.indexOf(r);
+    var tmp = document.createElement('tbody');
+    tmp.innerHTML = rowHtml(r, i + 1);
+    tr.parentNode.replaceChild(tmp.firstChild, tr);
+  }
+
   $('spec-body').addEventListener('click', function (e) {
     var b = e.target.closest('[data-del]');
-    if (b) delRow(b.dataset.del);
+    if (b) { delRow(b.dataset.del); return; }
+    // Кухня почти всегда в двух декорах: корпусные и акцентные. Плёнку
+    // отдельной позиции задаём здесь, а не двумя разными заказами.
+    var dc = e.target.closest('[data-dec]');
+    if (dc) {
+      var uid = dc.dataset.dec;
+      openPickFor(function (picked) {
+        var r = st.rows.filter(function (x) { return x.uid === uid; })[0];
+        if (!r || !picked) return;
+        r.decor = (st.decor && picked.id === st.decor.id) ? null : picked.id;
+        renderSpec();
+        toast('Плёнка позиции: ' + decLabel(picked));
+      });
+    }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('#act-jump')) return;
+    var bad = $('spec-body').querySelector('[data-bad="1"]');
+    if (!bad) {
+      var tr = [].filter.call($('spec-body').querySelectorAll('tr[data-uid]'), function (row) {
+        var r = st.rows.filter(function (x) { return x.uid === row.dataset.uid; })[0];
+        return r && !rowFilled(r);
+      })[0];
+      bad = tr && tr.querySelector('.cell-in');
+    }
+    if (!bad) return;
+    bad.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    bad.focus();
   });
 
   document.querySelectorAll('[data-add]').forEach(function (b) {
@@ -1291,7 +1487,10 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   }
 
   $('btn-clear').addEventListener('click', function () {
-    st.rows = []; renderSpec(); toast('Спецификация очищена');
+    if (!st.rows.length) { toast('Спецификация и так пуста'); return; }
+    var was = snapshot(), k = st.rows.length;
+    st.rows = []; renderSpec();
+    toast('Удалено ' + k + ' ' + plural(k, 'позиция', 'позиции', 'позиций'), function () { restore(was); });
   });
 
   $('btn-demo').addEventListener('click', function () {
@@ -1313,8 +1512,9 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   /* ═══════════ Вставка из Excel ═══════════ */
 
   document.addEventListener('paste', function (e) {
-    if ($('s-work').hidden) return;
+    if (!signedIn || $('s-work').hidden) return;
     var t = e.target, tag = (t.tagName || '').toLowerCase();
+    if (t && t.classList && t.classList.contains('cell-in')) return;
     if (tag === 'input' && (t.type === 'search' || t.type === 'number')) return;
 
     var cd = e.clipboardData || window.clipboardData;
@@ -1325,15 +1525,25 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     var lines = txt.split(/\r?\n/), added = 0;
     lines.forEach(function (ln) {
       if (!ln.trim()) return;
-      var parts = ln.split(/[\t;,]|\s{2,}|\s*[×xX*]\s*/);
+      var parts = ln.split(/[\t;]|\s*[×xXхХ*]\s*|\s+/);
       var nums = [];
       parts.forEach(function (p) {
         var v = parseInt(String(p).replace(/[^\d]/g, ''), 10);
         if (!isNaN(v) && v > 0) nums.push(v);
       });
-      if (nums.length < 2) return;
-      var h = nums[0], w = nums[1], q = nums[2] || 1;
-      var type = (h <= TYPES.drawer.hMax) ? 'drawer' : 'blind';
+      // Габарит в миллиметрах — от 50; всё мельче считаем количеством или
+      // порядковым номером строки. Иначе «Фасад 1  1200  600  2» разбирался
+      // как 1×1200 штук 600.
+      var dims = nums.filter(function (v) { return v >= 50; });
+      if (dims.length < 2) return;
+      var h = dims[0], w = dims[1];
+      var q = 1, iw = nums.indexOf(w);
+      for (var qi = iw + 1; qi < nums.length; qi++) {
+        if (nums[qi] < 50) { q = nums[qi]; break; }
+      }
+      if (q === 1 && dims.length > 2 && dims[2] < 50) q = dims[2];
+      var lim = rowLim({ type: 'drawer', mill: null });
+      var type = (h <= lim.hMax) ? 'drawer' : 'blind';
       addRow(type, { h: h, w: w, q: q });
       added++;
     });
@@ -1350,6 +1560,9 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
   function renderTotals() {
     var t = totals(st.rows, st.discount);
+    $('t-pos').textContent = st.rows.length === t.ok
+      ? nf.format(t.ok)
+      : nf.format(t.ok) + ' из ' + nf.format(st.rows.length);
     $('t-qty').textContent = nf.format(t.qty);
     $('t-area').textContent = fmtArea(t.area);
     $('t-raw').textContent = money(t.raw);
@@ -1357,11 +1570,36 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     $('t-disc').textContent = t.disc > 0 ? '−' + money(t.disc) : '—';
     $('t-total').textContent = money(t.total);
     $('t-ready').textContent = t.ok ? 'к ' + dateRu(addWorkDays(new Date(), PROD_MAX)) : '—';
-    $('btn-act').disabled = t.ok === 0;
+    // Акт — акцепт: он не должен молча уехать без позиций, которые человек ввёл.
+    // Пока в спецификации есть ошибочная строка, кнопка закрыта, и рядом сказано,
+    // сколько строк и куда нажать, чтобы к ним перейти.
+    var bad = st.rows.filter(rowBad).length;
+    var empty = st.rows.filter(function (r) { return !rowBad(r) && !rowFilled(r); }).length;
+    var noDec = st.rows.filter(function (r) { return !rowDecor(r); }).length;
+    var act = $('btn-act'), why = $('act-why');
+    act.disabled = t.ok === 0 || bad > 0 || empty > 0 || noDec > 0;
+    act.setAttribute('aria-describedby', 'act-why');
+    if (bad > 0) {
+      why.hidden = false;
+      why.innerHTML = 'Исправьте ' + bad + ' ' + plural(bad, 'позицию', 'позиции', 'позиций') +
+        ' — в акт такие строки не попадут. <button type="button" class="linkbtn" id="act-jump">Перейти к первой</button>';
+    } else if (empty > 0) {
+      why.hidden = false;
+      why.innerHTML = 'Допишите размеры в ' + empty + ' ' + plural(empty, 'позиции', 'позициях', 'позициях') +
+        '. <button type="button" class="linkbtn" id="act-jump">Перейти к первой</button>';
+    } else if (noDec > 0) {
+      why.hidden = false; why.textContent = 'Не у всех позиций выбран декор — цена не рассчитана.';
+    } else if (t.ok === 0) {
+      why.hidden = false; why.textContent = 'Добавьте хотя бы одну позицию.';
+    } else {
+      why.hidden = true; why.textContent = '';
+    }
+    saveDraft();
 
     var warns = [];
-    var bad = st.rows.filter(function (r) { return !rowOk(r); }).length;
-    if (bad) warns.push(bad + (bad === 1 ? ' позиция' : ' позиций') + ' с недопустимым размером — проверьте подсветку в таблице');
+    if (bad) warns.push(bad + ' ' + plural(bad, 'позиция', 'позиции', 'позиций') +
+      ' с недопустимым размером — размеры проверяются по техкарте выбранной фрезеровки');
+    if (empty) warns.push(empty + ' ' + plural(empty, 'позиция', 'позиции', 'позиций') + ' без размеров');
 
     var seen = {}, oos = [];
     st.rows.forEach(function (r) {
@@ -1393,19 +1631,54 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     }
     renderSpec(); renderVis();
   });
-  $('f-thick').addEventListener('change', function () { st.thick = +this.value; });
-  $('f-edge').addEventListener('change', function () { st.edge = this.value; });
+  $('f-thick').addEventListener('change', function () { st.thick = +this.value; saveDraft(); });
+  $('f-edge').addEventListener('change', function () { st.edge = this.value; saveDraft(); });
   /* ═══════════ Вход ═══════════ */
 
+  // Черновик спецификации хранится по контрагенту: перезагрузка его не теряет,
+  // а вход под другой компанией не показывает чужие позиции по своим ценам.
+  var DRAFT = 'kataleya.draft.';
+  var signedIn = false;
+  function saveDraft() {
+    if (!signedIn || !PARTY) return;
+    try {
+      localStorage.setItem(DRAFT + PARTY.id, JSON.stringify({
+        rows: st.rows, decor: st.decor ? st.decor.id : null,
+        mill: st.mill, thick: st.thick, edge: st.edge, seq: rowSeq
+      }));
+    } catch (e) { /* приватный режим — просто не сохраняем */ }
+  }
+  function loadDraft(id) {
+    try { return JSON.parse(localStorage.getItem(DRAFT + id) || 'null'); } catch (e) { return null; }
+  }
+  function dropDraft(id) { try { localStorage.removeItem(DRAFT + id); } catch (e) {} }
+
   function loginAs(party, note) {
+    // Чужой черновик не переносим: он посчитан по другим ценам.
+    signedIn = false;
+    st.rows = []; st.decor = null; st.act = null;
     PARTY = party;
     st.discount = party.discount;
+    var dr = loadDraft(party.id);
+    if (dr) {
+      st.rows = dr.rows || [];
+      rowSeq = dr.seq || st.rows.length;
+      if (dr.decor !== null && dr.decor !== undefined) st.decor = decById(dr.decor) || null;
+      if (dr.mill) st.mill = dr.mill;
+      if (dr.thick) st.thick = dr.thick;
+      if (dr.edge) st.edge = dr.edge;
+      $('f-mill').value = st.mill; $('f-thick').value = String(st.thick); $('f-edge').value = st.edge;
+    }
+    signedIn = true;
+    setDecor(st.decor || decByLabel('0101 Дуб шале натуральный') || DEC[0]);
+    renderSpec();
     $('party-name').textContent = party.name;
     $('party-person').textContent = party.person;
     $('party-disc').hidden = !party.discount;
     if (party.discount) $('party-disc').innerHTML = '<span class="dot"></span>скидка −' + party.discount + '%';
     seedOrders(); renderOrders();
     renderTotals(); renderVis();
+    go('work');
     document.getElementById('s-auth').hidden = true;
     document.getElementById('app-top').hidden = false;
     document.getElementById('app-main').hidden = false;
@@ -1441,6 +1714,11 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     loginAs(p, 'Готово! Подтвердите почту по ссылке из письма (демо) — и можно заказывать');
   });
   $('btn-logout').addEventListener('click', function () {
+    saveDraft();
+    signedIn = false;
+    st.rows = []; st.decor = null; st.act = null;
+    renderSpec(); setDecor(null);
+    $('l-mail').value = ''; $('l-pass').value = ''; $('l-err').textContent = '';
     document.getElementById('s-auth').hidden = false;
     document.getElementById('app-top').hidden = true;
     document.getElementById('app-main').hidden = true;
@@ -1455,8 +1733,30 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     $('f-reg').hidden = false; $('f-login').hidden = true;
   });
 
+  // Клик по образцу в каталоге переписывал плёнку всему заказу молча, на
+  // другом экране и без отката. Теперь говорим, сколько строк задето и на
+  // сколько изменился итог, и даём вернуть.
+  function setDecorForOrder(d) {
+    var prev = st.decor, was = snapshot();
+    var affected = st.rows.filter(function (r) { return r.decor === null || r.decor === undefined; }).length;
+    var before = totals(st.rows, st.discount).total;
+    setDecor(d);
+    if (!affected) { toast('Декор заказа: ' + decLabel(d)); return; }
+    var delta = totals(st.rows, st.discount).total - before;
+    toast('Плёнка заменена в ' + affected + ' ' + plural(affected, 'позиции', 'позициях', 'позициях') +
+          (delta ? ' · итог ' + (delta > 0 ? '+' : '−') + money(Math.abs(delta)) : ''),
+          function () { st.rows = was; setDecor(prev); renderSpec(); toast('Возвращено'); });
+  }
+
   function setDecor(d) {
-    if (!d) return;
+    if (!d) {
+      st.decor = null;
+      $('pd-sw').style.backgroundImage = 'none';
+      $('pd-name').textContent = 'Декор не выбран';
+      $('pd-meta').textContent = 'Нажмите, чтобы выбрать плёнку';
+      renderSpec(); renderVis();
+      return;
+    }
     st.decor = d;
     $('pd-sw').style.backgroundImage = decBg(d);
     $('pd-name').textContent = decLabel(d);
@@ -1482,12 +1782,16 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     return h;
   }
 
+  function norm(v) { return String(v || '').toLowerCase().replace(/ё/g, 'е'); }
   function filterDec(f) {
-    var q = f.q.trim().toLowerCase();
+    var words = norm(f.q).split(/\s+/).filter(Boolean);
     return DEC.filter(function (d) {
       if (f.g && d.g !== f.g) return false;
       if (f.stock && !d.stock) return false;
-      if (q && decLabel(d).toLowerCase().indexOf(q) === -1) return false;
+      if (words.length) {
+        var hay = norm(decLabel(d));
+        for (var wi = 0; wi < words.length; wi++) if (hay.indexOf(words[wi]) === -1) return false;
+      }
       return true;
     });
   }
@@ -1516,6 +1820,10 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     $('p-count').textContent = 'Показано ' + slice.length + ' из ' + list.length;
   }
 
+  // Две задачи у одного диалога: выбрать плёнку всему заказу (pickOne = false)
+  // или только одной позиции (pickOne = true, глобальный декор не трогаем).
+  var pickOne = false;
+  function openPickFor(cb) { pickOne = true; openPick(cb); }
   function openPick(cb) {
     pickCb = cb || null;
     pShown = 60;
@@ -1525,6 +1833,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     setTimeout(function () { $('p-q').focus(); }, 40);
   }
   function closePick() {
+    pickOne = false; pickCb = null;
     if (dlg.close && dlg.open) dlg.close(); else dlg.removeAttribute('open');
   }
 
@@ -1542,10 +1851,14 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   });
   $('p-grid').addEventListener('click', function (e) {
     var b = e.target.closest('[data-id]'); if (!b) return;
-    setDecor(decById(+b.dataset.id));
+    var d = decById(+b.dataset.id);
+    var one = pickOne, cb = pickCb;
+    pickOne = false; pickCb = null;
     closePick();
-    toast('Декор: ' + decLabel(st.decor));
-    if (pickCb) { var cb = pickCb; pickCb = null; cb(); }
+    if (one) { if (cb) cb(d); return; }
+    setDecor(d);
+    toast('Декор: ' + decLabel(d));
+    if (cb) cb(d);
   });
 
   /* ═══════════ Каталог (экран) ═══════════ */
@@ -1572,9 +1885,8 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   });
   $('d-grid').addEventListener('click', function (e) {
     var b = e.target.closest('[data-id]'); if (!b) return;
-    setDecor(decById(+b.dataset.id));
+    setDecorForOrder(decById(+b.dataset.id));
     renderCatalog();
-    toast('Выбран для заказа: ' + decLabel(st.decor));
   });
 
   /* ═══════════ Визуальный подбор ═══════════ */
@@ -1593,13 +1905,18 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   }
 
   function renderVis() {
-    var v = visVals(), t = TYPES[v.type], f = $('vis-fasad');
+    var v = visVals(), f = $('vis-fasad');
+    // Лимиты берём из техкарты выбранной фрезеровки — теми же, какими потом
+    // проверяется строка. Раньше подпись показывала обобщённые, и кнопка
+    // «Добавить» гасла на размере, который она же называла допустимым.
+    var t = rowLim({ type: v.type, mill: null });
+    t.label = TYPES[v.type].label;
     f.dataset.mill = st.mill;
     if (st.decor) f.style.backgroundImage = decBg(st.decor);
     $('vis-dim').textContent = (v.h || '—') + ' × ' + (v.w || '—') + ' мм' + (v.q > 1 ? ' · ' + v.q + ' шт' : '');
     if (v.h > 0 && v.w > 0) f.style.aspectRatio = v.w + ' / ' + v.h;
-    $('v-lim').textContent = 'Допустимо для «' + t.label + '»: высота ' + t.hMin + '–' + t.hMax +
-      ' мм, ширина ' + t.wMin + '–' + t.wMax + ' мм.';
+    $('v-lim').textContent = 'Техкарта «' + st.mill + '», ' + t.label.toLowerCase() + ': высота ' +
+      t.hMin + '–' + t.hMax + ' мм, ширина ' + t.wMin + '–' + t.wMax + ' мм.';
     var r = { type: v.type, h: v.h, w: v.w, q: v.q, decor: null, mill: null };
     var ok = rowOk(r) && !!st.decor;
     $('v-sum').textContent = ok ? money2(rowCost(r)) + ' ₽' : '—';
@@ -1730,7 +2047,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
           '<td class="r">' + r.w + '</td>' +
           '<td class="c">' + r.q + '</td>' +
           '<td>' + esc(r.mill) + '</td>' +
-          '<td>' + esc(a.edge) + '|№—</td>' +
+          '<td>' + esc(a.edge) + '</td>' +
           '<td>' + (show ? esc(r.decor) : '') + '</td>' +
           '<td class="c">' + nf.format(r.price) + 'р/м²</td>' +
           '<td class="r">' + money2(r.cost) + '</td>' +
@@ -1799,6 +2116,20 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
     var ok = $('act-ok');
     if (ok) ok.addEventListener('click', function () {
+      // Согласование = акцепт состава заказа, после него правки только через
+      // менеджера. Необратимое действие подтверждается явно, а не одним кликом.
+      if (ok.dataset.armed !== '1') {
+        ok.dataset.armed = '1';
+        ok.textContent = 'Подтвердить согласование';
+        ok.classList.add('btn--danger');
+        var note = document.createElement('p');
+        note.className = 'hint';
+        note.id = 'act-arm';
+        note.textContent = 'Заказ уйдёт в производство, состав зафиксируется. Нажмите ещё раз или нажмите Esc, чтобы отменить.';
+        ok.parentNode.insertBefore(note, ok.nextSibling);
+        ok.focus();
+        return;
+      }
       var now = new Date();
       a.approved = {
         who: PARTY.person + ', ' + PARTY.name,
@@ -1808,10 +2139,11 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       st.orders.unshift(a);
       st.seq++;
       st.rows = [];
+      dropDraft(PARTY.id);
       renderSpec();
       renderAct();
       renderOrders();
-      toast('Акт согласован — заказ передан в производство');
+      toast('Акт согласован. Заказ № ' + a.no + ' принят — менеджер подтвердит и запустит в производство');
     });
 
     var pr = $('act-print');
@@ -1887,7 +2219,8 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       return '<article class="card"><div class="card__b">' +
         '<div class="order__h">' +
           '<span class="order__n">№ ' + o.no + '</span>' +
-          '<span class="tag ' + (o.status >= 2 ? 'tag--ok' : 'tag--info') + '"><span class="dot"></span>' + STATUS[o.status] + '</span>' +
+          '<span class="tag ' + ['tag--info', 'tag--work', 'tag--ok', 'tag--mute'][o.status] +
+            '"><span class="dot"></span>' + STATUS[o.status] + '</span>' +
           '<span class="order__meta">от ' + dateRu(o.date) + ' · готовность ' + dateRu(o.ready) + '</span>' +
           '<span style="flex:1"></span>' +
           '<span class="order__sum">' + money(total) + '</span>' +
@@ -1919,6 +2252,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     if (rp) {
       var ord = st.orders.filter(function (x) { return x.no === +rp.dataset.repeat; })[0];
       if (!ord) return;
+      var wasRows = snapshot(), hadRows = st.rows.length;
       st.rows = [];
       var first = decByLabel(ord.rows[0] && ord.rows[0].decor);
       ord.rows.forEach(function (r) {
@@ -1929,25 +2263,71 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
         });
       });
       if (first) setDecor(first);
+      // общие параметры тоже из заказа: раньше завал и толщина молча
+      // подменялись текущими, а панель показывала не ту фрезеровку
+      if (ord.thick) { st.thick = ord.thick; $('f-thick').value = String(ord.thick); }
+      if (ord.edge) { st.edge = ord.edge; $('f-edge').value = ord.edge; }
+      if (ord.rows[0] && ord.rows[0].mill) { st.mill = ord.rows[0].mill; $('f-mill').value = st.mill; }
       renderSpec();
       go('work');
-      toast('Позиции заказа № ' + ord.no + ' скопированы');
+      if (hadRows) {
+        toast('Спецификация заменена заказом № ' + ord.no + ' (было ' + hadRows + ')',
+              function () { restore(wasRows); });
+      } else {
+        toast('Позиции заказа № ' + ord.no + ' скопированы');
+      }
     }
   });
 
   /* ═══════════ Документы ═══════════ */
 
-  $('lim-body').innerHTML = TYPE_ORDER.map(function (k) {
-    var t = TYPES[k];
-    return '<tr><td>' + t.label + '</td><td class="n">' + t.hMin + ' – ' + t.hMax +
-           '</td><td class="n">' + t.wMin + ' – ' + t.wMax + '</td></tr>';
+  // Общей таблицы лимитов не существует: у каждой из 79 фрезеровок своя
+  // техкарта. Показываем карту выбранной фрезеровки и даём переключить.
+  function renderLimits() {
+    var f = millByName(st.mill);
+    $('lim-body').innerHTML = TYPE_ORDER.map(function (k) {
+      var t = rowLim({ type: k, mill: null });
+      return '<tr><td>' + TYPES[k].label + '</td><td class="n">' + t.hMin + ' – ' + t.hMax +
+             '</td><td class="n">' + t.wMin + ' – ' + t.wMax + '</td></tr>';
+    }).join('');
+    var meta = $('lim-meta');
+    if (meta) {
+      meta.innerHTML = f
+        ? 'Толщина по умолчанию <b>' + f.th + ' мм</b>, кромка <b>' + f.edge + '</b>, отступ фрезеровки <b>' +
+          f.off + ' мм</b>' + (f.vf ? ', рамка витрины <b>' + f.vf + ' мм</b>' : '') + '.'
+        : 'Для «' + esc(st.mill) + '» техкарты в каталоге нет — показаны типовые значения, уточните у менеджера.';
+    }
+  }
+  $('lim-mill').innerHTML = MILLS.map(function (m) {
+    return '<option value="' + esc(m) + '"' + (m === st.mill ? ' selected' : '') + '>' + esc(m) + '</option>';
   }).join('');
+  $('lim-mill').addEventListener('change', function () {
+    st.mill = this.value; $('f-mill').value = this.value;
+    renderLimits(); renderSpec(); renderVis();
+  });
+  renderLimits();
 
   /* ═══════════ Клавиатура ═══════════ */
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && dlg.open) closePick();
+    if (e.key === 'Escape' && dlg.open) { closePick(); return; }
+    if (e.key === 'Escape') disarmAct();
+    // Главное действие — последний таб-стоп из 117. Даём его с клавиатуры.
+    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter' && !$('s-work').hidden) {
+      var b = $('btn-act');
+      if (!b.disabled) { e.preventDefault(); b.click(); }
+    }
   });
+  function disarmAct() {
+    var ok = $('act-ok');
+    if (ok && ok.dataset.armed === '1') {
+      ok.dataset.armed = '0';
+      ok.textContent = 'Согласовать акт сверки';
+      ok.classList.remove('btn--danger');
+      var note = $('act-arm');
+      if (note) note.remove();
+    }
+  }
 
   /* ═══════════ Старт ═══════════ */
 
@@ -1965,8 +2345,12 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
   // Прямые ссылки для показа (в самом конце — когда все справочники присвоены):
   // cabinet.html#demo — базовая цена, #demo-dd — контрагент со скидкой 50%
-  if (location.hash === '#demo') loginAs(PARTIES[0]);
-  if (location.hash === '#demo-dd') loginAs(PARTIES[1]);
+  function hashLogin() {
+    if (location.hash === '#demo') loginAs(PARTIES[0]);
+    else if (location.hash === '#demo-dd') loginAs(PARTIES[1]);
+  }
+  window.addEventListener('hashchange', hashLogin);
+  hashLogin();
 })();
 </script>
 </body>
