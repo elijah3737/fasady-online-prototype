@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>О компании КАТАЛЕЯ — производство мебельных фасадов МДФ в Великом Новгороде</title>
+<meta name="description" content="КАТАЛЕЯ (бывшая «КатиССо») — фабрика мебельных фасадов МДФ в плёнке ПВХ. Толщины 10/16/19 мм, двусторонние и радиусные фасады, стеновые панели, срок 10–14 рабочих дней, гарантия 12 месяцев.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+/* Разворот «делаем / не делаем»: вторая колонка намеренно тише первой —
+   это не парные карточки, а утверждение и его граница. */
+.do { border: 1px solid var(--line); border-radius: var(--r-lg); background: var(--surface); padding: 1.5rem 1.6rem; }
+.do h3 { font-family: var(--font); text-transform: none; letter-spacing: 0; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.8rem; }
+.do ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.7rem; font-size: 0.95rem; }
+.do li { display: grid; grid-template-columns: 20px 1fr; gap: 0.65rem; align-items: start; color: var(--ink-2); }
+.do li b { color: var(--ink); font-weight: 600; }
+.do svg { margin-top: 3px; }
+.dont { background: transparent; border-style: dashed; }
+.dont li { color: var(--ink-3); }
+
+.hist { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1.4rem; align-items: baseline; padding: 1.2rem 0; border-bottom: 1px solid var(--line); }
+.hist:first-of-type { border-top: 1px solid var(--line); }
+.hist dt { font-family: var(--mono); font-size: 0.86rem; color: var(--green); font-weight: 500; }
+.hist dd { margin: 0; font-size: 0.97rem; color: var(--ink-2); }
+.hist dd b { color: var(--ink); }
+
+.film { display: grid; grid-template-columns: repeat(10, 1fr); gap: 0.5rem; margin-top: 1.4rem; }
+.film .sw { aspect-ratio: 1; border-radius: 6px; box-shadow: inset 0 0 0 1px oklch(23% 0.012 60 / 0.14); }
+
+.ph2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.ph2 figure { margin: 0; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-1); position: relative; }
+.ph2 img { display: block; width: 100%; aspect-ratio: 4/3.2; object-fit: cover; }
+.ph2 figcaption { position: absolute; inset: auto 0 0 0; padding: 2rem 0.9rem 0.7rem; color: #fff; font-size: 0.82rem; background: linear-gradient(transparent, oklch(20% 0.02 60 / 0.8)); }
+
+@media (max-width: 1000px) { .film { grid-template-columns: repeat(5, 1fr); } }
+@media (max-width: 700px)  { .ph2 { grid-template-columns: 1fr; } .hist { grid-template-columns: 1fr; gap: 0.3rem; } }
+</style>
+</head>
+<body>
+
+<div class="protobar">Прототип нового сайта «КАТАЛЕЯ». Тексты собраны из фактов действующего сайта и каталога; спорные формулировки помечены.</div>
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a class="brand" href="index.html" aria-label="КАТАЛЕЯ — на главную"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Разделы сайта">
+      <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+        <path class="b1" d="M1 1h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="b2" d="M1 7h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="b3" d="M1 13h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav class="nav" id="nav" aria-label="Разделы сайта">
+      <a href="dekory.html">Декоры</a>
+      <a href="frezerovki.html">Фрезеровки</a>
+      <a href="raboty.html">Работы</a>
+      <a href="o-kompanii.html" aria-current="page">О компании</a>
+      <a href="novosti.html">Новости</a>
+      <a href="kontakty.html">Контакты</a>
+    </nav>
+    <span class="hdr__sp"></span>
+    <a class="hdr__tel" href="tel:+79219492334">+7 921 949-23-34</a>
+    <a class="btn" href="cabinet.html">Войти в кабинет</a>
+  </div>
+</header>
+
+<main>
+
+<div class="wrap crumbs">
+  <ol>
+    <li><a href="index.html">Главная</a></li>
+    <li>О компании</li>
+  </ol>
+</div>
+
+<div class="phead">
+  <div class="wrap phead__in">
+    <h1>Фабрика фасадов в Великом Новгороде</h1>
+    <div>
+      <p class="phead__lead">Производим мебельные фасады МДФ в плёнке ПВХ для мебельных производств, кухонных студий и дизайнеров. <b>Своё производство</b> — от раскроя и фрезеровки до термовакуумного прессования плёнки.</p>
+      <div class="phead__meta">
+        <span>в каталоге <b>582</b> декора</span>
+        <span><b>79</b> фрезеровок</span>
+        <span>срок <b>10–14</b> раб. дней</span>
+        <span>гарантия <b>12</b> мес.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Смена имени ═══ -->
+<section class="sec sec--tight">
+  <div class="wrap">
+    <div class="cols2 cols2--wide">
+      <div class="prose">
+        <h2>Почему «КАТАЛЕЯ», а раньше «КатиССо»</h2>
+        <p>В 2025 году компания прошла ребрендинг: сменились название, руководство и производственная площадка. Коллектив, технология и станочный парк остались теми же — поэтому заказчики, которые работали с «КатиССо», получают тот же продукт под новым именем.</p>
+        <p>Юридическое лицо — <b>ООО «КАТЕНЬКА»</b>, договоры и отгрузочные документы оформляются на него. «КАТАЛЕЯ» — торговая марка производства.</p>
+        <dl style="margin:1.6rem 0 0">
+          <div class="hist"><dt>до 2025</dt><dd>Производство работает под маркой <b>«КатиССо»</b>, наработан каталог фрезеровок и база мебельных заказчиков.</dd></div>
+          <div class="hist"><dt>2025</dt><dd>Ребрендинг в <b>«КАТАЛЕЯ»</b>: новое название, руководство и площадка. Открыт офис продаж в Санкт-Петербурге.</dd></div>
+          <div class="hist"><dt>2026</dt><dd>Каталог переведён в онлайн: <b>582 декора</b> с поиском и <b>79 фрезеровок</b> с техкартами, запускается кабинет партнёра с расчётом стоимости.</dd></div>
+        </dl>
+      </div>
+      <aside class="aside">
+        <h3>Что это значит для заказчика</h3>
+        <ul>
+          <li>Техкарты фрезеровок сохранены — размерные лимиты те же, что были у «КатиССо».</li>
+          <li>Номенклатура плёнок расширена, старые декоры остались в каталоге.</li>
+          <li>Документы приходят от ООО «КАТЕНЬКА» — реквизиты на странице контактов.</li>
+        </ul>
+        <a class="btn btn--ghost" href="kontakty.html">Реквизиты и контакты</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Делаем / не делаем ═══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Что мы делаем и чего не делаем</h2>
+      <p>Второй список важнее первого: он экономит вам звонок менеджеру.</p>
+    </div>
+    <div class="cols2">
+      <div class="do">
+        <h3>Производим</h3>
+        <ul>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="oklch(36% 0.058 162)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Фасады МДФ в плёнке ПВХ</b> — глухие, витрины, ящики, любые размеры в пределах техкарты фрезеровки.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="oklch(36% 0.058 162)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Толщины 10, 16 и 19 мм.</b> От 22 до 50 мм — по индивидуальному согласованию.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="oklch(36% 0.058 162)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Двусторонние фасады</b> — цвет и фрезеровка с обеих сторон.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="oklch(36% 0.058 162)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Стеновые панели</b> — по умолчанию 6 мм, возможны те же толщины, что у фасадов.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="oklch(36% 0.058 162)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Фрезеровку под заказ</b> и изменения в существующих — «без лучей», «без полос» и другие правки по согласованию с технологом.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10.5l4 4 8-9" stroke="oklch(36% 0.058 162)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span><b>Гнутые фасады стандартных радиусов</b> из нашего каталога.</span>
+          </li>
+        </ul>
+      </div>
+      <div class="do dont">
+        <h3>Не производим</h3>
+        <ul>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8" stroke="oklch(52% 0.11 70)" stroke-width="2" stroke-linecap="round"/></svg>
+            <span><b>Фасады из массива дерева.</b> Сосна, дуб, ясень — это не наш продукт: мы работаем только с МДФ в плёнке. На старом сайте массив упоминался ошибочно.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8" stroke="oklch(52% 0.11 70)" stroke-width="2" stroke-linecap="round"/></svg>
+            <span><b>Гнутые фасады нестандартного радиуса.</b> Только радиусы из каталога.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8" stroke="oklch(52% 0.11 70)" stroke-width="2" stroke-linecap="round"/></svg>
+            <span><b>Готовую мебель.</b> Мы поставляем фасады к вашим корпусам — сборкой кухонь и шкафов занимаются наши партнёры.</span>
+          </li>
+          <li>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M6 6l8 8M14 6l-8 8" stroke="oklch(52% 0.11 70)" stroke-width="2" stroke-linecap="round"/></svg>
+            <span><b>Замер на объекте.</b> Размеры даёт заказчик — по ним и изготавливаем.<span class="tofill">проверить у КАТАЛЕИ</span></span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Материал ═══ -->
+<section class="sec sec--tight">
+  <div class="wrap">
+    <div class="cols2 cols2--wide">
+      <div class="prose">
+        <h2>Плёнка и плита</h2>
+        <p>Основа фасада — плита МДФ, поверхность — декоративная плёнка ПВХ ведущих корейских и китайских производителей. Плёнка напрессовывается в термовакуумном прессе: рисунок ложится на фрезеровку без стыков и кромочной ленты, включая внутренние углы.</p>
+        <p>Ассортимент декоров обновляется по мере выхода новых коллекций — <b>582 образца</b> в каталоге с поиском по названию и артикулу. Древесные, однотонные матовые, глянцевые и текстурные.</p>
+        <p style="margin-top:1.1rem"><a class="sec__more" href="dekory.html">Открыть каталог декоров →</a></p>
+        <div class="film" id="film" aria-hidden="true"></div>
+      </div>
+      <aside class="aside">
+        <h3>Про выгорание — честно</h3>
+        <p>На солнце декоративная поверхность рано или поздно выгорает. Материалы дорогого сегмента имеют защитные покрытия и выгорают заметно медленнее, но полностью от этого не защищён ни один декор.</p>
+        <p style="margin-top:0.7rem">Если фасады идут на солнечную сторону — скажите менеджеру, подберём плёнку под эту нагрузку.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Возможности ═══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Производственные возможности</h2>
+      <p>Точные лимиты по высоте и ширине зависят от фрезеровки — они указаны в техкарте каждой модели.</p>
+      <a class="sec__more" href="frezerovki.html">Все техкарты →</a>
+    </div>
+    <div class="cols2 cols2--wide">
+      <div class="tw">
+        <table class="spec">
+          <tbody>
+            <tr><th>Материал</th><td>МДФ, облицовка плёнкой ПВХ в термовакуумном прессе</td></tr>
+            <tr><th>Толщина</th><td><span class="mono">10 / 16 / 19 мм</span> — серийно. <span class="mono">22–50 мм</span> — по согласованию</td></tr>
+            <tr><th>Стеновые панели</th><td><span class="mono">6 мм</span> по умолчанию, возможны толщины как у фасадов</td></tr>
+            <tr><th>Типы деталей</th><td>Глухой фасад, витрина под стекло, фасад ящика, стеновая панель</td></tr>
+            <tr><th>Кромка</th><td><span class="mono">R3</span> — по умолчанию у большинства фрезеровок; встречаются <span class="mono">R4</span> и <span class="mono">Rmin</span></td></tr>
+            <tr><th>Рамка витрины</th><td>от <span class="mono">63 мм</span>, точное значение — в техкарте фрезеровки</td></tr>
+            <tr><th>Двусторонние</th><td>Да — цвет и фрезеровка с обеих сторон</td></tr>
+            <tr><th>Радиусные</th><td>Только стандартные радиусы каталога</td></tr>
+            <tr><th>Присадка под петли и ручки</th><td>По согласованию с менеджером <span class="tofill">условия уточняем</span></td></tr>
+            <tr><th>Минимальная площадь позиции</th><td>Нет — считаем по фактической площади детали</td></tr>
+            <tr><th>Срок изготовления</th><td><span class="mono">10–14</span> рабочих дней; срочный — <span class="mono">3–5</span></td></tr>
+            <tr><th>Гарантия</th><td>12 месяцев</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ph2" style="grid-template-columns:1fr">
+        <figure>
+          <img src="img/works/w03.webp" alt="Кухня из фасадов КАТАЛЕЯ: фисташковая плёнка, витрина со стеклом, деревянный пенал" loading="lazy">
+          <figcaption>Глухие фасады, витрина и стеновая панель в одном заказе</figcaption>
+        </figure>
+        <figure>
+          <img src="img/works/w18.webp" alt="Двухцветный фасад с арочной фрезеровкой: синяя и белая плёнка ПВХ" loading="lazy">
+          <figcaption>Двухцветный фасад «Арка» — плёнка на фрезеровке без стыков</figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Полоса ═══ -->
+<section class="sec sec--tight band">
+  <div class="wrap">
+    <div class="cols2 cols2--wide" style="align-items:center">
+      <div>
+        <h2>Считать цену больше не нужно через менеджера</h2>
+        <p style="margin-top:0.9rem;max-width:52ch">Кабинет партнёра открыт для мебельных производств, студий и дизайнеров: каталог с наличием, техкарты, расчёт спецификации и история заказов. Регистрация бесплатная и не обязывает к заказу.</p>
+      </div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap">
+        <a class="btn btn--onGreen btn--lg" href="cabinet.html">Открыть кабинет</a>
+        <a class="btn btn--lg" style="background:transparent;border-color:var(--green-line);color:#fff" href="index.html#work">Как проходит заказ</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Где мы ═══ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Где мы находимся</h2>
+      <a class="sec__more" href="kontakty.html">Контакты и реквизиты →</a>
+    </div>
+    <div class="cont">
+      <div>
+        <h3>Великий Новгород</h3>
+        <dl>
+          <dt>Адрес</dt><dd>пр. Мира, 9 — производство и офис продаж</dd>
+          <dt>Телефон</dt><dd><a href="tel:+79211947887" class="mono">+7 921 194-78-87</a></dd>
+          <dt>Почта</dt><dd><a href="mailto:fasad-kat@mail.ru" class="mono">fasad-kat@mail.ru</a></dd>
+          <dt>Часы</dt><dd>с 9:00 до 18:00</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Санкт-Петербург</h3>
+        <dl>
+          <dt>Адрес</dt><dd>ул. Дыбенко, 16, офис 5 — офис продаж</dd>
+          <dt>Телефон</dt><dd><a href="tel:+79219492334" class="mono">+7 921 949-23-34</a></dd>
+          <dt>Почта</dt><dd><a href="mailto:firma.katenka@gmail.com" class="mono">firma.katenka@gmail.com</a></dd>
+          <dt>Часы</dt><dd>с 9:00 до 18:00</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div>
+      <a class="brand" href="index.html"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
+      <p style="margin-top:0.9rem;font-size:0.88rem;max-width:36ch;color:oklch(74% 0.01 80)">Производство мебельных фасадов МДФ в плёнке ПВХ. Собственное производство в Великом Новгороде, офис продаж в Санкт-Петербурге.</p>
+      <p style="margin-top:0.8rem;font-size:0.9rem"><a class="mono" href="tel:+79211947887">+7 921 194-78-87</a> — Великий Новгород<br><a class="mono" href="tel:+79219492334">+7 921 949-23-34</a> — Санкт-Петербург</p>
+    </div>
+    <div>
+      <h3>Каталог</h3>
+      <ul>
+        <li><a href="dekory.html">Декоры плёнки</a></li>
+        <li><a href="frezerovki.html">Фрезеровки и техкарты</a></li>
+        <li><a href="cabinet.html">Кабинет партнёра</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Компания</h3>
+      <ul>
+        <li><a href="o-kompanii.html">О компании</a></li>
+        <li><a href="raboty.html">Работы</a></li>
+        <li><a href="novosti.html">Новости</a></li>
+        <li><a href="kontakty.html">Контакты</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Партнёрам</h3>
+      <ul>
+        <li><a href="index.html#work">Как проходит заказ</a></li>
+        <li><a href="dostavka.html">Доставка, оплата, гарантия</a></li>
+        <li><a href="voprosy.html">Вопросы и ответы</a></li>
+        <li><a href="politika.html">Обработка персональных данных</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot__legal">
+    <span>© 2026 ООО «КАТЕНЬКА» · бренд «КАТАЛЕЯ»</span>
+    <a href="politika.html">Политика обработки персональных данных</a>
+    <span style="margin-left:auto">Прототип · Silver ML</span>
+  </div>
+</footer>
+
+<script src="dekory.js"></script>
+<script src="site.js"></script>
+<script>
+(function () {
+  'use strict';
+  // Полоса плёнок: по одному наличному образцу из каждой группы, добираем древесными.
+  var box = document.getElementById('film');
+  if (!box || !window.DECORS) return;
+  var seen = {}, pick = [];
+  window.DECORS.forEach(function (d) { if (d[5] && !seen[d[2]]) { seen[d[2]] = 1; pick.push(d); } });
+  window.DECORS.forEach(function (d) { if (d[5] && pick.length < 10 && pick.indexOf(d) < 0) pick.push(d); });
+  box.innerHTML = pick.slice(0, 10).map(function (d) {
+    return '<i class="sw" style="background-image:url(img/dekory/' + d[4] + '.webp)" title="' + d[1] + '"></i>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

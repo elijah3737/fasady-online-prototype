@@ -46,12 +46,21 @@
 
 <header class="hdr">
   <div class="wrap hdr__in">
-    <a class="brand" href="index.html"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
-    <nav class="nav" aria-label="Разделы сайта">
+    <a class="brand" href="index.html" aria-label="КАТАЛЕЯ — на главную"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Разделы сайта">
+      <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+        <path class="b1" d="M1 1h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="b2" d="M1 7h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="b3" d="M1 13h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav class="nav" id="nav" aria-label="Разделы сайта">
       <a href="dekory.html" aria-current="page">Декоры</a>
       <a href="frezerovki.html">Фрезеровки</a>
-      <a href="index.html#work">Как работаем</a>
-      <a href="index.html#contacts">Контакты</a>
+      <a href="raboty.html">Работы</a>
+      <a href="o-kompanii.html">О компании</a>
+      <a href="novosti.html">Новости</a>
+      <a href="kontakty.html">Контакты</a>
     </nav>
     <span class="hdr__sp"></span>
     <a class="hdr__tel" href="tel:+79219492334">+7 921 949-23-34</a>
@@ -60,6 +69,13 @@
 </header>
 
 <main class="cat">
+<div class="wrap crumbs">
+  <ol>
+    <li><a href="index.html">Главная</a></li>
+    <li>Декоры плёнки ПВХ</li>
+  </ol>
+</div>
+
   <div class="wrap">
     <div class="cat__head">
       <h1>Декоры плёнки ПВХ</h1>
@@ -106,10 +122,43 @@
 </dialog>
 
 <footer class="foot">
-  <div class="wrap foot__legal" style="border-top:0">
-    <span>© 2026 ООО «КАТЕНЬКА» · КАТАЛЕЯ</span>
+  <div class="wrap foot__in">
+    <div>
+      <a class="brand" href="index.html"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></a>
+      <p style="margin-top:0.9rem;font-size:0.88rem;max-width:36ch;color:oklch(74% 0.01 80)">Производство мебельных фасадов МДФ в плёнке ПВХ. Собственное производство в Великом Новгороде, офис продаж в Санкт-Петербурге.</p>
+      <p style="margin-top:0.8rem;font-size:0.9rem"><a class="mono" href="tel:+79211947887">+7 921 194-78-87</a> — Великий Новгород<br><a class="mono" href="tel:+79219492334">+7 921 949-23-34</a> — Санкт-Петербург</p>
+    </div>
+    <div>
+      <h3>Каталог</h3>
+      <ul>
+        <li><a href="dekory.html">Декоры плёнки</a></li>
+        <li><a href="frezerovki.html">Фрезеровки и техкарты</a></li>
+        <li><a href="cabinet.html">Кабинет партнёра</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Компания</h3>
+      <ul>
+        <li><a href="o-kompanii.html">О компании</a></li>
+        <li><a href="raboty.html">Работы</a></li>
+        <li><a href="novosti.html">Новости</a></li>
+        <li><a href="kontakty.html">Контакты</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Партнёрам</h3>
+      <ul>
+        <li><a href="index.html#work">Как проходит заказ</a></li>
+        <li><a href="dostavka.html">Доставка, оплата, гарантия</a></li>
+        <li><a href="voprosy.html">Вопросы и ответы</a></li>
+        <li><a href="politika.html">Обработка персональных данных</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot__legal">
+    <span>© 2026 ООО «КАТЕНЬКА» · бренд «КАТАЛЕЯ»</span>
     <a href="politika.html">Политика обработки персональных данных</a>
-    <a href="index.html" style="margin-left:auto">На главную</a>
+    <span style="margin-left:auto">Прототип · Silver ML</span>
   </div>
 </footer>
 
@@ -197,5 +246,6 @@
 })();
 </script>
 
+<script src="site.js"></script>
 </body>
 </html>
