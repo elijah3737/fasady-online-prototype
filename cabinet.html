@@ -585,7 +585,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     </div>
 
     <form class="auth__f" id="f-login">
-      <div><label for="l-mail">Логин или электронная почта</label><input class="ctl" id="l-mail" type="text" placeholder="логин" autocomplete="username"></div>
+      <div><label for="l-mail">Логин</label><input class="ctl" id="l-mail" type="text" placeholder="логин" autocomplete="username"></div>
       <div><label for="l-pass">Пароль</label><input class="ctl" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <p class="auth__err" id="l-err" role="alert"></p>
       <button class="btn btn--primary" type="submit">Войти</button>
@@ -1053,9 +1053,9 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   // Скидку контрагенту назначает фабрика в админке; цена одна для всех.
   // Второй контрагент показывает механику скидки (условная компания, условный процент).
   var PARTIES = [
-    { id: 'artel', logins: ['1', 'artel@kataleya.ru'], pass: '1',
+    { id: 'artel', logins: ['admin', '1'], pass: ['admin', '1'],
       name: 'Дизайн-бюро «Артель»', person: 'Ирина Соколова', phone: '+7 911 245-38-11', discount: 0 },
-    { id: 'dd',    logins: ['2', 'yasen@kataleya.ru'], pass: '2',
+    { id: 'dd',    logins: ['admin2', '2'], pass: ['admin2', '2'],
       name: 'Мебельный цех «Ясень»', person: 'Отдел закупок',  phone: '+7 911 600-24-17', discount: 50 }
   ];
   var PARTY = PARTIES[0];
@@ -1412,8 +1412,9 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     toast(note || ('Вы вошли: ' + party.name + (party.discount ? ' · скидка ' + party.discount + '%' : '')));
   }
   // У каждого контрагента свой вход: компанию и её скидку определяет учётная
-  // запись, под которой вошли, а не переключатель на экране. В прототипе у
-  // каждого две пары — короткая тестовая (1/1, 2/2) и «боевая» по почте.
+  // запись, под которой вошли, а не переключатель на экране. В прототипе
+  // пароль совпадает с логином: admin/admin — базовая цена, admin2/admin2 —
+  // со скидкой. Короткие 1 и 2 оставлены синонимами.
   $('f-login').addEventListener('submit', function (e) {
     e.preventDefault();
     var login = $('l-mail').value.trim().toLowerCase(), pass = $('l-pass').value.trim();
@@ -1424,7 +1425,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       return;
     }
     var p = PARTIES.filter(function (x) { return x.logins.indexOf(login) >= 0; })[0];
-    if (!p || pass !== p.pass) {
+    if (!p || p.pass.indexOf(pass) < 0) {
       err.textContent = 'Неверный логин или пароль';
       $('l-pass').select();
       return;
