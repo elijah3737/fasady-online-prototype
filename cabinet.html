@@ -585,7 +585,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     </div>
 
     <form class="auth__f" id="f-login">
-      <div><label for="l-mail">Электронная почта</label><input class="ctl" id="l-mail" type="email" placeholder="you@company.ru" autocomplete="email"></div>
+      <div><label for="l-mail">Логин или электронная почта</label><input class="ctl" id="l-mail" type="text" placeholder="логин" autocomplete="username"></div>
       <div><label for="l-pass">Пароль</label><input class="ctl" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <p class="auth__err" id="l-err" role="alert"></p>
       <button class="btn btn--primary" type="submit">Войти</button>
@@ -1053,8 +1053,10 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
   // Скидку контрагенту назначает фабрика в админке; цена одна для всех.
   // Второй контрагент показывает механику скидки (условная компания, условный процент).
   var PARTIES = [
-    { id: 'artel', mail: 'artel@kataleya.ru', name: 'Дизайн-бюро «Артель»', person: 'Ирина Соколова', phone: '+7 911 245-38-11', discount: 0 },
-    { id: 'dd',    mail: 'yasen@kataleya.ru', name: 'Мебельный цех «Ясень»', person: 'Отдел закупок',  phone: '+7 911 600-24-17', discount: 50 }
+    { id: 'artel', logins: ['1', 'artel@kataleya.ru'], pass: '1',
+      name: 'Дизайн-бюро «Артель»', person: 'Ирина Соколова', phone: '+7 911 245-38-11', discount: 0 },
+    { id: 'dd',    logins: ['2', 'yasen@kataleya.ru'], pass: '2',
+      name: 'Мебельный цех «Ясень»', person: 'Отдел закупок',  phone: '+7 911 600-24-17', discount: 50 }
   ];
   var PARTY = PARTIES[0];
 
@@ -1409,19 +1411,25 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     document.getElementById('app-main').hidden = false;
     toast(note || ('Вы вошли: ' + party.name + (party.discount ? ' · скидка ' + party.discount + '%' : '')));
   }
-  // У каждого контрагента свой вход: компанию и её скидку определяет почта,
-  // под которой вошли, а не переключатель на экране.
+  // У каждого контрагента свой вход: компанию и её скидку определяет учётная
+  // запись, под которой вошли, а не переключатель на экране. В прототипе у
+  // каждого две пары — короткая тестовая (1/1, 2/2) и «боевая» по почте.
   $('f-login').addEventListener('submit', function (e) {
     e.preventDefault();
-    var mail = $('l-mail').value.trim().toLowerCase(), pass = $('l-pass').value;
+    var login = $('l-mail').value.trim().toLowerCase(), pass = $('l-pass').value.trim();
     var err = $('l-err');
-    if (!mail || !pass) {
-      err.textContent = 'Введите почту и пароль';
-      (!mail ? $('l-mail') : $('l-pass')).focus();
+    if (!login || !pass) {
+      err.textContent = 'Введите логин и пароль';
+      (!login ? $('l-mail') : $('l-pass')).focus();
+      return;
+    }
+    var p = PARTIES.filter(function (x) { return x.logins.indexOf(login) >= 0; })[0];
+    if (!p || pass !== p.pass) {
+      err.textContent = 'Неверный логин или пароль';
+      $('l-pass').select();
       return;
     }
     err.textContent = '';
-    var p = PARTIES.filter(function (x) { return x.mail === mail; })[0] || PARTIES[0];
     loginAs(p);
   });
   $('f-reg').addEventListener('submit', function (e) {
