@@ -68,9 +68,20 @@ button, input, select { font: inherit; color: inherit; }
 /* ── Шапка ── */
 .hdr { position: sticky; top: 0; z-index: 100; background: color-mix(in oklab, var(--paper) 90%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
 .hdr__in { display: flex; align-items: center; gap: 1.5rem; min-height: 62px; }
-.brand { display: flex; flex-direction: column; text-decoration: none; line-height: 1.05; }
-.brand b { font-family: var(--disp); font-weight: 600; font-size: 1.35rem; letter-spacing: 0.10em; }
-.brand i { font-style: normal; font-size: 0.62rem; letter-spacing: 0.34em; text-transform: uppercase; color: var(--ink-3); }
+/* ── Знак и замковая пара ──
+   Знак — фасадная плита с арочной фрезеровкой: прорезь сделана дырой
+   (fill-rule: evenodd), поэтому сквозь неё виден любой фон — бумага,
+   тёмный подвал, холодный хром кабинета, зелёное поле. Цвет плиты
+   задаётся через color, а не зашит в путь.
+   Размеры всех частей — в em от .brand, поэтому пара масштабируется
+   целиком одной строкой. Кегль и трекинг подписи подобраны так, что её
+   ширина совпадает с шириной слова «КАТАЛЕЯ» (замерено: 114 / 114 px). */
+.brand { display: inline-flex; align-items: center; gap: 0.6em; text-decoration: none; color: var(--ink); font-size: 1.35rem; line-height: 1; }
+.brand__m { flex: 0 0 auto; display: block; width: 1.36em; height: 1.36em; color: var(--green); }
+.brand__w { display: flex; flex-direction: column; line-height: 1; }
+.brand b { font-family: var(--disp); font-weight: 600; font-size: 1em; letter-spacing: 0.105em; text-transform: uppercase; }
+.brand i { font-style: normal; font-size: 0.4em; letter-spacing: 0.145em; text-transform: uppercase; color: var(--ink-3); margin-top: 0.32em; }
+.brand:hover .brand__m { color: var(--green-deep); }
 .nav { display: flex; gap: 0.25rem; margin-left: 0.5rem; }
 .nav a { text-decoration: none; font-size: 0.9rem; color: var(--ink-2); padding: 0.45rem 0.6rem; border-radius: 6px; transition: color 0.15s, background 0.15s; }
 .nav a:hover { color: var(--ink); background: var(--paper-2); }
@@ -123,8 +134,11 @@ button, input, select { font: inherit; color: inherit; }
 .foot h3 { font-size: 0.85rem; letter-spacing: 0.12em; color: oklch(70% 0.01 80); margin-bottom: 0.8rem; }
 .foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; font-size: 0.92rem; }
 .foot__legal { border-top: 1px solid oklch(38% 0.015 60); padding: 1.1rem 0 1.6rem; font-size: 0.8rem; color: oklch(66% 0.01 80); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+.foot .brand { color: #fff; }
+.foot .brand__m { color: oklch(72% 0.09 162); }
 .foot .brand b { color: #fff; }
-.foot .brand i { color: oklch(64% 0.012 80); }
+.foot .brand i { color: oklch(66% 0.012 80); }
+.foot .brand:hover .brand__m { color: oklch(80% 0.10 162); }
 
 /* ── Диалог ── */
 dialog { border: 0; border-radius: var(--r-lg); box-shadow: var(--sh-3); padding: 0; max-width: min(560px, calc(100vw - 2rem)); width: 100%; }
@@ -376,9 +390,7 @@ dialog.lb { max-width: min(1080px, calc(100vw - 2rem)); background: var(--surfac
 }
 @media (max-width: 560px) {
   .hdr .btn { padding: 0.55rem 0.8rem; font-size: 0.88rem; white-space: nowrap; flex: 0 0 auto; }
-  .hdr .brand { flex: 0 0 auto; }
-  .brand b { font-size: 1.15rem; }
-  .hdr .brand i { letter-spacing: 0.16em; font-size: 0.55rem; white-space: nowrap; }
+  .hdr .brand { flex: 0 0 auto; font-size: 1.08rem; gap: 0.5em; }
 }
 
 @media (max-width: 1000px) {

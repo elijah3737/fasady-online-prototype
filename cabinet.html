@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Кабинет партнёра — КАТАЛЕЯ: расчёт и заказ фасадов онлайн</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
 <meta name="description" content="Прототип кабинета партнёра фабрики мебельных фасадов «КАТАЛЕЯ»: спецификация, расчёт, акт сверки без менеджера.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -124,6 +126,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
   max-width: 1400px; margin: 0 auto;
 }
 .brand { display: flex; align-items: center; gap: 0.625rem; flex-shrink: 0; }
+/* Знак остаётся зелёным и в кабинете: это единственная точка, где бренд
+   присутствует в холодном хроме, и она держит переход «сайт → кабинет». */
+.brand__m { flex: 0 0 auto; display: block; width: 1.75rem; height: 1.75rem; color: oklch(36% 0.058 162); }
 .brand__mark { display: grid; line-height: 1; }
 .brand__mark b {
   font-family: "Oswald", "Arial Narrow", sans-serif;
@@ -623,10 +628,8 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
       <!-- Wordmark, а не файл логотипа с их сайта: в шапке fasad-kat.ru до сих
            стоит лого прежнего бренда «KatiSSo», хотя ребрендинг в «КАТАЛЕЯ»
            на сайте уже объявлен. Тащить устаревшую марку в прототип незачем. -->
-      <span class="brand__mark">
-        <b>КАТАЛЕЯ</b>
-        <i>мебельные фасады</i>
-      </span>
+      <svg class="brand__m" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.6 2h14.8A2.6 2.6 0 0 1 26 4.6v22.8a2.6 2.6 0 0 1-2.6 2.6H8.6A2.6 2.6 0 0 1 6 27.4V4.6A2.6 2.6 0 0 1 8.6 2Zm2.9 24.7V13.4a4.5 4.5 0 0 1 9 0v13.3h2.2V13.4a6.7 6.7 0 0 0-13.4 0v13.3h2.2Z"/></svg>
+      <span class="brand__mark"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></span>
       <span class="brand__sub">Кабинет партнёра</span>
     </a>
 
