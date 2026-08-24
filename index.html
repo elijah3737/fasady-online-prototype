@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>КАТАЛЕЯ — мебельные фасады МДФ в плёнке ПВХ от производителя</title>
+<meta name="description" content="Производство мебельных фасадов МДФ в плёнке ПВХ. 582 декора, 79 фрезеровок, срок 10–14 рабочих дней. Кабинет партнёра с расчётом стоимости онлайн. Великий Новгород и Санкт-Петербург.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="favicon.svg">
+<link rel="stylesheet" href="site.css">
+<!--
+THESIS: сайт-инструмент производителя: единственный на рынке аргумент — «цена
+на экране, без запроса прайса у менеджера» — показан работающей демкой, а не
+обещанием. Отказ от категорийного дефолта: маркетинговый герой со стоковым фото
+и формой «оставьте заявку».
+OWN-WORLD: грунт печатного каталога (хрома 0.0015, оттенок 110 — не тёплый
+крем), глубокий зелёный их действующего бренда, реальные образцы плёнки как
+графическая система. Одна гарнитура Onest несёт заголовки и интерфейс — гротеск
+2022 года с настоящей кириллицей; размеры и артикулы — JetBrains Mono. Капса нет:
+сжатый прописной был главной приметой генерации. Радиус один на весь сайт, 4px —
+завал кромки R3 у их же фасада.
+STORY: мебельщик понимает «это фабрика, у неё каталог и кабинет, где я сам
+считаю цену» → регистрируется.
+FIRST VIEWPORT: слева заголовок, два действия (кабинет / каталог), строка
+фактов монощрифтом; справа их реальные зелёные фасады с арочной фрезеровкой.
+FORM: направление закреплено утверждённым планом клиента (brief-pinned,
+ПЛАН-системы-2026-08-20.md), жеребьёвка не проводилась.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the
+finish review, the verdict, and DESIGN.md
+-->
+<style>
+/* ── Первый экран ── */
+.hero { border-bottom: 1px solid var(--line); overflow: hidden; }
+.hero__grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: center; }
+.hero__txt { padding: clamp(2.5rem, 6vw, 5rem) 0; }
+.hero__txt h1 { max-width: 17ch; }
+.hero__sub { margin: 1.3rem 0 2rem; font-size: 1.06rem; line-height: 1.5; color: var(--ink-2); max-width: 46ch; }
+.hero__sub b { color: var(--ink); }
+.hero__cta { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+.hero__note { margin-top: 0.9rem; font-size: 0.83rem; color: var(--ink-3); }
+.hero__img { position: relative; align-self: stretch; min-height: 420px; }
+.hero__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* подписи поверх фотографии больше нет: плашка на снимке — приём-примета */
+.facts { border-top: 1px solid var(--line); background: var(--surface); }
+.facts__in { display: flex; flex-wrap: wrap; gap: 0.4rem 2.2rem; padding: 0.85rem 0; font-family: var(--mono); font-size: 0.84rem; color: var(--ink-2); }
+.facts__in b { color: var(--ink); font-weight: 500; }
+
+/* ── Демо-расчёт ── */
+.calc { background: var(--green-deep); color: var(--green-ink); }
+.calc h2 { color: #fff; }
+.calc__grid { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: start; }
+.calc__lead { font-size: 1.05rem; color: var(--green-ink2); margin-top: 1rem; max-width: 46ch; }
+.calc__lead b { color: #fff; }
+.calc__pts { list-style: none; margin: 1.6rem 0 0; padding: 0; display: grid; gap: 0.75rem; font-size: 0.95rem; }
+.calc__pts li { display: flex; gap: 0.7rem; align-items: baseline; }
+.calc__pts li::before { content: ""; flex: 0 0 8px; height: 8px; border-radius: 2px; background: var(--green-ink2); transform: translateY(-1px); }
+.calcbox { background: var(--surface); color: var(--ink); border-radius: var(--r-lg); box-shadow: var(--sh-3); padding: 1.4rem; }
+.calcbox__t { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 1rem; }
+.calcbox__t h3 { font-family: var(--font); text-transform: none; letter-spacing: 0; font-size: 1.05rem; font-weight: 700; }
+.calcbox__t span { font-size: 0.8rem; color: var(--ink-3); }
+.calc__f { display: grid; gap: 0.85rem; }
+.calc__row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+.f label { display: block; font-size: 0.8rem; font-weight: 600; color: var(--ink-2); margin-bottom: 0.3rem; }
+/* Все контролы демо-расчёта — одной формы: высота 44, радиус 8, своя
+   отрисовка вместо нативной. До этого селект был 42 px с двойной стрелкой
+   macOS, поля 43 px со спиннерами, а чипы 36 px и трёх разных ширин. */
+.f .ctl {
+  width: 100%; height: 44px; box-sizing: border-box;
+  border: 1px solid var(--line-2); border-radius: var(--r); background: var(--surface);
+  padding: 0 0.7rem; font-size: 0.95rem; line-height: normal;
+  appearance: none; -webkit-appearance: none;
+}
+.f select.ctl {
+  padding-right: 2.1rem; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23635C57' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 0.75rem center;
+}
+.f input.ctl::-webkit-outer-spin-button,
+.f input.ctl::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.f input.ctl[type="number"] { -moz-appearance: textfield; }
+.f .ctl:focus { outline: 2px solid var(--green); outline-offset: -1px; }
+.f .ctl[aria-invalid="true"] { border-color: var(--danger); outline: 1px solid var(--danger); }
+
+/* Тип фасада — сегментированный переключатель во всю ширину, а не три
+   разноразмерные таблетки: это такое же поле, как соседние. */
+.typechips { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.4rem; }
+.typechips .chip {
+  height: 44px; padding: 0 0.5rem; border-radius: var(--r);
+  font-size: 0.92rem; font-weight: 500; display: inline-flex;
+  align-items: center; justify-content: center;
+}
+.typechips .chip[aria-pressed="true"] { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; }
+.calc__err { font-size: 0.8rem; color: var(--danger); min-height: 1.1em; }
+.calc__ok { font-size: 0.8rem; color: var(--ok); min-height: 1.1em; }
+.calc__out { border-top: 1px dashed var(--line-2); margin-top: 0.4rem; padding-top: 0.85rem; display: grid; gap: 0.45rem; }
+.calc__line { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.92rem; }
+.calc__line .mono { font-size: 0.95rem; }
+.calc__price { display: flex; justify-content: space-between; align-items: center; height: 44px; box-sizing: border-box; background: var(--paper); border: 1px solid var(--line); border-radius: var(--r); padding: 0 0.9rem; margin-top: 0.3rem; }
+.calc__price b { font-size: 1rem; }
+.calc__lock { display: flex; align-items: center; gap: 0.5rem; color: var(--ink-3); font-size: 0.88rem; }
+.calc__lock svg { flex: 0 0 auto; }
+.calcbox .btn { width: 100%; margin-top: 0.9rem; }
+.calcbox__foot { text-align: center; font-size: 0.8rem; color: var(--ink-3); margin-top: 0.6rem; }
+.calcbox__foot a { color: var(--green); font-weight: 600; }
+
+/* ── Декоры-превью ── */
+.dg { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+.dg__cell { position: relative; border-radius: var(--r-lg); overflow: hidden; aspect-ratio: 4 / 4.6; display: block; text-decoration: none; color: #fff; box-shadow: var(--sh-1); }
+.dg__mosaic { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; }
+.dg__mosaic .sw { transition: transform 0.4s var(--ease); }
+.dg__cell:hover .sw { transform: scale(1.05); }
+.dg__cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 2.2rem 1rem 0.85rem; background: linear-gradient(transparent, oklch(20% 0.02 60 / 0.82)); }
+.dg__cap b { font-family: var(--disp); font-weight: 600; font-size: 1.12rem; letter-spacing: 0.03em; text-transform: uppercase; display: block; }
+.dg__cap span { font-size: 0.8rem; opacity: 0.85; }
+
+/* ── Фрезеровки-превью ── */
+.fz { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; }
+.fz a { display: block; text-decoration: none; color: var(--ink); }
+.fz .ph { aspect-ratio: 3 / 4; border-radius: var(--r); background: var(--surface); border: 1px solid var(--line); overflow: hidden; display: grid; place-items: center; }
+.fz img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.35s var(--ease); }
+.fz a:hover img { transform: scale(1.05); }
+.fz figcaption { font-size: 0.85rem; font-weight: 600; margin-top: 0.45rem; text-align: center; }
+
+/* ── Наличие ── */
+.stock { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.stock__grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.3fr); gap: clamp(1.5rem, 4vw, 4rem); align-items: center; }
+.stock__list { display: grid; gap: 0; border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; background: var(--paper); }
+.stock__row { display: flex; align-items: center; gap: 0.9rem; padding: 0.6rem 0.9rem; background: var(--surface); }
+.stock__row + .stock__row { border-top: 1px solid var(--line); }
+.stock__row .sw { flex: 0 0 44px; height: 44px; border-radius: 6px; border: 1px solid var(--line); }
+.stock__row .nm { flex: 1; min-width: 0; }
+.stock__row .nm b { display: block; font-size: 0.92rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stock__row .nm span { font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3); }
+.stock__note { font-size: 0.8rem; color: var(--ink-3); padding: 0.55rem 0.9rem; background: var(--paper); }
+
+/* ── Производство ── */
+.prod__grid { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(0,0.85fr); gap: clamp(1.5rem, 4vw, 3.5rem); align-items: start; }
+.spec { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; }
+.spec th, .spec td { text-align: left; padding: 0.65rem 0.95rem; border-bottom: 1px solid var(--line); font-size: 0.92rem; vertical-align: top; }
+.spec th { width: 38%; font-weight: 600; color: var(--ink-2); background: var(--paper); }
+.spec tr:last-child th, .spec tr:last-child td { border-bottom: 0; }
+.spec td .mono { font-size: 0.88rem; }
+.prod__ph { border-radius: var(--r); overflow: visible; }
+.prod__ph img { display: block; width: 100%; aspect-ratio: 3.2/4; object-fit: cover; border-radius: var(--r); }
+.prod__ph figcaption { padding: 0.6rem 0.1rem 0; font-size: 0.83rem; color: var(--ink-3); }
+.tw { overflow-x: auto; max-width: 100%; border-radius: var(--r-lg); }
+
+/* ── Как работаем ── */
+.steps { counter-reset: st; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 1px solid var(--line-2); }
+.step { counter-increment: st; padding: 1.25rem 1.5rem 1.5rem 0; border-right: 1px solid var(--line); }
+.step:last-child { border-right: 0; }
+.step + .step { padding-left: 1.5rem; }
+.step::before {
+  content: counter(st, decimal-leading-zero);
+  font-family: var(--mono); font-size: 0.72rem; font-weight: 500; color: var(--ink-3);
+  display: block; margin-bottom: 0.9rem;
+}
+.step b { display: block; margin-bottom: 0.4rem; font-size: 1rem; letter-spacing: -0.012em; }
+.step p { font-size: 0.88rem; color: var(--ink-2); line-height: 1.5; }
+.steps__note { margin-top: 1.1rem; font-size: 0.9rem; color: var(--ink-2); }
+.steps__note b { color: var(--ink); }
+
+/* ── Портфолио ── */
+.pf { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.pf figure { margin: 0; border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--sh-1); }
+.pf img { display: block; width: 100%; aspect-ratio: 4/3.4; object-fit: cover; transition: transform 0.4s var(--ease); }
+.pf figure:hover img { transform: scale(1.04); }
+
+/* ── Кому ── */
+.who { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.who > div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.4rem 1.5rem; }
+.who h3 { font-family: var(--font); text-transform: none; letter-spacing: 0; font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
+.who p { font-size: 0.93rem; color: var(--ink-2); }
+.who ul { margin: 0.6rem 0 0; padding-left: 1.1rem; font-size: 0.93rem; color: var(--ink-2); display: grid; gap: 0.3rem; }
+.who__priv { grid-column: 1 / -1; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; background: var(--paper-2); border-style: dashed; }
+.who__priv p { flex: 1; min-width: 260px; }
+
+/* ── Контакты ── */
+.cont { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.cont > div { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 1.4rem 1.5rem; }
+.cont h3 { margin-bottom: 0.7rem; }
+.cont dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 0.35rem 1rem; font-size: 0.93rem; }
+.cont dt { color: var(--ink-3); }
+.cont dd { margin: 0; }
+.cont a { color: var(--ink); text-decoration: none; }
+.cont a:hover { color: var(--green); }
+
+/* ── CTA-финал ── */
+.fin { text-align: center; }
+.fin h2 { max-width: 22ch; margin: 0 auto 1rem; }
+.fin p { color: var(--ink-2); max-width: 52ch; margin: 0 auto 1.6rem; }
+
+@media (max-width: 960px) {
+  .hero__grid, .calc__grid, .stock__grid, .prod__grid { grid-template-columns: 1fr; }
+  .hero__img { min-height: 300px; }
+  .hero__img img { position: static; height: 100%; }
+  .dg { grid-template-columns: 1fr 1fr; }
+  .fz { grid-template-columns: repeat(3, 1fr); }
+  .steps { grid-template-columns: 1fr 1fr; }
+  .step:nth-child(2n) { border-right: 0; }
+  .step:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+  .pf { grid-template-columns: 1fr 1fr; }
+  .who, .cont { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .fz { grid-template-columns: 1fr 1fr; }
+  .pf { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .step { border-right: 0; border-bottom: 1px solid var(--line); padding-left: 0 !important; }
+  .step:last-child { border-bottom: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="protobar">Прототип нового сайта «КАТАЛЕЯ». Цены на сайте не публикуются — расчёт в кабинете партнёра; данные каталога сняты с действующего fasad-kat.ru.</div>
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <a class="brand" href="index.html" aria-label="КАТАЛЕЯ — на главную"><svg class="brand__m" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.6 2h14.8A2.6 2.6 0 0 1 26 4.6v22.8a2.6 2.6 0 0 1-2.6 2.6H8.6A2.6 2.6 0 0 1 6 27.4V4.6A2.6 2.6 0 0 1 8.6 2Zm2.9 24.7V13.4a4.5 4.5 0 0 1 9 0v13.3h2.2V13.4a6.7 6.7 0 0 0-13.4 0v13.3h2.2Z"/></svg><span class="brand__w"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></span></a>
+    <button class="burger" type="button" aria-expanded="false" aria-controls="nav" aria-label="Разделы сайта">
+      <svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true">
+        <path class="b1" d="M1 1h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="b2" d="M1 7h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        <path class="b3" d="M1 13h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <nav class="nav" id="nav" aria-label="Разделы сайта">
+      <a href="dekory.html">Декоры</a>
+      <a href="frezerovki.html">Фрезеровки</a>
+      <a href="raboty.html">Работы</a>
+      <a href="o-kompanii.html">О компании</a>
+      <a href="novosti.html">Новости</a>
+      <a href="kontakty.html">Контакты</a>
+    </nav>
+    <span class="hdr__sp"></span>
+    <a class="hdr__tel" href="tel:+79219492334">+7 921 949-23-34</a>
+    <a class="btn" href="cabinet.html">Войти в кабинет</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ═══ Первый экран ═══ -->
+<section class="hero">
+  <div class="wrap hero__grid">
+    <div class="hero__txt">
+      <h1>Фасады МДФ в&nbsp;плёнке ПВХ</h1>
+      <p class="hero__sub">Производство в Великом Новгороде. <b>582 декора и 79 фрезеровок</b> в кабинете партнёра, где стоимость заказа вы считаете сами.</p>
+      <div class="hero__cta">
+        <a class="btn btn--lg" href="cabinet.html">Зарегистрироваться</a>
+        <a class="btn btn--lg btn--ghost" href="dekory.html">Каталог декоров</a>
+      </div>
+    </div>
+    <figure class="hero__img">
+      <img src="img/works/w08.webp" alt="Шкаф с арочными фасадами в оливковой плёнке ПВХ — работа на фасадах КАТАЛЕЯ">
+    </figure>
+  </div>
+  <div class="facts">
+    <div class="wrap facts__in">
+      <span><b>582</b> декора плёнки</span>
+      <span><b>79</b> фрезеровок</span>
+      <span>срок <b>10–14</b> раб. дней</span>
+      <span>срочно <b>3–5</b> дней</span>
+      <span>гарантия <b>12</b> мес.</span>
+      <span>толщина <b>10–50</b> мм</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Демо-расчёт ═══ -->
+<section class="calc sec" id="calc">
+  <div class="wrap calc__grid">
+    <div>
+      <h2>Цену считаете вы, а&nbsp;не&nbsp;менеджер</h2>
+      <p class="calc__lead">На рынке фасадов прайс принято «запрашивать в WhatsApp». У нас — <b>кабинет партнёра</b>: выбираете фрезеровку и плёнку, вводите размеры — стоимость на экране сразу, по каждой позиции.</p>
+      <ul class="calc__pts">
+        <li>Размеры проверяются по техкарте фрезеровки — ошибка габарита не пройдёт в заказ</li>
+        <li>Площадь и сумма по каждой позиции, без минимума «от 1 м²»</li>
+        <li>Заказ, счёт и акт сверки — документами из кабинета</li>
+        <li>Статус заказа виден онлайн: принят → в производстве → готов → выдан</li>
+      </ul>
+    </div>
+    <div class="calcbox" id="demo">
+      <div class="calcbox__t">
+        <h3>Попробуйте: фасад за минуту</h3>
+        <span>демо без цены</span>
+      </div>
+      <div class="calc__f">
+        <div class="f">
+          <label for="d-mill">Фрезеровка</label>
+          <select class="ctl" id="d-mill"></select>
+        </div>
+        <div class="f">
+          <label>Тип фасада</label>
+          <div class="typechips" role="group" aria-label="Тип фасада">
+            <button class="chip" data-t="b" aria-pressed="true">Глухой</button>
+            <button class="chip" data-t="v" aria-pressed="false">Витрина</button>
+            <button class="chip" data-t="d" aria-pressed="false">Ящик</button>
+          </div>
+        </div>
+        <div class="calc__row2">
+          <div class="f">
+            <label for="d-h">Высота, мм</label>
+            <input class="ctl mono" id="d-h" type="number" inputmode="numeric" value="716">
+          </div>
+          <div class="f">
+            <label for="d-w">Ширина, мм</label>
+            <input class="ctl mono" id="d-w" type="number" inputmode="numeric" value="396">
+          </div>
+        </div>
+        <p class="calc__err" id="d-err" role="status"></p>
+        <div class="calc__out">
+          <div class="calc__line"><span>Лимиты техкарты</span><span class="mono" id="d-lim">—</span></div>
+          <div class="calc__line"><span>Площадь</span><span class="mono" id="d-area">—</span></div>
+          <div class="calc__price">
+            <span class="calc__lock">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Стоимость
+            </span>
+            <b id="d-price">в кабинете</b>
+          </div>
+        </div>
+        <a class="btn" href="cabinet.html">Зарегистрироваться и увидеть цену</a>
+        <p class="calcbox__foot">Уже работаете с нами? <a href="cabinet.html">Войти</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Декоры ═══ -->
+<section class="sec" id="dekory">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>582 декора плёнки</h2>
+      <p>Плёнки ПВХ корейских и китайских производителей. Образцы — настоящие, из каталога фабрики.</p>
+      <a class="sec__more" href="dekory.html">Весь каталог с поиском →</a>
+    </div>
+    <div class="dg" id="dg"></div>
+  </div>
+</section>
+
+<!-- ═══ Фрезеровки ═══ -->
+<section class="sec sec--tight" id="frez">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>79 фрезеровок</h2>
+      <p>От простых линий до арок и 3D. У каждой — техкарта с лимитами размеров. Нет подходящей — разработаем под вас.</p>
+      <a class="sec__more" href="frezerovki.html">Все фрезеровки и техкарты →</a>
+    </div>
+    <div class="fz" id="fz"></div>
+  </div>
+</section>
+
+<!-- ═══ Наличие ═══ -->
+<section class="stock sec" id="stock">
+  <div class="wrap stock__grid">
+    <div>
+      <h2>Наличие плёнки — до&nbsp;заказа, а&nbsp;не&nbsp;после</h2>
+      <p class="calc__lead" style="color: var(--ink-2)">Обычно о том, что декора нет на складе, узнают от менеджера — после того, как проект уже согласован с заказчиком. В кабинете статус наличия виден у каждого декора: <b style="color:var(--ink)">данные приходят из учётной системы фабрики</b>.</p>
+      <p class="steps__note">Нет на складе — закажем плёнку под ваш заказ, менеджер подтвердит срок поставки.</p>
+    </div>
+    <div class="stock__list" id="stock-list"></div>
+  </div>
+</section>
+
+<!-- ═══ Производство ═══ -->
+<section class="sec" id="prod">
+  <div class="wrap prod__grid">
+    <div>
+      <div class="sec__head" style="margin-bottom: 1.2rem">
+        <h2>Что умеет производство</h2>
+      </div>
+      <div class="tw">
+      <table class="spec">
+        <tr><th>Материал</th><td>МДФ, облицовка плёнкой ПВХ в термовакуумном прессе</td></tr>
+        <tr><th>Толщина фасадов</th><td><span class="mono">10 / 16 / 19 мм</span>, от <span class="mono">22</span> до <span class="mono">50 мм</span> — по согласованию</td></tr>
+        <tr><th>Стеновые панели</th><td><span class="mono">6 мм</span>, возможны толщины как у фасадов</td></tr>
+        <tr><th>Двусторонние фасады</th><td>Плёнка и фрезеровка с обеих сторон</td></tr>
+        <tr><th>Радиусные фасады</th><td>Стандартные радиусы</td></tr>
+        <tr><th>Изменение фрезеровок</th><td>«Без лучей», «без полос» и другие правки — при размещении заказа</td></tr>
+        <tr><th>Новые фрезеровки</th><td>Разработка под проект партнёра</td></tr>
+        <tr><th>Кромка</th><td>Сечение по умолчанию <span class="mono">R3</span>, варианты по техкарте фрезеровки</td></tr>
+        <tr><th>Гарантия</th><td>12 месяцев</td></tr>
+      </table>
+      </div>
+    </div>
+    <figure class="prod__ph">
+      <img src="img/works/w18.webp" alt="Двухцветный фасад с арочной фрезеровкой: синяя и белая плёнка ПВХ, вид до сборки" loading="lazy">
+      <figcaption>Двухцветная «Арка» до сборки: две плёнки на одной фрезеровке</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ═══ Как работаем ═══ -->
+<section class="sec sec--tight" id="work">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Как проходит заказ</h2>
+      <a class="sec__more" href="dostavka.html">Сроки, оплата, гарантия →</a>
+    </div>
+    <div class="steps">
+      <div class="step"><b>Регистрация</b><p>Почта, пароль, название компании — две минуты, без ожидания одобрения.</p></div>
+      <div class="step"><b>Расчёт и заказ</b><p>Спецификация в кабинете: размеры проверяются по техкарте, цена считается сразу. Можно вставить таблицу из Excel.</p></div>
+      <div class="step"><b>Подтверждение</b><p>Менеджер связывается, сверяет детали и наличие плёнки, согласует срок. Акт сверки — в кабинете.</p></div>
+      <div class="step"><b>Производство</b><p>10–14 рабочих дней, срочный заказ — 3–5. Статус меняется в кабинете: принят → в производстве → готов → выдан.</p></div>
+    </div>
+    <p class="steps__note">Оплата — по счёту для юридических лиц и ИП. <b>Повторный заказ</b> — в один клик из истории заказов.</p>
+  </div>
+</section>
+
+<!-- ═══ Портфолио ═══ -->
+<section class="sec" id="portfolio">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Работы с нашими фасадами</h2>
+      <p>Кухни и шкафы, собранные партнёрами: корпуса и сборка — их, фасады — наши.</p>
+      <a class="sec__more" href="raboty.html">Вся галерея →</a>
+    </div>
+    <div class="pf">
+      <figure><img src="img/works/w00.webp" alt="Угловая кухня под потолок в серо-бежевой матовой плёнке" loading="lazy"></figure>
+      <figure><img src="img/works/w03.webp" alt="Кухня с фисташковыми фасадами, витриной и деревянным пеналом" loading="lazy"></figure>
+      <figure><img src="img/works/w02.webp" alt="Двухцветная кухня: тёмно-синий низ и светлый верх" loading="lazy"></figure>
+      <figure><img src="img/works/w05.webp" alt="Серо-зелёная кухня с деревянной столешницей" loading="lazy"></figure>
+      <figure><img src="img/works/w14.webp" alt="Белая кухня с гладкими фасадами и мраморной столешницей" loading="lazy"></figure>
+      <figure><img src="img/works/w08.webp" alt="Шкаф с арочными фасадами в оливковой плёнке" loading="lazy"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Кому ═══ -->
+<section class="sec sec--tight" id="who">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>С кем работаем</h2>
+    </div>
+    <div class="who">
+      <div>
+        <h3>Мебельным производствам и студиям</h3>
+        <p>Фасады под ваши корпуса — партиями и поштучно.</p>
+        <ul>
+          <li>Спецификация вставляется из Excel — без перебивки размеров</li>
+          <li>Цена и площадь по каждой позиции сразу</li>
+          <li>История заказов и повтор в один клик</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Дизайнерам интерьера</h3>
+        <p>Подбор декора и расчёт бюджета — до встречи с заказчиком.</p>
+        <ul>
+          <li>582 образца с поиском и статусом наличия</li>
+          <li>Расчёт фасадов без звонков и ожидания прайса</li>
+          <li>Техкарты фрезеровок для рабочей документации</li>
+        </ul>
+      </div>
+      <div class="who__priv">
+        <p><b>Частный заказчик?</b> Изготовим фасады по эскизу вашего дизайнера или замерам — напишите нам в WhatsApp или позвоните, поможем с выбором.</p>
+        <a class="btn btn--ghost" href="tel:+79211947887">+7 921 194-78-87</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Вопросы ═══ -->
+<section class="sec" id="faq">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Частые вопросы</h2>
+      <p>Толщины, сроки, гарантия и лимиты размеров — коротко.</p>
+      <a class="sec__more" href="voprosy.html">Все ответы →</a>
+    </div>
+    <div class="cols2 cols2--wide">
+      <div class="qa">
+        <details open>
+          <summary>Какая толщина фасадов бывает?</summary>
+          <div class="qa__a"><p>Серийно — <span class="mono">10, 16 и 19 мм</span>. От <span class="mono">22 до 50 мм</span> — по индивидуальному согласованию. Стеновые панели по умолчанию <span class="mono">6 мм</span>.</p></div>
+        </details>
+        <details>
+          <summary>Есть минимальный заказ?</summary>
+          <div class="qa__a"><p>Нет. Считаем по фактической площади детали — позиция в 0,456 м² так и рассчитывается, без округления до квадратного метра.</p></div>
+        </details>
+        <details>
+          <summary>Можно изготовить то, чего нет в каталоге?</summary>
+          <div class="qa__a"><p>Да, изготовление деталей и новых фрезеровок возможно по согласованию с менеджером. Изменения в существующих фрезеровках — «без лучей», «без полос» — тоже делаем.</p></div>
+        </details>
+        <details>
+          <summary>Когда будет готов заказ?</summary>
+          <div class="qa__a"><p><span class="mono">10–14 рабочих дней</span>, срочный — <span class="mono">3–5</span>. Точная дата называется при подтверждении и видна в кабинете. Подробнее — <a href="dostavka.html">доставка, оплата и гарантия</a>.</p></div>
+        </details>
+      </div>
+      <aside class="aside">
+        <h3>Не нашли ответ?</h3>
+        <p>Напишите менеджеру своего города — ответим в рабочее время и добавим вопрос в раздел.</p>
+        <ul style="margin-top:0.7rem">
+          <li>Великий Новгород — <a class="mono" href="tel:+79211947887" style="color:var(--green)">+7 921 194-78-87</a></li>
+          <li>Санкт-Петербург — <a class="mono" href="tel:+79219492334" style="color:var(--green)">+7 921 949-23-34</a></li>
+        </ul>
+        <a class="btn btn--ghost" href="kontakty.html">Контакты и форма</a>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Блог ═══ -->
+<section class="sec sec--tight" id="blog">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Блог и новости</h2>
+      <p>Разборы производства: техкарты, толщины, плёнка и наличие.</p>
+      <a class="sec__more" href="novosti.html">Все материалы →</a>
+    </div>
+    <div class="blog" id="blogteaser"></div>
+  </div>
+</section>
+
+<!-- ═══ Контакты ═══ -->
+<section class="sec" id="contacts">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2>Контакты</h2>
+      <p>Производство в Великом Новгороде, офис продаж в Санкт-Петербурге. Цена в обоих городах одинаковая <span class="tofill">проверить у КАТАЛЕИ</span>.</p>
+      <a class="sec__more" href="kontakty.html">Реквизиты и мессенджеры →</a>
+    </div>
+    <div class="cont">
+      <div>
+        <h3>Великий Новгород</h3>
+        <dl>
+          <dt>Адрес</dt><dd>пр. Мира, 9 — офис продаж и производство</dd>
+          <dt>Телефон</dt><dd><a href="tel:+79211947887" class="mono">+7 921 194-78-87</a></dd>
+          <dt>Почта</dt><dd><a href="mailto:fasad-kat@mail.ru" class="mono">fasad-kat@mail.ru</a></dd>
+          <dt>Часы</dt><dd>с 9:00 до 18:00</dd>
+        </dl>
+      </div>
+      <div>
+        <h3>Санкт-Петербург</h3>
+        <dl>
+          <dt>Адрес</dt><dd>ул. Дыбенко, 16, офис 5</dd>
+          <dt>Телефон</dt><dd><a href="tel:+79219492334" class="mono">+7 921 949-23-34</a></dd>
+          <dt>Почта</dt><dd><a href="mailto:firma.katenka@gmail.com" class="mono">firma.katenka@gmail.com</a></dd>
+          <dt>Часы</dt><dd>с 9:00 до 18:00</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Финальный CTA ═══ -->
+<section class="sec fin">
+  <div class="wrap">
+    <h2>Посчитайте первый заказ сегодня</h2>
+    <p>Регистрация бесплатная и не обязывает к заказу. Каталог, техкарты и расчёт стоимости — сразу после входа.</p>
+    <a class="btn btn--lg" href="cabinet.html">Открыть кабинет партнёра</a>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <div>
+      <a class="brand" href="index.html"><svg class="brand__m" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.6 2h14.8A2.6 2.6 0 0 1 26 4.6v22.8a2.6 2.6 0 0 1-2.6 2.6H8.6A2.6 2.6 0 0 1 6 27.4V4.6A2.6 2.6 0 0 1 8.6 2Zm2.9 24.7V13.4a4.5 4.5 0 0 1 9 0v13.3h2.2V13.4a6.7 6.7 0 0 0-13.4 0v13.3h2.2Z"/></svg><span class="brand__w"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></span></a>
+      <p style="margin-top:0.9rem;font-size:0.88rem;max-width:36ch;color:oklch(74% 0.01 80)">Производство мебельных фасадов МДФ в плёнке ПВХ. Собственное производство в Великом Новгороде, офис продаж в Санкт-Петербурге.</p>
+      <p style="margin-top:0.8rem;font-size:0.9rem"><a class="mono" href="tel:+79211947887">+7 921 194-78-87</a> — Великий Новгород<br><a class="mono" href="tel:+79219492334">+7 921 949-23-34</a> — Санкт-Петербург</p>
+    </div>
+    <div>
+      <h3>Каталог</h3>
+      <ul>
+        <li><a href="dekory.html">Декоры плёнки</a></li>
+        <li><a href="frezerovki.html">Фрезеровки и техкарты</a></li>
+        <li><a href="cabinet.html">Кабинет партнёра</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Компания</h3>
+      <ul>
+        <li><a href="o-kompanii.html">О компании</a></li>
+        <li><a href="raboty.html">Работы</a></li>
+        <li><a href="novosti.html">Новости</a></li>
+        <li><a href="kontakty.html">Контакты</a></li>
+      </ul>
+    </div>
+    <div>
+      <h3>Партнёрам</h3>
+      <ul>
+        <li><a href="index.html#work">Как проходит заказ</a></li>
+        <li><a href="dostavka.html">Доставка, оплата, гарантия</a></li>
+        <li><a href="voprosy.html">Вопросы и ответы</a></li>
+        <li><a href="politika.html">Обработка персональных данных</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap foot__legal">
+    <span>© 2026 ООО «КАТЕНЬКА» · бренд «КАТАЛЕЯ»</span>
+    <a href="politika.html">Политика обработки персональных данных</a>
+    <span style="margin-left:auto">Прототип · Silver ML</span>
+  </div>
+</footer>
+
+<script src="dekory.js"></script>
+<script src="frezerovki.js"></script>
+<script src="stati.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s) { return document.querySelector(s); };
+  function decImg(d) { return 'img/dekory/' + d[4] + '.webp'; }
+  function decBg(d) { return 'url("' + decImg(d) + '")'; }
+
+  /* ── Мозаика групп декоров ── */
+  var GROUPS = [
+    { key: 'D', name: 'Древесные', cnt: 0 },
+    { key: 'O', name: 'Однотонные', cnt: 0 },
+    { key: 'G', name: 'Глянцевые', cnt: 0 },
+    { key: 'T', name: 'Текстурные', cnt: 0 }
+  ];
+  var byG = {};
+  window.DECORS.forEach(function (d) { (byG[d[2]] = byG[d[2]] || []).push(d); });
+  var dg = $('#dg');
+  GROUPS.forEach(function (g) {
+    var list = byG[g.key] || [];
+    // берём образцы из разных мест списка, чтобы мозаика была разнообразной
+    var picks = [0, Math.floor(list.length / 3), Math.floor(list.length / 2), list.length - 1]
+      .map(function (i) { return list[Math.max(0, Math.min(i, list.length - 1))]; });
+    var mosaic = picks.map(function (d) {
+      return '<span class="sw" style=' + "'" + 'background-image:' + decBg(d) + "'" + '></span>';
+    }).join('');
+    dg.insertAdjacentHTML('beforeend',
+      '<a class="dg__cell" href="dekory.html#' + g.key + '">' +
+        '<span class="dg__mosaic">' + mosaic + '</span>' +
+        '<span class="dg__cap"><b>' + g.name + '</b><span>' + list.length + ' декор' + plural(list.length) + '</span></span>' +
+      '</a>');
+  });
+  function plural(n) { var m = n % 100, u = n % 10; if (m > 10 && m < 20) return 'ов'; if (u === 1) return ''; if (u > 1 && u < 5) return 'а'; return 'ов'; }
+
+  /* ── Превью фрезеровок ── */
+  var fz = $('#fz');
+  var frezPick = ['Сканди', 'Выборка 20', 'Арка', 'Колизей', 'Волна', 'Рубин'];
+  var shown = 0;
+  frezPick.forEach(function (nm) {
+    var f = window.FREZ.find(function (x) { return x.n === nm; });
+    if (!f || !f.img || shown >= 6) return;
+    shown++;
+    fz.insertAdjacentHTML('beforeend',
+      '<a href="frezerovki.html#' + f.id + '"><figure style="margin:0">' +
+        '<span class="ph"><img src="' + f.img + '" alt="Фрезеровка «' + f.n + '»" loading="lazy"></span>' +
+        '<figcaption>' + f.n + '</figcaption>' +
+      '</figure></a>');
+  });
+  // добираем из каталога, если именных не хватило
+  for (var i = 0; shown < 6 && i < window.FREZ.length; i++) {
+    var f2 = window.FREZ[i];
+    if (frezPick.indexOf(f2.n) !== -1 || !f2.img) continue;
+    shown++;
+    fz.insertAdjacentHTML('beforeend',
+      '<a href="frezerovki.html#' + f2.id + '"><figure style="margin:0">' +
+        '<span class="ph"><img src="' + f2.img + '" alt="Фрезеровка «' + f2.n + '»" loading="lazy"></span>' +
+        '<figcaption>' + f2.n + '</figcaption>' +
+      '</figure></a>');
+  }
+
+  /* ── Наличие: живые строки из каталога ── */
+  var sl = $('#stock-list');
+  var stockPicks = [];
+  ['D', 'O', 'G', 'T'].forEach(function (g) {
+    var list = byG[g] || [];
+    for (var i = 0; i < list.length && stockPicks.filter(function (x) { return x[2] === g; }).length < 2; i += 7) {
+      stockPicks.push(list[i]);
+    }
+  });
+  stockPicks.slice(0, 6).forEach(function (d) {
+    var inStock = d[5] !== 0;
+    sl.insertAdjacentHTML('beforeend',
+      '<div class="stock__row">' +
+        '<span class="sw" style=' + "'" + 'background-image:' + decBg(d) + "'" + '></span>' +
+        '<span class="nm"><b>' + d[1] + '</b><span>' + (d[0] || '—') + '</span></span>' +
+        '<span class="avail ' + (inStock ? 'avail--y' : 'avail--n') + '">' + (inStock ? 'В наличии' : 'Под заказ') + '</span>' +
+      '</div>');
+  });
+  sl.insertAdjacentHTML('beforeend', '<div class="stock__note">Статусы в прототипе условные. В работе — выгрузка со склада фабрики (1С).</div>');
+
+  /* ── Демо-конфигуратор без цены ── */
+  var mills = window.FREZ.filter(function (f) { return !f.defTech; });
+  var mSel = $('#d-mill');
+  mills.forEach(function (f, i) {
+    mSel.insertAdjacentHTML('beforeend', '<option value="' + f.id + '"' + (f.n === 'Сканди' ? ' selected' : '') + '>' + f.n + ' — ' + f.g.replace(' фрезеровки', '').toLowerCase() + '</option>');
+  });
+  var demoType = 'b';
+  var typeNames = { b: 'глухого', v: 'витрины', d: 'ящика' };
+  document.querySelectorAll('.typechips .chip').forEach(function (ch) {
+    ch.addEventListener('click', function () {
+      document.querySelectorAll('.typechips .chip').forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+      ch.setAttribute('aria-pressed', 'true');
+      demoType = ch.dataset.t;
+      demoCalc();
+    });
+  });
+  function millById(id) { return window.FREZ.find(function (x) { return x.id === id; }); }
+  function demoCalc() {
+    var f = millById(mSel.value); if (!f) return;
+    var lim = f.lim[demoType];
+    var h = parseInt($('#d-h').value, 10) || 0;
+    var w = parseInt($('#d-w').value, 10) || 0;
+    $('#d-lim').textContent = lim[0][0] + '–' + lim[0][1] + ' × ' + lim[1][0] + '–' + lim[1][1] + ' мм';
+    var errs = [];
+    if (h && (h < lim[0][0] || h > lim[0][1])) errs.push('высота ' + typeNames[demoType] + ': ' + lim[0][0] + '–' + lim[0][1] + ' мм');
+    if (w && (w < lim[1][0] || w > lim[1][1])) errs.push('ширина: ' + lim[1][0] + '–' + lim[1][1] + ' мм');
+    var hInp = $('#d-h'), wInp = $('#d-w');
+    hInp.setAttribute('aria-invalid', h && (h < lim[0][0] || h > lim[0][1]) ? 'true' : 'false');
+    wInp.setAttribute('aria-invalid', w && (w < lim[1][0] || w > lim[1][1]) ? 'true' : 'false');
+    $('#d-err').textContent = errs.length ? 'Вне лимитов техкарты «' + f.n + '»: ' + errs.join(', ') : '';
+    if (h && w && !errs.length) {
+      $('#d-area').textContent = (h * w / 1000000).toLocaleString('ru-RU', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' м²';
+    } else {
+      $('#d-area').textContent = '—';
+    }
+  }
+  mSel.addEventListener('change', demoCalc);
+  $('#d-h').addEventListener('input', demoCalc);
+  $('#d-w').addEventListener('input', demoCalc);
+  demoCalc();
+})();
+</script>
+
+<script src="site.js"></script>
+<script>
+(function () {
+  'use strict';
+  var box = document.getElementById('blogteaser');
+  if (box && window.STATI) box.innerHTML = window.STATI.slice(0, 3).map(window.statCard).join('');
+})();
+</script>
+</body>
+</html>
