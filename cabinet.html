@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Кабинет партнёра — КАТАЛЕЯ: расчёт и заказ фасадов онлайн</title>
+<title>Кабинет партнёра — KatiSSo: расчёт и заказ фасадов онлайн</title>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="favicon.svg">
-<meta name="description" content="Прототип кабинета партнёра фабрики мебельных фасадов «КАТАЛЕЯ»: спецификация, расчёт, акт сверки без менеджера.">
+<meta name="description" content="Прототип кабинета партнёра фабрики мебельных фасадов «KatiSSo»: спецификация, расчёт, акт сверки без менеджера.">
 <meta name="robots" content="noindex, nofollow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════════════════════════
-   КАТАЛЕЯ · кабинет партнёра — прототип
+   KatiSSo · кабинет партнёра — прототип
    Регистр: product. Пользователь в задаче (собрать спецификацию),
    а не читает страницу.
 
@@ -132,11 +132,11 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .brand__mark { display: grid; line-height: 1; }
 .brand__mark b {
   font-family: "Onest", system-ui, sans-serif;
-  font-size: var(--t-md); font-weight: 600; letter-spacing: 0.14em;
-  color: var(--ink); text-transform: uppercase;
+  font-size: 1.5rem; font-weight: 600; letter-spacing: 0.02em;
+  color: var(--ink);
 }
 .brand__mark i {
-  font-style: normal; font-size: 0.5625rem; letter-spacing: 0.155em;
+  font-style: normal; font-size: 0.5rem; letter-spacing: 0.06em;
   color: var(--ink-3); text-transform: uppercase; margin-top: 0.1875rem;
 }
 .brand__sub {
@@ -167,7 +167,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .auth__card { width: 100%; max-width: 420px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--sh-2); padding: 1.75rem; }
 .auth__brand { text-align: center; margin-bottom: 1.25rem; }
 .auth__brand .brand__m { width: 2.25rem; height: 2.25rem; margin: 0 auto 0.6rem; }
-.auth__brand b { display: block; font-family: "Onest", system-ui, sans-serif; font-size: var(--t-lg); letter-spacing: 0.1em; font-weight: 600; }
+.auth__brand b { display: block; font-family: "Onest", system-ui, sans-serif; font-size: var(--t-lg); letter-spacing: 0.02em; font-weight: 600; }
 .auth__brand i { font-style: normal; font-size: var(--t-xs); letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-3); }
 .auth__tabs { display: grid; grid-template-columns: 1fr 1fr; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 3px; margin-bottom: 1.25rem; }
 .auth__tabs button { border: 0; background: transparent; border-radius: 6px; padding: 0.5rem; font-weight: 600; font-size: var(--t-sm); cursor: pointer; color: var(--ink-2); }
@@ -649,7 +649,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
 <section class="auth" id="s-auth">
   <div class="auth__card">
-    <div class="auth__brand"><svg class="brand__m" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.6 2h14.8A2.6 2.6 0 0 1 26 4.6v22.8a2.6 2.6 0 0 1-2.6 2.6H8.6A2.6 2.6 0 0 1 6 27.4V4.6A2.6 2.6 0 0 1 8.6 2Zm2.9 24.7V13.4a4.5 4.5 0 0 1 9 0v13.3h2.2V13.4a6.7 6.7 0 0 0-13.4 0v13.3h2.2Z"/></svg><b>КАТАЛЕЯ</b><i>кабинет партнёра</i></div>
+    <div class="auth__brand"><svg class="brand__m" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.6 2h14.8A2.6 2.6 0 0 1 26 4.6v22.8a2.6 2.6 0 0 1-2.6 2.6H8.6A2.6 2.6 0 0 1 6 27.4V4.6A2.6 2.6 0 0 1 8.6 2Zm2.9 24.7V13.4a4.5 4.5 0 0 1 9 0v13.3h2.2V13.4a6.7 6.7 0 0 0-13.4 0v13.3h2.2Z"/></svg><b>KatiSSo</b><i>кабинет партнёра</i></div>
     <div class="auth__tabs" role="tablist">
       <button role="tab" id="tab-login" aria-selected="true">Вход</button>
       <button role="tab" id="tab-reg" aria-selected="false">Регистрация</button>
@@ -678,12 +678,12 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
 
 <header class="topbar" id="app-top" hidden>
   <div class="topbar__in">
-    <a class="brand" href="index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit" title="Открыть сайт КАТАЛЕЯ в новой вкладке — спецификация останется здесь">
-      <!-- Wordmark, а не файл логотипа с их сайта: в шапке fasad-kat.ru до сих
-           стоит лого прежнего бренда «KatiSSo», хотя ребрендинг в «КАТАЛЕЯ»
-           на сайте уже объявлен. Тащить устаревшую марку в прототип незачем. -->
+    <a class="brand" href="index.html" target="_blank" rel="noopener" style="text-decoration:none; color:inherit" title="Открыть сайт KatiSSo в новой вкладке — спецификация останется здесь">
+      <!-- Wordmark набран текстом, а не картинкой: файла логотипа KatiSSo у нас
+           нет, а вытаскивать растр из шапки fasad-kat.ru — тащить в прототип
+           чужое качество. Придёт исходник от фабрики — подменяется одной строкой. -->
       <svg class="brand__m" viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M8.6 2h14.8A2.6 2.6 0 0 1 26 4.6v22.8a2.6 2.6 0 0 1-2.6 2.6H8.6A2.6 2.6 0 0 1 6 27.4V4.6A2.6 2.6 0 0 1 8.6 2Zm2.9 24.7V13.4a4.5 4.5 0 0 1 9 0v13.3h2.2V13.4a6.7 6.7 0 0 0-13.4 0v13.3h2.2Z"/></svg>
-      <span class="brand__mark"><b>КАТАЛЕЯ</b><i>мебельные фасады</i></span>
+      <span class="brand__mark"><b>KatiSSo</b><i>мебельные фасады</i></span>
       <span class="brand__sub">Кабинет партнёра</span>
     </a>
 
@@ -979,7 +979,7 @@ dialog.pick::backdrop { background: oklch(22% 0.006 250 / 0.42); backdrop-filter
     <div class="card">
       <div class="card__h"><h3>Присадка под петли</h3></div>
       <div class="card__b">
-        <p style="font-size:var(--t-sm); color:var(--ink-2)">Количество петель зависит от веса, ширины и высоты фасада. <span class="tofill">заполняет КАТАЛЕЯ</span> — таблица ниже общеотраслевая, для МДФ 16 мм; фабрика подтверждает свои значения.</p>
+        <p style="font-size:var(--t-sm); color:var(--ink-2)">Количество петель зависит от веса, ширины и высоты фасада. <span class="tofill">заполняет KatiSSo</span> — таблица ниже общеотраслевая, для МДФ 16 мм; фабрика подтверждает свои значения.</p>
         <table class="lim" style="margin-top:0.75rem">
           <thead><tr><th>Высота фасада</th><th>Петель</th></tr></thead>
           <tbody>

@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════════════
-   КАТАЛЕЯ · публичный мини-сайт — общие стили
+   KatiSSo · публичный мини-сайт — общие стили
    Мир: инструмент профессионала. Тёплый нейтральный грунт (их сайт),
    глубокий зелёный акцент (их кнопки и их же фасады с фото), реальные
    образцы плёнки как графическая система. Дисплей — Oswald (голос
@@ -85,12 +85,14 @@ button, input, select { font: inherit; color: inherit; }
    задаётся через color, а не зашит в путь.
    Размеры всех частей — в em от .brand, поэтому пара масштабируется
    целиком одной строкой. Кегль и трекинг подписи подобраны так, что её
-   ширина совпадает с шириной слова «КАТАЛЕЯ» (замерено: 114 / 114 px). */
+   ширина совпадает с шириной вордмарка (замерено: 95.5 / 97.3 px).
+   Капса на имени нет намеренно: фабрика пишет марку «KatiSSo», и
+   text-transform превратил бы её в «KATISSO», потеряв две большие S. */
 .brand { display: inline-flex; align-items: center; gap: 0.6em; text-decoration: none; color: var(--ink); font-size: 1.35rem; line-height: 1; }
 .brand__m { flex: 0 0 auto; display: block; width: 1.36em; height: 1.36em; color: var(--green); }
 .brand__w { display: flex; flex-direction: column; line-height: 1; }
-.brand b { font-family: var(--disp); font-weight: 600; font-size: 1em; letter-spacing: 0.105em; text-transform: uppercase; }
-.brand i { font-style: normal; font-size: 0.4em; letter-spacing: 0.145em; text-transform: uppercase; color: var(--ink-3); margin-top: 0.32em; }
+.brand b { font-family: var(--disp); font-weight: 600; font-size: 1.15em; letter-spacing: 0.015em; }
+.brand i { font-style: normal; font-size: 0.36em; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); margin-top: 0.32em; }
 .brand:hover .brand__m { color: var(--green-deep); }
 .nav { display: flex; gap: 0.25rem; margin-left: 0.5rem; }
 .nav a { text-decoration: none; font-size: 0.9rem; color: var(--ink-2); padding: 0.45rem 0.6rem; border-radius: 6px; transition: color 0.15s, background 0.15s; }
@@ -247,7 +249,7 @@ dialog.lb { max-width: min(1080px, calc(100vw - 2rem)); background: var(--surfac
 /* ── Блог и новости: рубрики, свежая запись, сетка карточек ──
    Раскладка перенесена с блога «Монолита» (рубрики со счётчиками →
    крупная свежая запись → сетка 3 в ряд с рубрикой, датой и временем
-   чтения). Цвета, шрифты и радиусы — свои, КАТАЛЕИ. */
+   чтения). Цвета, шрифты и радиусы — свои, KatiSSo. */
 
 .btabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0 0 clamp(1.4rem, 3vw, 2rem); }
 .btab { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.45rem 0.95rem;
