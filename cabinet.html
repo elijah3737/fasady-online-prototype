@@ -292,21 +292,6 @@ select.ctl {
 }
 .ctl.num, input.num { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; }
 
-/* Сегментированный контрол */
-.seg {
-  display: inline-flex; gap: 2px; padding: 2px; border-radius: 9px;
-  background: var(--fill); flex: none;
-}
-.seg button {
-  border: 0; background: transparent; font: inherit; font-size: var(--t-sm); font-weight: 500;
-  color: var(--ink); min-height: 30px; padding: 6px 13px; border-radius: var(--r-xs); cursor: pointer;
-  transition: background .15s var(--ease);
-}
-.seg button[aria-pressed="true"] {
-  background: var(--surface); font-weight: 600;
-  box-shadow: 0 3px 8px rgba(0,0,0,.10), 0 0 0 .5px rgba(0,0,0,.04);
-}
-.seg button:active { opacity: .7; }
 
 /* Переключатель «только в наличии» */
 .sw { display: inline-flex; align-items: center; gap: 8px; font-size: var(--t-sm); color: var(--ink-2); cursor: pointer; }
@@ -569,30 +554,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
 .pick__b { padding: 16px; overflow: auto; }
 .pick__f { padding: 12px 16px; border-top: 1px solid var(--sep); display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
-/* ── Превью подбора ─────────────────────────────────────────────── */
-.vis { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 18px; }
-.fasad {
-  aspect-ratio: 3/4; border-radius: 12px; background: var(--fill) center / cover no-repeat;
-  box-shadow: inset 0 0 0 1px rgba(0,0,0,.10), var(--sh-2); position: relative; overflow: hidden;
-  max-height: 380px; margin: 0 auto; width: 100%;
-}
-.fasad::after {
-  content: ""; position: absolute; inset: 11%; border-radius: 3px;
-  box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.42), 0 0 0 1.5px rgba(0,0,0,.20);
-  transition: inset .2s var(--ease), border-radius .2s var(--ease);
-}
-.fasad[data-mill="Зеркало"]::after { inset: 7%; }
-.fasad[data-mill="Арка"]::after { inset: 11%; border-radius: 44% 44% 3px 3px; }
-.fasad[data-mill="Сканди"]::after { inset: 13% 9%; }
-.fasad[data-mill="Кристалл"]::after { inset: 12%; border-radius: 0; }
-.fasad[data-mill="Закругленный"]::after { inset: 10%; border-radius: 16px; }
-.fasad[data-mill="Модерн"]::after { inset: 8% 8% 8% 22%; }
-.fasad__d {
-  position: absolute; left: 0; right: 0; bottom: 0; padding: 20px 10px 8px;
-  background: linear-gradient(to top, rgba(0,0,0,.66), transparent);
-  color: #fff; font-size: var(--t-xs); font-variant-numeric: tabular-nums; font-family: var(--font);
-}
-
 /* ── Тост ───────────────────────────────────────────────────────── */
 .toast {
   position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(12px);
@@ -653,7 +614,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
 @media (max-width: 1000px) {
   .work { grid-template-columns: minmax(0, 1fr); }
   .side--sticky { position: static; }
-  .vis { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 767px) {
   .app-shell { grid-template-columns: minmax(0, 1fr); }
@@ -763,11 +723,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     <div>
       <h1>Новый заказ</h1>
       <p>Соберите спецификацию, проверьте расчёт и сформируйте акт сверки — без звонка менеджеру. Ваша скидка учитывается сразу.</p>
-    </div>
-    <span class="head__sp"></span>
-    <div class="seg" role="group" aria-label="Способ ввода">
-      <button id="m-spec" aria-pressed="true">Спецификация</button>
-      <button id="m-vis" aria-pressed="false">Подбор с превью</button>
     </div>
   </div>
 
@@ -900,54 +855,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
           <button class="btn" data-add="drawer">+ Ящик</button>
           <span style="flex:1"></span>
           <button class="btn btn--ghost btn--sm btn--danger" id="btn-clear" hidden>Очистить</button>
-        </div>
-      </div>
-
-      <!-- Режим: визуальный подбор -->
-      <div class="card" id="box-vis" hidden>
-        <div class="card__h">
-          <h3>Подбор с превью</h3>
-          <span class="sp"></span>
-          <span class="hint">Соберите позицию визуально и добавьте в спецификацию</span>
-        </div>
-        <div class="card__b">
-          <div class="vis">
-            <div>
-              <div class="fasad" id="vis-fasad" data-mill="Модерн">
-                <div class="fasad__d" id="vis-dim">716 × 396 мм</div>
-              </div>
-              <p class="hint" style="margin-top:0.5rem">Превью на реальном образце плёнки. Рисунок фрезеровки показан схематично.</p>
-            </div>
-            <div style="display:grid; gap:0.875rem; align-content:start; min-width:0">
-              <div class="params">
-                <div class="field">
-                  <label for="v-type">Тип фасада</label>
-                  <select class="ctl" id="v-type"></select>
-                </div>
-                <div class="field">
-                  <label for="v-h">Высота, мм</label>
-                  <input class="ctl num" id="v-h" type="number" value="716" inputmode="numeric">
-                </div>
-                <div class="field">
-                  <label for="v-w">Ширина, мм</label>
-                  <input class="ctl num" id="v-w" type="number" value="396" inputmode="numeric">
-                </div>
-                <div class="field">
-                  <label for="v-q">Количество</label>
-                  <input class="ctl num" id="v-q" type="number" value="2" min="1" inputmode="numeric">
-                </div>
-              </div>
-              <p class="hint" id="v-lim"></p>
-              <div style="display:flex; align-items:center; gap:0.875rem; flex-wrap:wrap">
-                <div>
-                  <div class="hint">Стоимость позиции</div>
-                  <div style="font-size:var(--t-lg); font-weight:600; letter-spacing:-0.01em" class="num" id="v-sum">—</div>
-                </div>
-                <span style="flex:1"></span>
-                <button class="btn btn--primary" id="v-add">Добавить в спецификацию</button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -1271,7 +1178,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     rows: [],
     orders: [],
     seq: 1042,
-    mode: 'spec',
     act: null
   };
 
@@ -1877,7 +1783,7 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     var lm = $('lim-mill'); if (lm && lm.value !== st.mill) lm.value = st.mill;
     // Уже введённые строки могли выйти за лимиты новой техкарты — скажем вслух.
     var badBefore = st.rows.filter(function (r) { return rowFilled(r) && rowBad(r); }).length;
-    renderSpec(); renderVis(); renderParamHints(); renderLimits(); saveDraft(); renderSide(); renderMillStrip();
+    renderSpec(); renderParamHints(); renderLimits(); saveDraft(); renderSide(); renderMillStrip();
     var badAfter = st.rows.filter(function (r) { return rowFilled(r) && rowBad(r); }).length;
     if (badAfter > badBefore) {
       toast(plural(badAfter - badBefore, 'Позиция вышла', 'Позиции вышли', 'Позиций вышло') +
@@ -1995,7 +1901,7 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     else if (party.demo) { seedOrders(); saveOrders(); }
     else { st.orders = []; }
     renderOrders();
-    renderTotals(); renderVis();
+    renderTotals();
     go('work');
     document.getElementById('s-auth').hidden = true;
     document.getElementById('app-shell').hidden = false;
@@ -2085,7 +1991,7 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
       $('pd-sw').style.backgroundImage = 'none';
       $('pd-name').textContent = 'Декор не выбран';
       $('pd-meta').textContent = '582 декора в каталоге';
-      renderSpec(); renderVis();
+      renderSpec();
       return;
     }
     st.decor = d;
@@ -2096,7 +2002,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
                : '<span class="tag tag--warn"><span class="dot"></span>под заказ</span>');
     $('pick-dec').title = decLabel(d) + ' · ' + groupLabel(d.g) + ' · ' + nf.format(decPrice(d)) + ' ₽/м²';
     renderSpec();
-    renderVis();
     renderSide();
     if (typeof renderShowcase === 'function' && !$('s-work').hidden) renderShowcase();
   }
@@ -2310,61 +2215,7 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     renderCatalog();
   });
 
-  /* ═══════════ Визуальный подбор ═══════════ */
-
-  $('v-type').innerHTML = TYPE_ORDER.map(function (k) {
-    return '<option value="' + k + '"' + (k === 'blind' ? ' selected' : '') + '>' + TYPES[k].label + '</option>';
-  }).join('');
-
-  function visVals() {
-    return {
-      type: $('v-type').value,
-      h: parseInt($('v-h').value, 10) || 0,
-      w: parseInt($('v-w').value, 10) || 0,
-      q: parseInt($('v-q').value, 10) || 0
-    };
-  }
-
-  function renderVis() {
-    var v = visVals(), f = $('vis-fasad');
-    // Лимиты берём из техкарты выбранной фрезеровки — теми же, какими потом
-    // проверяется строка. Раньше подпись показывала обобщённые, и кнопка
-    // «Добавить» гасла на размере, который она же называла допустимым.
-    var t = rowLim({ type: v.type, mill: null });
-    t.label = TYPES[v.type].label;
-    f.dataset.mill = st.mill;
-    if (st.decor) f.style.backgroundImage = decBg(st.decor);
-    $('vis-dim').textContent = (v.h || '—') + ' × ' + (v.w || '—') + ' мм' + (v.q > 1 ? ' · ' + v.q + ' шт' : '');
-    if (v.h > 0 && v.w > 0) f.style.aspectRatio = v.w + ' / ' + v.h;
-    $('v-lim').textContent = 'Техкарта «' + st.mill + '», ' + t.label.toLowerCase() + ': высота ' +
-      t.hMin + '–' + t.hMax + ' мм, ширина ' + t.wMin + '–' + t.wMax + ' мм.';
-    var r = { type: v.type, h: v.h, w: v.w, q: v.q, decor: null, mill: null };
-    var ok = rowOk(r) && !!st.decor;
-    $('v-sum').textContent = ok ? money2(rowCost(r)) + ' ₽' : '—';
-    $('v-add').disabled = !ok;
-  }
-  ['v-type', 'v-h', 'v-w', 'v-q'].forEach(function (id) {
-    $(id).addEventListener('input', renderVis);
-    $(id).addEventListener('change', renderVis);
-  });
-  $('v-add').addEventListener('click', function () {
-    var v = visVals();
-    addRow(v.type, { h: v.h, w: v.w, q: v.q });
-    renderSpec();
-    toast('Добавлено в спецификацию');
-  });
-
-  $('m-spec').addEventListener('click', function () { setMode('spec'); });
-  $('m-vis').addEventListener('click', function () { setMode('vis'); });
-  function setMode(m) {
-    st.mode = m;
-    $('m-spec').setAttribute('aria-pressed', m === 'spec' ? 'true' : 'false');
-    $('m-vis').setAttribute('aria-pressed', m === 'vis' ? 'true' : 'false');
-    $('box-vis').hidden = (m !== 'vis');   // спецификация видна всегда — она главная
-    if (m === 'vis') renderVis();
-  }
-
-  /* ═══════════ Акт сверки ═══════════ */
+    /* ═══════════ Акт сверки ═══════════ */
 
   // Псевдо-QR: детерминированная сетка от номера заказа.
   // В бою — реальный QR со ссылкой на заказ в кабинете.
@@ -2786,7 +2637,6 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
 
   // Заказы и итоги сеются при входе (loginAs); до него открыт экран входа.
   setDecor(decByLabel('0101 Дуб шале натуральный') || DEC[0]);
-  setMode('spec');
   renderSpec();
   go('work');
 
