@@ -340,6 +340,18 @@ select.ctl {
 .tag--info   { background: var(--accent-wash); color: var(--accent); }
 .tag--work   { background: #e7f0fb; color: #1e5fa8; }
 .tag--mute   { background: var(--fill); color: var(--ink-2); }
+/* «Пример» — на карточках, наполненных образцами, а не данными фабрики. */
+.tag--test   { background: var(--warn-wash); color: var(--warn); font-weight: 600; }
+
+/* Полоса-предупреждение над разделом: тем же языком, что оговорка о черновом
+   прайсе на экране заказа — человек уже знает, что жёлтое означает «данные
+   ещё не подтверждены фабрикой». */
+.banner {
+  display: block; margin-bottom: 14px; padding: 12px 14px;
+  border-radius: var(--r); font-size: var(--t-sm); line-height: 1.45;
+}
+.banner--test { background: var(--warn-wash); color: var(--warn); }
+.banner--test b { color: var(--warn); }
 
 /* ── Витрина образцов ───────────────────────────────────────────── */
 .grid-dec { display: grid; grid-template-columns: repeat(auto-fill, minmax(152px, 1fr)); gap: 14px; }
@@ -487,8 +499,25 @@ table.spec { width: 100%; border-collapse: collapse; font-size: var(--t-md); }
 
 /* ── Документы ──────────────────────────────────────────────────── */
 .docs { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; align-items: start; }
-.dl { display: grid; gap: 8px; }
 .grp { display: grid; gap: 6px; }
+
+/* Список файлов: имя слева, формат отдельной пилюлей справа. Раньше формат
+   стоял вплотную к названию и читался его частью — «фасадов ПВХPDF». */
+.dl { display: grid; gap: 2px; }
+.dl a {
+  display: flex; align-items: center; gap: 10px;
+  min-height: var(--tap); padding: 6px 8px; margin: 0 -8px;
+  border-radius: 10px; color: var(--ink); text-decoration: none;
+  font-size: var(--t-sm); line-height: 1.35;
+}
+.dl a:hover { background: var(--fill); }
+.dl a svg { flex: none; color: var(--ink-3); }
+.dl a span.nm { flex: 1; min-width: 0; }
+.dl .sz {
+  flex: none; margin-left: auto;
+  font-size: 11px; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-3); background: var(--fill); border-radius: 5px; padding: 2px 6px;
+}
 
 /* ── Акт сверки ─────────────────────────────────────────────────── */
 .act-wrap { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 18px; align-items: start; }
@@ -578,8 +607,22 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
 .toast__do:hover { text-decoration: underline; }
 
 /* ── Мелочи ─────────────────────────────────────────────────────── */
-.lim { font-size: var(--t-xs); color: var(--ink-3); font-family: var(--mono); }
-.sz { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+/* Таблица лимитов. Была набрана целиком моноширинным серым 12 px, колонки
+   ничем не выравнивались — числа «плясали», а заголовки читались как данные.
+   Теперь подписи системным шрифтом, числа моноширинными с табличными цифрами
+   и по правому краю, строки разделены волосяной линией. */
+.lim { width: 100%; border-collapse: collapse; font-size: var(--t-sm); }
+.lim th {
+  font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-3); text-align: left; padding: 0 0 6px;
+}
+.lim th + th, .lim td + td { text-align: right; }
+.lim td { padding: 7px 0; color: var(--ink); border-top: 1px solid var(--line); }
+.lim td:first-child { color: var(--ink-2); white-space: nowrap; }
+.lim td.n, .lim td + td {
+  font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.lim tbody tr:first-child td { border-top-color: var(--line-2); }
 .x { color: var(--ink-3); padding: 0 3px; }
 .c { color: var(--ink-2); }
 .tofill {
@@ -993,6 +1036,16 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     </div>
   </div>
 
+  <!-- Пометка обязательна: часть раздела показана образцами. Демонстрировать
+       выдуманные документы как настоящие нельзя — доверие к остальным цифрам
+       падает вместе с ними. -->
+  <div class="banner banner--test">
+    <b>Раздел заполнен тестовыми данными.</b> Настоящие здесь только лимиты
+    техкарт — они загружены из каталога фабрики и по ним проверяется
+    спецификация. Таблица присадки взята общеотраслевая, файлы — образцы:
+    и то и другое ждёт документов KatiSSo.
+  </div>
+
   <div class="docs">
     <div class="card">
       <div class="card__h"><h2 class="card__t">Техкарта фрезеровки: лимиты, мм</h2></div>
@@ -1000,7 +1053,7 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
         <label class="lbl" for="lim-mill">Фрезеровка</label>
         <select class="ctl" id="lim-mill" style="width:100%"></select>
       </div>
-      <div class="card__b card__b--flush">
+      <div class="card__b" style="padding-top:0.5rem">
         <table class="lim">
           <thead><tr><th>Тип фасада</th><th>Высота</th><th>Ширина</th></tr></thead>
           <tbody id="lim-body"></tbody>
@@ -1014,15 +1067,15 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     </div>
 
     <div class="card">
-      <div class="card__h"><h3>Присадка под петли</h3></div>
+      <div class="card__h"><h3>Присадка под петли</h3><span class="sp"></span><span class="tag tag--test">пример</span></div>
       <div class="card__b">
         <p style="font-size:var(--t-sm); color:var(--ink-2)">Количество петель зависит от веса, ширины и высоты фасада. <span class="tofill">заполняет KatiSSo</span> — таблица ниже общеотраслевая, для МДФ 16 мм; фабрика подтверждает свои значения.</p>
         <table class="lim" style="margin-top:0.75rem">
           <thead><tr><th>Высота фасада</th><th>Петель</th></tr></thead>
           <tbody>
             <tr><td class="n">до 900</td><td class="n">2</td></tr>
-            <tr><td class="n">901 – 1600</td><td class="n">3</td></tr>
-            <tr><td class="n">1601 – 2000</td><td class="n">4</td></tr>
+            <tr><td class="n">901–1600</td><td class="n">3</td></tr>
+            <tr><td class="n">1601–2000</td><td class="n">4</td></tr>
             <tr><td class="n">от 2001</td><td class="n">5</td></tr>
           </tbody>
         </table>
@@ -1031,15 +1084,15 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     </div>
 
     <div class="card">
-      <div class="card__h"><h3>Файлы</h3></div>
+      <div class="card__h"><h3>Файлы</h3><span class="sp"></span><span class="tag tag--test">пример</span></div>
       <div class="card__b">
         <div class="dl">
-          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg> Технический каталог фасадов ПВХ<span class="sz">PDF</span></a>
-          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg> Каталог фрезеровок<span class="sz">PDF</span></a>
-          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg> Правила эксплуатации фасадов<span class="sz">PDF</span></a>
-          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4.5l6-3 6 3-6 3-6-3z" stroke="currentColor" stroke-width="1.3"/><path d="M2 8l6 3 6-3M2 11.5l6 3 6-3" stroke="currentColor" stroke-width="1.3"/></svg> 3D-модели фасадов для проектирования<span class="sz">архив</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg><span class="nm">Технический каталог фасадов ПВХ</span><span class="sz">PDF</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg><span class="nm">Каталог фрезеровок</span><span class="sz">PDF</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M9 1.5H4.5A1.5 1.5 0 003 3v10A1.5 1.5 0 004.5 14.5h7A1.5 1.5 0 0013 13V5.5L9 1.5z" stroke="currentColor" stroke-width="1.3"/><path d="M9 1.5V5.5H13" stroke="currentColor" stroke-width="1.3"/></svg><span class="nm">Правила эксплуатации фасадов</span><span class="sz">PDF</span></a>
+          <a href="#" data-file="1"><svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4.5l6-3 6 3-6 3-6-3z" stroke="currentColor" stroke-width="1.3"/><path d="M2 8l6 3 6-3M2 11.5l6 3 6-3" stroke="currentColor" stroke-width="1.3"/></svg><span class="nm">3D-модели фасадов для проектирования</span><span class="sz">архив</span></a>
         </div>
-        <p class="hint" style="margin-top:0.875rem">Раздел-образец: наполняется документами фабрики.</p>
+        <p class="hint" style="margin-top:0.875rem">Названия придуманы для примера — какие документы фабрика даёт дизайнеру, ещё уточняется.</p>
       </div>
     </div>
   </div>
@@ -2659,8 +2712,10 @@ dialog#dlg::backdrop { background: rgba(0,0,0,.4); backdrop-filter: blur(3px); }
     var f = millByName(st.mill);
     $('lim-body').innerHTML = TYPE_ORDER.map(function (k) {
       var t = rowLim({ type: k, mill: null });
-      return '<tr><td>' + TYPES[k].label + '</td><td class="n">' + t.hMin + ' – ' + t.hMax +
-             '</td><td class="n">' + t.wMin + ' – ' + t.wMax + '</td></tr>';
+      // Диапазон коротким тире без пробелов: «246–2500» читается одним числом-
+      // интервалом и не разъезжается при переносе.
+      return '<tr><td>' + TYPES[k].label + '</td><td class="n">' + t.hMin + '–' + t.hMax +
+             '</td><td class="n">' + t.wMin + '–' + t.wMax + '</td></tr>';
     }).join('');
     var meta = $('lim-meta');
     if (meta) {
